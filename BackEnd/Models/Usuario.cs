@@ -3,7 +3,7 @@ using Postgrest.Models;
 
 namespace backend.Models
 {
-    [Table("usuario")]
+    [Table("Usuario")]
     public class Usuario : BaseModel
     {
         [PrimaryKey("id", false)]

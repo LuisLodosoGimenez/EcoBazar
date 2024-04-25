@@ -26,8 +26,9 @@ namespace backend.Services
             {
                 AutoConnectRealtime = true
             };
+            
 
-            _supabaseClient = new Supabase.Client(supabaseUrl, supabaseKey, options);
+            _supabaseClient = new Supabase.Client(supabaseUrl!, supabaseKey, options);
 
              // Espera a que la inicialización se complete antes de devolver el control
         }
@@ -170,16 +171,7 @@ namespace backend.Services
             return users;                    
         }
 
-        public async Task InsertarUser(Usuario nuevouser)
-        {
-            
-
-            // Inserta el nuevo producto en la tabla correspondiente
-            await _supabaseClient
-                    .From<Usuario>()
-                    .Insert(nuevouser);
-            Console.WriteLine("User insertado correctamente en Supabase.");
-        }
+        
 
         public async Task InsertarBuyerEnUsuarios(Comprador2 nuevouser)
         {
@@ -259,7 +251,25 @@ namespace backend.Services
 
 
 
-        //   #######################################  LUIS  ########################################################
+
+
+
+
+        public async Task InsertarUser(Usuario nuevouser)
+        {
+            
+
+            // Inserta el nuevo producto en la tabla correspondiente
+            await _supabaseClient
+                    .From<Usuario>()
+                    .Insert(nuevouser);
+            Console.WriteLine("User insertado correctamente en Supabase.");
+        }
+
+        
+
+
+//   #######################################  LUIS  ########################################################
 
 
 
@@ -271,7 +281,7 @@ namespace backend.Services
             await _supabaseClient
                     .From<Compradorluis>()
                     .Insert(comprador);
-            Console.WriteLine("User insertado correctamente en Supabase.");
+            Console.WriteLine("Comprador insertado correctamente en Supabase.");
         }
 
 

@@ -319,7 +319,7 @@ namespace backend.Logica
 
 
 
-        public void AñadirComprador(string nombre, string nick_name, string contraseña, string email, int edad, int limiteGasto)
+        public async void AñadirComprador(string nombre, string nick_name, string contraseña, string email, int edad, int limiteGasto)
         {
             Usuario usuario = new Usuario{
                 Nombre = nombre,
@@ -329,7 +329,7 @@ namespace backend.Logica
                 Edad = edad,
             };
 
-            interf.InsertarUser(usuario);
+            await interf.InsertarUser(usuario);
 
             int userId = ObtenerUsuarioPorNick(nick_name).Id;
 
@@ -338,7 +338,7 @@ namespace backend.Logica
                 Limite_gasto_cents_mes = limiteGasto
             };
 
-            interf.InsertarCompradorLuis(comprador);
+            await interf.InsertarCompradorLuis(comprador);
             
 
 

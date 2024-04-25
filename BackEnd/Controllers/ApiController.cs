@@ -219,7 +219,7 @@ namespace backend.Controllers
 
         public class RegistroLuisRequest
         {
-            public string Nombre { get; set; }
+            public string? Nombre { get; set; }
             public string Nick { get; set; }
             public string Password { get; set; }
             public string Email { get; set; }
@@ -266,11 +266,15 @@ namespace backend.Controllers
             public int Edad { get; set; }
             public int? LimiteGasto {get; set; }
         }
+
+
+
         public class Buyer
         {
-
             public int limite { get; set; }
         }
+
+
 
     }
 }
