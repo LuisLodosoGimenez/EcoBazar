@@ -4,7 +4,7 @@ using Postgrest.Models;
 
 namespace backend.Models
 {
-    [Table("vendedor")]
+    [Table("Vendedor")]
     public class Vendedor : Usuario
     {
 

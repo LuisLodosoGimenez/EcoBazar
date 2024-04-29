@@ -18,31 +18,24 @@ namespace backend.Services
 {
     public interface Interfaz
     {
+        Task InsertarUser(Usuario nuevouser);
+        Task InsertarCompradorLuis(Compradorluis comprador);
+        Task<bool> UsuarioExistePorApodo(string apodo);
+        Task<Usuario> UserByNick(string filtro);
+        Task<List<Usuario>> GetAllUsers();
+        Task<List<Producto>> GetAllProducts();
+        Task<List<Articulo>> GetAllArticles();
+        Task InsertarCarrito(CarritoCompra nuevocarrito);
+
+        //De momento no sirven
         Task InsertarProducto(Producto nuevoProducto);
         Task<List<Producto>> GetProductsById(int y);
         Task EliminarProducto(Producto producto);
-        Task<List<Producto>> GetAllProducts();
-        Task<List<Usuario>> GetAllUsers();
-        Task<Usuario> UserByNick(string filtro);
-        Task InsertarUser(Usuario nuevouser);
-        Task<bool> UsuarioExistePorApodo(string apodo);
         Task<Usuario> UpdateAgeUser(Usuario usuario,int edad1 ,int edad);
         Task<Usuario> UserByAge(int filtro);
-        Task InsertarCarrito(CarritoCompra nuevocarrito);
-        //Task<Comprador> BuyerByNick(string filtro);
         Task<Producto> ProductByPrice(int filtro);
-        Task InsertarBuyer(Comprador3 nuevobuyer);
         Task<List<CarritoCompra>> GetChart();
-        Task<List<Articulo>> GetAllArticles();
-        Task Insert1<Comprador>(Comprador item) where Comprador : Usuario,new();
-        Task InsertarBuyerEnUsuarios(Comprador2 nuevouser);
-
-
-
-        //   #######################################  LUIS  ########################################################
-
-        Task InsertarCompradorLuis(Compradorluis comprador);
-        //   ########################################################################################################
+        Task<List<Compradorluis>> GetAllBuyers();
 
     }
 }

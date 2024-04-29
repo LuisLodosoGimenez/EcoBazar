@@ -3,7 +3,7 @@ using Postgrest.Models;
 
 namespace backend.Models
 {
-    [Table("producto")]
+    [Table("Producto")]
     public class Producto : BaseModel
     {
         [PrimaryKey("id", false)]
@@ -21,9 +21,9 @@ namespace backend.Models
 
         [Column("id_articulo")]
         public int Id_articulo { get; set; }
-        public Vendedor Vendedor { get; set; }
+        public Vendedor? Vendedor { get; set; }
         
-        public Articulo Articulo { get; set; }
+        public Articulo? Articulo { get; set; }
 
     }
 }

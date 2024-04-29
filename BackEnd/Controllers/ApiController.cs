@@ -16,6 +16,83 @@ namespace backend.Controllers
             this._logica = logica;
         }
 
+
+        [HttpPost("registroLuisa")]
+        public IActionResult AñadirComprador(RegistroLuisRequest req)
+        {
+            _logica.AñadirComprador(req.Nombre!, req.Nick!, req.Password!, req.Email!, req.Edad, req.LimiteGasto);
+            return Ok();
+        }
+
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] LoginRequest request)
+        {
+            _logica.Login(request.Nick!, request.Password!);
+            return Ok();
+        }
+
+        [HttpPost("login2")]
+        public async Task<IActionResult> Login2([FromBody] LoginRequest request)
+        {
+            try
+            {
+                await _logica.Login(request.Nick!, request.Password!);
+                var perfil = _logica.ObtenerUsuarioPorNick(request.Nick!); //Obtiene al usuario
+                var user = _logica.GetChartByUser(perfil); //Accede al carrito del usuario
+                var productos = new List<Producto>(); //Crea una lista para almacenar los productos del usuario
+                var items = new List<Articulo>(); //Crea una lista para almacenar los productos del usuario
+
+                // Para cada carrito en la lista de carritos
+                foreach(var product in user)
+                {
+                    // Obtener los productos asociados al carrito del usuario
+                    var productItems = _logica.GetProductByChart(product);
+                    
+                    // Agregar los productos a la lista de productos
+                    productos.AddRange(productItems);
+                }
+                foreach(var prod in productos)
+                {
+                    // Obtener los artículos asociados al producto
+                    var productItems = _logica.GetArticleByProduct(prod);
+                    
+                    // Agregar los artículos a la lista de items
+                    items.AddRange(productItems);
+                }
+
+                var responseData = new 
+                {
+                    Perfil = perfil,
+                    ArticulosEnCarrito = items
+                };
+
+                return Ok(responseData);
+            }
+            catch(UsuarioNoExisteException ex)
+            {
+                return NotFound("Usuario no encontrado: " + ex.Message);
+            }
+            catch(ContraseñaIncorrectaException ex)
+            {
+                return Unauthorized("Contraseña incorrecta: " + ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, "Error: " + ex.Message);
+            }
+        }
+
+        [HttpGet("perfil/{nick}")]
+        public IActionResult ObtenerPerfilComprador(string nick)
+        {
+            var perfil = _logica.ObtenerUsuarioPorNick(nick);
+            return Ok(perfil);
+        }
+
+
+
+        //Hasta el momento no sirven para nada
+
         [HttpPost("carrito")]
         public IActionResult AgregarAlCarrito([FromBody] CarritoCompraRequest request)
         {
@@ -70,176 +147,20 @@ namespace backend.Controllers
                 return StatusCode(500, "Internal Server Error : " + ex.Message);
             }
         }
-    /*
-        [HttpGet("buscar/productos")]
-        public IActionResult BuscarProductos([FromQuery] string query)
-        {
-            var productos = _logica.BuscarProductos(query);
-            return Ok(productos);
-        }
-    */
-        [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest request)
-        {
-            _logica.Login(request.Nick, request.Password);
-            return Ok();
-        }
-
-        [HttpPost("login2")]
-        public async Task<IActionResult> Login2([FromBody] LoginRequest request)
-        {
-            try
-            {
-                await _logica.Login(request.Nick, request.Password);
-                var perfil = _logica.ObtenerUsuarioPorNick(request.Nick);
-                var user = _logica.GetChartByUser(perfil);
-                var productos = new List<Producto>();
-                var items = new List<Articulo>();
-
-                // Para cada carrito en la lista de carritos
-                foreach(var product in user)
-                {
-                    // Obtener los artículos asociados al producto
-                    var productItems = _logica.GetProductByChart(product);
-                    
-                    // Agregar los artículos a la lista de items
-                    productos.AddRange(productItems);
-                }
-                foreach(var prod in productos)
-                {
-                    // Obtener los artículos asociados al producto
-                    var productItems = _logica.GetArticleByProduct(prod);
-                    
-                    // Agregar los artículos a la lista de items
-                    items.AddRange(productItems);
-                }
-
-                var responseData = new 
-                {
-                    Perfil = perfil,
-                    ArticulosEnCarrito = items
-                };
-
-                return Ok(responseData);
-            }
-            catch(UsuarioNoExisteException ex)
-            {
-                return NotFound("Usuario no encontrado: " + ex.Message);
-            }
-            catch(ContraseñaIncorrectaException ex)
-            {
-                return Unauthorized("Contraseña incorrecta: " + ex.Message);
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(500, "Error: " + ex.Message);
-            }
-        }
-/*
-        [HttpPost("registro")]
-        public IActionResult RegistrarComprador([FromBody] RegistroRequest request)
-        {
-            try
-            {
-                
-                if (request.LimiteGasto != null)
-                {
-                    // El usuario es un comprador
-                    _logica.CrearUsuario2(request.Nombre, request.Nick, request.Password, request.Email, request.Edad, request.LimiteGasto.Value);
-                }
-                else
-                {
-                    // El usuario es un usuario regular
-                    _logica.CrearUsuario2(request.Nombre, request.Nick, request.Password, request.Email, request.Edad);
-                }
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal Server Error : " + ex.Message);
-            }
-        }
-*/
-        [HttpGet("perfil/{nick}")]
-        public IActionResult ObtenerPerfilComprador(string nick)
-        {
-            var perfil = _logica.ObtenerUsuarioPorNick(nick);
-            return Ok(perfil);
-        }
-/*
-        [HttpGet("productos/buscar")]
-        public IActionResult BuscarProductosPorNombre([FromQuery] string nombre)
-        {
-            try
-            {
-                var productos = _logica.ObtenerProductosPorNombre(nombre);
-                return Ok(productos);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Internal Server Error: " + ex.Message);
-            }
-        }
-
-
-*/
+    
         
 
-
-        [HttpPost("registrobuyer")]
-        public IActionResult Añadirbuyer(Buyer request)
-        {
-            
-            _logica.AddBuyer2(request.limite);
-            return Ok();
-        }
-
-        [HttpPost("registrobuyer2")]
-        public IActionResult Añadirbuyer2(RegistroRequest request)
-        {
-            
-            _logica.AddBuyer22(request.Nombre, request.Nick, request.Password, request.Email, request.Edad);
-            return Ok();
-        }
-
-
-
-//   #######################################  LUIS  ########################################################
-
-
-
-        [HttpPost("registroLuisa")]
-        public IActionResult AñadirComprador(RegistroLuisRequest req)
-        {
-            
-            _logica.AñadirComprador(req.Nombre, req.Nick, req.Password, req.Email, req.Edad, req.LimiteGasto);
-            return Ok();
-        }
-
+        //Cuerpo de las respuestas
 
         public class RegistroLuisRequest
         {
             public string? Nombre { get; set; }
-            public string Nick { get; set; }
-            public string Password { get; set; }
-            public string Email { get; set; }
+            public string? Nick { get; set; }
+            public string? Password { get; set; }
+            public string? Email { get; set; }
             public int Edad { get; set; }
             public int LimiteGasto {get; set; }
         }
-
-
-
-//   ########################################################################################################
-
-
-
-
-
-
-
-
-
-
 
         public class CarritoCompraRequest
         {
@@ -253,27 +174,9 @@ namespace backend.Controllers
 
         public class LoginRequest
         {
-            public string Nick { get; set; }
-            public string Password { get; set; }
+            public string? Nick { get; set; }
+            public string? Password { get; set; }
         }
-
-        public class RegistroRequest
-        {
-            public string Nombre { get; set; }
-            public string Nick { get; set; }
-            public string Password { get; set; }
-            public string Email { get; set; }
-            public int Edad { get; set; }
-            public int? LimiteGasto {get; set; }
-        }
-
-
-
-        public class Buyer
-        {
-            public int limite { get; set; }
-        }
-
 
 
     }

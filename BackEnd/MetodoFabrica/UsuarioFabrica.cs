@@ -11,16 +11,16 @@ namespace backend.MetodoFabrica
 
 
         [Column("nombre")]
-        public string Nombre { get; set; }
+        public string? Nombre { get; set; }
 
         [Column("nick_name")]
-        public string Nick_name { get; set; }
+        public string? Nick_name { get; set; }
 
         [Column("contraseña")]
-        public string Contraseña { get; set; }
+        public string? Contraseña { get; set; }
 
         [Column("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         [Column("edad")]
         public int Edad { get; set; }

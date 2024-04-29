@@ -14,133 +14,60 @@ namespace backend.Logica
         }
 
 
-        public IList<Producto> ObtenerProductos()
+        public Usuario UserLogged()
         {
-            var productosTask = interf.GetAllProducts(); // Obtiene la tarea para obtener todos los productos
-            productosTask.Wait(); // Espera a que la tarea se complete
-            //return productosTask.Result;
-            List<Producto> productos1 = productosTask.Result;
-            return productos1;
+            Usuario user = userlogin;
+            return user;
         }
 
-        public IList<CarritoCompra> ObtenerChart()
+        //Probablemente sea borrado
+        public void Logout()
         {
-            var productosTask = interf.GetChart(); // Obtiene la tarea para obtener todos los productos
-            productosTask.Wait(); // Espera a que la tarea se complete
-            //return productosTask.Result;
-            List<CarritoCompra> productos1 = productosTask.Result;
-            return productos1;
+            if(userlogin == null) throw new Exception("Usuario no loggeado");
+            userlogin = null;
+            DateTime fechaacceso = DateTime.Now;
         }
 
-        public IList<Articulo> ObtenerArticulos()
-        {
-            var productosTask = interf.GetAllArticles(); // Obtiene la tarea para obtener todos los productos
-            productosTask.Wait(); // Espera a que la tarea se complete
-            //return productosTask.Result;
-            List<Articulo> productos1 = productosTask.Result;
-            return productos1;
+        //Creo que así no peta, REVISAAAAAR!!!
+         public async void AñadirComprador(string nombre, string nick_name, string contraseña, string email, int edad, int limiteGasto)
+        { 
+            
+            try{
+                 Usuario usuario = new Usuario{
+                    Nombre = nombre,
+                    Nick_name = nick_name,
+                    Contraseña = contraseña,
+                    Email = email,
+                    Edad = edad,
+                };
+
+                AddMember(usuario);
+                await interf.InsertarUser(usuario);
+
+                int userId = ObtenerUsuarioPorNick(nick_name).Id;
+
+                Compradorluis comprador = new Compradorluis{
+                    Id = userId,
+                    Limite_gasto_cents_mes = limiteGasto
+                };
+
+                await interf.InsertarCompradorLuis(comprador);
+
+            } catch(Exception e){
+
+                //Con esto se consigue mostrar por consola la excepción por la que no es posible registrar a un usuario, en este caso saltan las excepciones de AddMember
+
+                throw; 
+
+            }
+             
         }
 
-        public IList<Usuario> ObtenerUsuarios()
+         public void AddMember(Usuario user)
         {
-            var productosTask = interf.GetAllUsers(); // Obtiene la tarea para obtener todos los productos
-            productosTask.Wait(); // Espera a que la tarea se complete
-            //return productosTask.Result;
-            List<Usuario> productos1 = productosTask.Result;
-            return productos1;
-        }
-
-        public List<Usuario> ObtenerUsuarios2()
-        {
-            var productosTask = interf.GetAllUsers(); // Obtiene la tarea para obtener todos los productos
-            productosTask.Wait(); // Espera a que la tarea se complete
-            //return productosTask.Result;
-            List<Usuario> productos1 = productosTask.Result;
-            return productos1;
-        }
-
-        public Boolean Bool1(string nick)
-        {
-            var bool2 = interf.UsuarioExistePorApodo(nick);
-            bool2.Wait();
-            Boolean bool3 = bool2.Result;
-            return bool3;
-
-        }
-
-
-        public IList<Producto> GetContentsByParameters2(int keyWords)
-        {
-            
-
-            IList<Producto> allContents = ObtenerProductos();
-
-            
-            allContents = allContents.Where(c => c.Precio_cents==keyWords).ToList();
-            
-
-            return allContents.ToList();
-        }
-
-        public IList<Articulo> GetArticlesByName(string keyWords)
-        {
-            
-
-            IList<Articulo> allContents = ObtenerArticulos();
-
-            
-            allContents = allContents.Where(c => c.Nombre==keyWords).ToList();
-            
-
-            return allContents.ToList();
-        }
-
-        public IList<CarritoCompra> GetChartByUser(Usuario user)
-        {
-            
-
-            IList<CarritoCompra> allContents = ObtenerChart();
-
-            
-            allContents = allContents.Where(c => c.Id_usuario==user.Id).ToList();
-            
-
-            return allContents.ToList();
-        }
-
-        public IList<Producto> GetProductByChart(CarritoCompra carr)
-        {
-            
-
-            IList<Producto> allContents = ObtenerProductos();
-
-            
-            allContents = allContents.Where(c => c.Id==carr.Id_producto).ToList();
-            
-
-            return allContents.ToList();
-        }
-
-        public IList<Articulo> GetArticleByProduct(Producto prod)
-        {
-            
-
-            IList<Articulo> allContents = ObtenerArticulos();
-
-            
-            allContents = allContents.Where(c => c.Id==prod.Id_articulo).ToList();
-            
-
-            return allContents.ToList();
-        }
-
-        public void AddMember(Usuario user)
-        {
-
-            
             IList<Usuario> allUsers = ObtenerUsuarios();
 
-
+            // Verificar si ya existe un miembro con el mismo nickname
             bool nicknamebool = allUsers.Any(u => u.Nick_name == user.Nick_name);
 
             // Verificar si ya existe un miembro con el mismo correo electrónico
@@ -162,139 +89,88 @@ namespace backend.Logica
 
         }
 
-        public void AddBuyer(Comprador comp)
-        {
-            //interf.InsertarBuyer(comp);
-            
-
-        }
-
-        public void AddBuyer22(string nombre, string nick_name, string contraseña, string email, int edad, int? limiteGasto = null)
-        {
-            Comprador2 nuevoUsuario2;
-
-            nuevoUsuario2 = new Comprador2
-                {
-                    Nombre = nombre,
-                    Nick_name = nick_name,
-                    Contraseña = contraseña,
-                    Email = email,
-                    Edad = edad,
-                };
-
-            interf.InsertarBuyerEnUsuarios(nuevoUsuario2);
-            
-
-        }
-        public void AddBuyer2(int limite)
-        {
-
-            Usuario nuevoUsuario2 = ObtenerUsuarioPorNick("luis456");
-
-            Comprador3 nuevoUsuario3 = new Comprador3
-            {
-                Id = nuevoUsuario2.Id ,
-                Nombre = nuevoUsuario2.Nombre,
-                Nick_name = nuevoUsuario2.Nick_name,
-                Contraseña = nuevoUsuario2.Contraseña,
-                Email = nuevoUsuario2.Email,
-                Edad = nuevoUsuario2.Edad,
-                BaseUrl = nuevoUsuario2.BaseUrl,
-                Limite_gasto_cents_mes = limite
-                
-            };
-            Console.WriteLine("El id es :" + nuevoUsuario2.PrimaryKey);
-    
-            interf.InsertarBuyer(nuevoUsuario3);
-            
-        }
-
-
         public async Task Login(String nick, String password)
         {
-            if(nick == "" || password == "" ) throw new CamposVaciosException("Existen campos vacíos");
+            if(nick == "" || password == "" ) 
+                throw new CamposVaciosException("Existen campos vacíos");
 
-            if (await interf.UsuarioExistePorApodo(nick)==false) throw new UsuarioNoExisteException("El usuario no existe");
+            if (!await interf.UsuarioExistePorApodo(nick)) 
+                throw new UsuarioNoExisteException("El usuario no existe");
+
             Usuario user =  await interf.UserByNick(nick);
             
-            if (!user.Contraseña.Equals(password)) throw new ContraseñaIncorrectaException("Contraseña incorrecta");
+            if (!user.Contraseña!.Equals(password))
+                 throw new ContraseñaIncorrectaException("Contraseña incorrecta");
+
             userlogin = user;
-            Console.WriteLine("Usuario con nick :" + user.Nick_name + "y contraseña :" + user.Contraseña + " logueado");
-        }
-
-
-
-        public Usuario UserLogged()
-        {
-            Usuario user = userlogin;
-            return user;
-        }
-
-        public void Logout()
-        {
-            if(userlogin == null) throw new Exception("Usuario no loggeado");
-            userlogin = null;
-            DateTime fechaacceso = DateTime.Now;
-        }
-
-
-        public  Usuario ObtenerUsuarioPorNick(string nick)
-        {
-
-            var productosTask = interf.UserByNick(nick); // Obtiene la tarea para obtener todos los productos
-            productosTask.Wait(); // Espera a que la tarea se complete
-            //return productosTask.Result;
-            Usuario user1 = productosTask.Result;
-            return user1;
-        }
-
-        public  Producto ObtenerProductoPorPrecio(int nick)
-        {
-
-            var productosTask = interf.ProductByPrice(nick); // Obtiene la tarea para obtener todos los productos
-            productosTask.Wait(); // Espera a que la tarea se complete
-            //return productosTask.Result;
-            Producto user1 = productosTask.Result;
-            return user1;
-        }
-        /*
-        public  Comprador ObtenerCompradorPorNick(string nick)
-        {
-
-            var productosTask = interf.BuyerByNick(nick); // Obtiene la tarea para obtener todos los productos
-            productosTask.Wait(); // Espera a que la tarea se complete
-            //return productosTask.Result;
-            Comprador user1 = productosTask.Result;
-            return user1;
-        }
-*/
-        public  Usuario ObtenerUsuarioPorEdad(int edad)
-        {
-
-            var productosTask = interf.UserByAge(edad); // Obtiene la tarea para obtener todos los productos
-            productosTask.Wait(); // Espera a que la tarea se complete
-            //return productosTask.Result;
-            Usuario user1 = productosTask.Result;
-            return user1;
-        }
-
-        public Usuario UpdateEdadUsuario(Usuario usuario,int edad)
-        {
-            var usuario1 = interf.UpdateAgeUser(usuario,usuario.Edad,edad);
-            usuario1.Wait();
-            Usuario user1 = usuario1.Result;
             
-            return user1;
-
+            Console.WriteLine("Usuario con nick :" + user.Nick_name + " y contraseña :" + user.Contraseña + " logueado");
         }
 
-
-        public void AddUsuario(Usuario usuario)
+         public IList<Usuario> ObtenerUsuarios()
         {
-            interf.InsertarUser(usuario);
-
+            var productosTask = interf.GetAllUsers();
+            productosTask.Wait(); 
+            List<Usuario> productos1 = productosTask.Result;
+            return productos1;
         }
 
+
+         public  Usuario ObtenerUsuarioPorNick(string nick)
+        {
+            var productosTask = interf.UserByNick(nick);
+            productosTask.Wait(); 
+            Usuario user1 = productosTask.Result;
+            return user1;
+        }
+
+
+        public IList<Producto> ObtenerProductos()
+        {
+            var productosTask = interf.GetAllProducts(); // Obtiene la tarea para obtener todos los productos
+            productosTask.Wait(); // Espera a que la tarea se complete
+            //return productosTask.Result;
+            List<Producto> productos1 = productosTask.Result;
+            return productos1;
+        }
+
+        
+        public IList<Articulo> ObtenerArticulos()
+        {
+            var productosTask = interf.GetAllArticles(); 
+            productosTask.Wait(); 
+            List<Articulo> productos1 = productosTask.Result;
+            return productos1;
+        }
+
+        //Creo que podrá servir para la búsqueda de productos, para mostrar sólo los que correspondan con el string que entra por parámetros
+        public IList<Articulo> GetArticlesByName(string keyWords)
+        {
+            IList<Articulo> allContents = ObtenerArticulos();
+            allContents = allContents.Where(c => c.Nombre==keyWords).ToList();
+            return allContents.ToList();
+        }
+
+        //Supongo que este método es para obtener el carrito de la compra de un usuario 
+        public IList<CarritoCompra> GetChartByUser(Usuario user)
+        {
+            IList<CarritoCompra> allContents = ObtenerChart();
+            allContents = allContents.Where(c => c.Id_usuario==user.Id).ToList();
+            return allContents.ToList();
+        }
+
+        public IList<Producto> GetProductByChart(CarritoCompra carr)
+        {
+            IList<Producto> allContents = ObtenerProductos();
+            allContents = allContents.Where(c => c.Id==carr.Id_producto).ToList();
+            return allContents.ToList();
+        }
+         public IList<Articulo> GetArticleByProduct(Producto prod)
+        {
+            IList<Articulo> allContents = ObtenerArticulos();
+            allContents = allContents.Where(c => c.Id==prod.Id_articulo).ToList();
+            return allContents.ToList();
+        } 
 
         public void AgregarAlCarrito(int usuarioId, int productoId)
         {
@@ -312,214 +188,41 @@ namespace backend.Logica
         }
 
 
-
-
-
-//   #######################################  LUIS  ########################################################
-
-
-
-        public async void AñadirComprador(string nombre, string nick_name, string contraseña, string email, int edad, int limiteGasto)
+        //Supongo que este método es para obtener el carrito de la compra de un usuario
+        public IList<CarritoCompra> ObtenerChart()
         {
-            Usuario usuario = new Usuario{
-                Nombre = nombre,
-                Nick_name = nick_name,
-                Contraseña = contraseña,
-                Email = email,
-                Edad = edad,
-            };
+            var productosTask = interf.GetChart();
+            productosTask.Wait(); 
+            List<CarritoCompra> productos1 = productosTask.Result;
+            return productos1;
+        }
 
-            await interf.InsertarUser(usuario);
+        //NO SE USA, TENDRÁ USO EN EL FUTURO?
+        public IList<Producto> GetContentsByParameters2(int keyWords)
+        {
+            IList<Producto> allContents = ObtenerProductos();
+            allContents = allContents.Where(c => c.Precio_cents==keyWords).ToList();
+            return allContents.ToList();
+        }
 
-            int userId = ObtenerUsuarioPorNick(nick_name).Id;
 
-            Compradorluis comprador = new Compradorluis{
-                Id = userId,
-                Limite_gasto_cents_mes = limiteGasto
-            };
-
-            await interf.InsertarCompradorLuis(comprador);
+        public Usuario UpdateEdadUsuario(Usuario usuario,int edad)
+        {
+            var usuario1 = interf.UpdateAgeUser(usuario,usuario.Edad,edad);
+            usuario1.Wait();
+            Usuario user1 = usuario1.Result;
             
+            return user1;
 
-
-
-
-
-            
         }
 
-
-
-//   ########################################################################################################
-
-
-
-
-
-
-
-
-
-/*
-        // Método fábrica para crear usuarios
-        public void CrearUsuario(string nombre, string nick_name, string contraseña, string email, int edad, int? limiteGasto = null)
+        public  Producto ObtenerProductoPorPrecio(int precio)
         {
-            Usuario nuevoUsuario;
-
-            if (limiteGasto != null)
-            {
-                // Crear un nuevo Comprador
-                nuevoUsuario = new Comprador
-                {
-                    Nombre = nombre,
-                    Nick_name = nick_name,
-                    Contraseña = contraseña,
-                    Email = email,
-                    Edad = edad,
-                    Limite_gasto_cents_mes = limiteGasto.Value
-                };
-            }
-            else
-            {
-                // Crear un nuevo Usuario
-                nuevoUsuario = new Usuario
-                {
-                    Nombre = nombre,
-                    Nick_name = nick_name,
-                    Contraseña = contraseña,
-                    Email = email,
-                    Edad = edad
-                };
-            }
-            AgregarUsuarioABaseDeDatos(nuevoUsuario,limiteGasto);
-
-            // Retornar el nuevo usuario creado
+            var productosTask = interf.ProductByPrice(precio); 
+            productosTask.Wait(); 
+            Producto user1 = productosTask.Result;
+            return user1;
         }
-
-        // Método para agregar usuario a la base de datos
-        public void AgregarUsuarioABaseDeDatos(Usuario usuario,int? limiteGasto)
-        {
-
-
-            // Aquí debes llamar a los métodos de tu capa de persistencia para insertar el usuario en la base de datos
-            Usuario usuario2;
-            if (usuario is Comprador)
-            {
-                // Si el usuario es un Comprador, insertamos primero el Usuario y luego el Comprador
-
-                // Insertar el Usuario en la tabla de Usuarios
-                usuario2 = new Usuario{
-                    Nombre = usuario.Nombre,
-                    Nick_name = usuario.Nick_name,
-                    Contraseña = usuario.Contraseña,
-                    Email = usuario.Email,
-                    Edad = usuario.Edad
-                };
-                try
-                {
-                    AddMember(usuario2);
-                }
-                catch (Exception ex)
-                {
-                    // Manejar la excepción, registrarla, imprimir información de depuración, etc.
-                    Console.WriteLine("Error al insertar usuario en la base de datos: " + ex.Message);
-                }
-
-                // Obtener el ID del Usuario recién insertado
-                int usuarioId = usuario2.Id;
-
-                // Insertar el Comprador en la tabla de Compradores
-                interf.InsertarBuyer(new Comprador
-                {
-                    Id = usuarioId, // Utilizar el mismo ID del Usuario
-                    Limite_gasto_cents_mes = ((Comprador)usuario).Limite_gasto_cents_mes
-                    // Otros atributos específicos de Comprador
-                });
-
-            }
-            else
-            {
-                // Si es un usuario normal, lo insertamos directamente en la tabla de Usuarios
-                AddMember(usuario);
-
-            }
-        }
-
-        public IList<Producto> ObtenerProductosPorNombre(string nombre)
-        {        
-            var productosTask = interf.GetAllProducts(); // Obtiene la tarea para obtener todos los productos
-            productosTask.Wait(); // Espera a que la tarea se complete
-            List<Producto> productos = productosTask.Result;
-            var productosFiltrados = productos.Where(p => p.Articulo.Nombre.Contains(nombre)).ToList();
-
-            return productosFiltrados;
-        }
-
-        // Método fábrica para crear usuarios
-        public void CrearUsuario2(string nombre, string nick_name, string contraseña, string email, int edad, int? limiteGasto = null)
-        {
-            Usuario nuevoUsuario;
-            Comprador nuevoUsuario2;
-
-            nuevoUsuario = new Usuario
-                {
-                    Nombre = nombre,
-                    Nick_name = nick_name,
-                    Contraseña = contraseña,
-                    Email = email,
-                    Edad = edad
-                };
-            try
-            {
-                AddMember(nuevoUsuario);    
-
-                if (limiteGasto != null && nuevoUsuario!=null)
-                {
-                    Usuario user2 = ObtenerUsuarioPorNick(nick_name);
-                    int usuarioId = user2.Id;
-                    Console.WriteLine(usuarioId);
-                    // Crear un nuevo Comprador
-                    nuevoUsuario2 = new Comprador
-                    {
-                        Id = usuarioId,
-                        Limite_gasto_cents_mes = limiteGasto.Value
-                    };
-                    AddBuyer(nuevoUsuario2);
-                }
-            }
-            catch (Exception ex)
-            {
-                // Manejar la excepción
-                Console.WriteLine("Error al crear el usuario: " + ex.Message);
-                // Puedes lanzar la excepción o manejarla de otra manera según tus necesidades
-            }
-            //AgregarUsuarioABaseDeDatos(nuevoUsuario,limiteGasto);
-
-            // Retornar el nuevo usuario creado
-        }
-
-/*
-        // Método para agregar usuario a la base de datos
-        public void AgregarUsuarioABaseDeDatos2(Usuario usuario, int? limiteGasto)
-        {
-
-            
-            // Obtener el ID del Usuario recién insertado
-            int usuarioId = usuario.Id;
-
-            // Insertar el Comprador en la tabla de Compradores
-            interf.InsertarBuyer(new Comprador
-            {
-                Id = usuarioId, // Utilizar el mismo ID del Usuario
-                Limite_gasto_cents_mes = ((Comprador)usuario).Limite_gasto_cents_mes
-                // Otros atributos específicos de Comprador
-            });
-
-            }
-
-        
-
-*/
 
     }
 
