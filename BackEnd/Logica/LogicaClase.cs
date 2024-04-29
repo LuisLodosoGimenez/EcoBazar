@@ -53,7 +53,7 @@ namespace backend.Logica
 
                 await interf.InsertarCompradorLuis(comprador);
 
-            } catch(Exception e){
+            } catch(Exception){
 
                 //Con esto se consigue mostrar por consola la excepción por la que no es posible registrar a un usuario, en este caso saltan las excepciones de AddMember
 
