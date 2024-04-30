@@ -16,7 +16,7 @@ namespace backend.Models
         public string? Categoria { get; set; }
 
         [Column("edad_min")]
-        public int Edad_min { get; set; }
+        public int? Edad_min { get; set; }
 
         [Column("consejos_utilizacion")]
         public string? Consejos_utilizacion { get; set; }

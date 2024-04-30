@@ -15,7 +15,7 @@ namespace backend.Controllers
         {
             this._logica = logica;
         }
-
+ 
 
         [HttpPost("registroLuisa")]
         public IActionResult AñadirComprador(RegistroLuisRequest req)

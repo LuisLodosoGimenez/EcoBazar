@@ -34,6 +34,6 @@ export class ApiService {
       'Access-Control-Allow-Origin': '*',
     });
 
-    return this.http.post(`http://localhost:5237/api/Api/registro`, body);
+    return this.http.post(`http://localhost:5237/api/Api/registroLuisa`, body);
   }
 }
