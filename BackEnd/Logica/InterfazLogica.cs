@@ -31,6 +31,8 @@ namespace backend.Logica
         IList<Producto> GetProductByChart(CarritoCompra carr);
          IList<Articulo> GetArticleByProduct(Producto prod);
         void AgregarAlCarrito(int usuarioId, int productoId);
+
+        
         
 
         //CONSULTAR SI SIRVEN Y TAL

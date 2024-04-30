@@ -9,13 +9,20 @@ namespace backend.Controllers
     [Route("api/[controller]")]
     public class ApiController : ControllerBase
     {
+        private static ApiController _instancia;
         private readonly InterfazLogica _logica;
 
-        public ApiController(InterfazLogica logica)
+        private ApiController(InterfazLogica logica)
         {
             this._logica = logica;
         }
- 
+  
+        public static ApiController GetInstance(InterfazLogica logica){
+            if(_instancia == null)
+                _instancia = new ApiController(logica);
+
+            return _instancia;
+        }
 
         [HttpPost("registroLuisa")]
         public IActionResult AñadirComprador(RegistroLuisRequest req)

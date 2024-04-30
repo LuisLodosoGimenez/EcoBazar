@@ -15,9 +15,10 @@ namespace backend.Services
 {
     public class SupabaseService : Interfaz
     {
+        private static SupabaseService _instancia;
         private readonly Supabase.Client _supabaseClient;
 
-        public SupabaseService(IConfiguration configuration)
+        private SupabaseService(IConfiguration configuration)
         {
             var supabaseUrl = configuration["Supabase:Url"];
             var supabaseKey = configuration["Supabase:ApiKey"];
@@ -28,6 +29,14 @@ namespace backend.Services
             };
             
             _supabaseClient = new Supabase.Client(supabaseUrl!, supabaseKey, options);
+        }
+ 
+        public static SupabaseService GetInstance(IConfiguration configuration){
+            if(_instancia == null)
+
+                _instancia = new SupabaseService(configuration);
+            
+            return _instancia;
         }
 
         public async Task InitializeSupabaseAsync()

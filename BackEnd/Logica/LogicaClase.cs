@@ -187,6 +187,10 @@ namespace backend.Logica
             
         }
 
+        
+
+
+
 
         //Supongo que este método es para obtener el carrito de la compra de un usuario
         public IList<CarritoCompra> ObtenerChart()
@@ -223,6 +227,9 @@ namespace backend.Logica
             Producto user1 = productosTask.Result;
             return user1;
         }
+
+
+
 
     }
 
