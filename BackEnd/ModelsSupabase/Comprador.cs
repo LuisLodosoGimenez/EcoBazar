@@ -1,10 +1,10 @@
 using Postgrest.Attributes;
 using Postgrest.Models;
 
-namespace backend.Models
+namespace backend.ModelsSupabase
 {
     [Table("Comprador")]
-    public class Compradorluis : BaseModel
+    public class Comprador : BaseModel
     {
 
         [PrimaryKey]

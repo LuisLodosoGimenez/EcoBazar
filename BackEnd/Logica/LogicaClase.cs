@@ -1,6 +1,7 @@
 using backend.Services;
 using backend.Models;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace backend.Logica
 {
@@ -33,23 +34,16 @@ namespace backend.Logica
         { 
             
             try{
-                 Usuario usuario = new Usuario{
-                    Nombre = nombre,
-                    Nick_name = nick_name,
-                    Contraseña = contraseña,
-                    Email = email,
-                    Edad = edad,
-                };
+
+                Usuario usuario = new Usuario(nombre, nick_name, contraseña, email, edad);
 
                 AddMember(usuario);
                 await interf.InsertarUser(usuario);
 
-                int userId = ObtenerUsuarioPorNick(nick_name).Id;
+                int userId = ObtenerUsuarioPorNick(nick_name).getId();
 
-                Compradorluis comprador = new Compradorluis{
-                    Id = userId,
-                    Limite_gasto_cents_mes = limiteGasto
-                };
+                
+                Comprador comprador = new Comprador(nombre, nick_name, contraseña, email, edad, limiteGasto);
 
                 await interf.InsertarCompradorLuis(comprador);
 
@@ -68,10 +62,10 @@ namespace backend.Logica
             IList<Usuario> allUsers = ObtenerUsuarios();
 
             // Verificar si ya existe un miembro con el mismo nickname
-            bool nicknamebool = allUsers.Any(u => u.Nick_name == user.Nick_name);
+            bool nicknamebool = allUsers.Any(u => u.getNick_name() == user.getNick_name());
 
             // Verificar si ya existe un miembro con el mismo correo electrónico
-            bool emailbool = allUsers.Any(u => u.Email == user.Email);
+            bool emailbool = allUsers.Any(u => u.getEmail() == user.getEmail());
 
 
             if (!nicknamebool && !emailbool)
@@ -81,10 +75,10 @@ namespace backend.Logica
             else
             {
                 if (nicknamebool)
-                    throw new Exception("El member con nick " + user.Nick_name + " ya existe.");
+                    throw new Exception("El member con nick " + user.getNick_name() + " ya existe.");
 
                 if (emailbool)
-                    throw new Exception("El member con correo electrónico " + user.Email + " ya existe.");
+                    throw new Exception("El member con correo electrónico " + user.getEmail() + " ya existe.");
             }
 
         }
@@ -99,12 +93,12 @@ namespace backend.Logica
 
             Usuario user =  await interf.UserByNick(nick);
             
-            if (!user.Contraseña!.Equals(password))
+            if (!user.getContraseña()!.Equals(password))
                  throw new ContraseñaIncorrectaException("Contraseña incorrecta");
 
             userlogin = user;
             
-            Console.WriteLine("Usuario con nick :" + user.Nick_name + " y contraseña :" + user.Contraseña + " logueado");
+            Console.WriteLine("Usuario con nick :" + user.getNick_name() + " y contraseña :" + user.getContraseña() + " logueado");
         }
 
          public IList<Usuario> ObtenerUsuarios()
@@ -147,7 +141,7 @@ namespace backend.Logica
         public IList<Articulo> GetArticlesByName(string keyWords)
         {
             IList<Articulo> allContents = ObtenerArticulos();
-            allContents = allContents.Where(c => c.Nombre==keyWords).ToList();
+            allContents = allContents.Where(c => c.getNombre() == keyWords).ToList();
             return allContents.ToList();
         }
 
@@ -155,41 +149,51 @@ namespace backend.Logica
         public IList<CarritoCompra> GetChartByUser(Usuario user)
         {
             IList<CarritoCompra> allContents = ObtenerChart();
-            allContents = allContents.Where(c => c.Id_usuario==user.Id).ToList();
+            allContents = allContents.Where(c => c.getId_Usuario() == user.getId()).ToList();
             return allContents.ToList();
         }
 
         public IList<Producto> GetProductByChart(CarritoCompra carr)
         {
             IList<Producto> allContents = ObtenerProductos();
-            allContents = allContents.Where(c => c.Id==carr.Id_producto).ToList();
+            allContents = allContents.Where(c => c.getId() == carr.getId_Producto()).ToList();
             return allContents.ToList();
         }
          public IList<Articulo> GetArticleByProduct(Producto prod)
         {
             IList<Articulo> allContents = ObtenerArticulos();
-            allContents = allContents.Where(c => c.Id==prod.Id_articulo).ToList();
+            allContents = allContents.Where(c => c.getId() == prod.getId_Articulo()).ToList();
             return allContents.ToList();
         } 
 
         public void AgregarAlCarrito(int usuarioId, int productoId)
         {
-            // Aquí iría la lógica para insertar el nuevo elemento en la tabla CarritoCompra
-            // Por ejemplo:
-            CarritoCompra nuevoElemento = new CarritoCompra
-            {
-                Id_usuario = usuarioId,
-                Id_producto = productoId
-                // Puedes añadir otros campos si los necesitas, como cantidad, fecha, etc.
-            };
-
+            CarritoCompra nuevoElemento = new CarritoCompra(usuarioId, productoId);
             interf.InsertarCarrito(nuevoElemento);
-            
         }
 
-        
+        public IList<Producto> ObtenerProductosPorCategoria(string categoria)
+        {
+            var articulos = interf.ObtenerArticulosPorCategoria(categoria);
+            articulos.Wait();
+            IList<Producto> listaProductos = FiltrarArticulos(articulos.Result);
+            return listaProductos;
+        }
 
+        public  IList<Producto>  FiltrarArticulos(IList<Articulo> filtrados) 
+        {
+            int precio_min = 0;
+            IList<Producto> listaProductos = new List<Producto>();
 
+            foreach(var articuloFiltrado in filtrados)
+            {
+                var ejem =  interf.ObtenerProductosPorID(articuloFiltrado.getId());
+                ejem.Wait();
+                List<Producto> e1 = ejem.Result.OrderBy(producto => producto.getPrecio()).ToList();
+                listaProductos.Add(e1[0]);
+            }
+            return listaProductos;
+        }
 
 
         //Supongo que este método es para obtener el carrito de la compra de un usuario
@@ -201,18 +205,10 @@ namespace backend.Logica
             return productos1;
         }
 
-        //NO SE USA, TENDRÁ USO EN EL FUTURO?
-        public IList<Producto> GetContentsByParameters2(int keyWords)
-        {
-            IList<Producto> allContents = ObtenerProductos();
-            allContents = allContents.Where(c => c.Precio_cents==keyWords).ToList();
-            return allContents.ToList();
-        }
-
 
         public Usuario UpdateEdadUsuario(Usuario usuario,int edad)
         {
-            var usuario1 = interf.UpdateAgeUser(usuario,usuario.Edad,edad);
+            var usuario1 = interf.UpdateAgeUser(usuario,usuario.getEdad(),edad);
             usuario1.Wait();
             Usuario user1 = usuario1.Result;
             
@@ -227,9 +223,6 @@ namespace backend.Logica
             Producto user1 = productosTask.Result;
             return user1;
         }
-
-
-
 
     }
 

@@ -31,13 +31,13 @@ namespace backend.Logica
         IList<Producto> GetProductByChart(CarritoCompra carr);
          IList<Articulo> GetArticleByProduct(Producto prod);
         void AgregarAlCarrito(int usuarioId, int productoId);
-
+        IList<Producto> ObtenerProductosPorCategoria(string keyWords);
+        IList<Producto>  FiltrarArticulos(IList<Articulo> filtrados);
         
         
 
         //CONSULTAR SI SIRVEN Y TAL
         IList<CarritoCompra> ObtenerChart();
-        IList<Producto> GetContentsByParameters2(int keyWords);
         Usuario UpdateEdadUsuario(Usuario usuario,int edad);
         Producto ObtenerProductoPorPrecio(int precio);
     }

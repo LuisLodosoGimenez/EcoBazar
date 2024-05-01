@@ -1,29 +1,36 @@
-﻿using Postgrest.Attributes;
-using Postgrest.Models;
-
-namespace backend.Models
+﻿namespace backend.Models
 {
-    [Table("Producto")]
-    public class Producto : BaseModel
-    {
-        [PrimaryKey("id", false)]
-        public int Id { get; set; }
+   public class Producto{
 
+    private int Id;
+    private int Precio_cents;
+    private int Unidades;
+    private int Id_usuario;
+    private int Id_articulo;
+    private Vendedor vendedor;
+    private Articulo articulo;
 
-        [Column("precio_cents")]
-        public int Precio_cents { get; set; }
-
-        [Column("unidades")]
-        public int Unidades { get; set; }
-
-        [Column("id_usuario")]
-        public int Id_usuario { get; set; }
-
-        [Column("id_articulo")]
-        public int Id_articulo { get; set; }
-        public Vendedor? Vendedor { get; set; }
-        
-        public Articulo? Articulo { get; set; }
-
+    public Producto(int id, int precio_cents, int unidades, int id_usuario, int id_articulo, Vendedor vendedor, Articulo articulo){
+        this.Id = id;
+        this.Precio_cents = precio_cents;
+        this.Unidades = unidades;
+        this.Id_usuario = id_usuario;
+        this.Id_articulo = id_articulo;
+        this.vendedor = vendedor;
+        this.articulo = articulo;
     }
+
+    public int getId(){
+        return this.Id;
+    }
+    
+    public int getId_Articulo(){
+        return this.Id_articulo;
+    }
+
+    public int getPrecio(){
+        return this.Precio_cents;
+    }
+
+   } 
 }

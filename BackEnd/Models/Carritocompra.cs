@@ -1,19 +1,21 @@
-using Postgrest.Attributes;
-using Postgrest.Models;
 
 namespace backend.Models
 {
-    [Table("CarritoCompra")]
-    public class CarritoCompra : BaseModel
-    {
+    public class CarritoCompra{
+        private int Id_usuario;
+        private int Id_producto;
 
-        [PrimaryKey]
-        [Column("id_usuario")]
-        public int Id_usuario { get; set; }
-        
-        [PrimaryKey]
-        [Column("id_producto")]
-        public int Id_producto { get; set; }
+        public CarritoCompra(int id_usuario, int id_producto){
+            this.Id_usuario = id_usuario;
+            this.Id_producto = id_producto;
+        }
 
+        public int getId_Usuario(){
+            return this.Id_usuario;
+        }
+
+        public int getId_Producto(){
+            return this.Id_producto;
+        }
     }
 }

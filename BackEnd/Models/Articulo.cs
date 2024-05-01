@@ -1,43 +1,43 @@
-using Postgrest.Attributes;
-using Postgrest.Models;
+
+
 
 namespace backend.Models
 {
-    [Table("Articulo")]
-    public class Articulo : BaseModel
-    {
-        [PrimaryKey("id", false)]
-        public int Id { get; set; }
+    public class Articulo{
+        private int Id;
+        private string Nombre;
+        private string Categoria;
+        private int Edad_min;
+        private string Consejos_utilizacion;
+        private string Consejos_retirada;
+        private string Origen;
+        private string Proceso_produccion;
+        private string Impacto_ambiental_social;
+        private string Contribucion_ods;
+        private int Id_usuario;
+        
+        public Articulo(int id, string nombre, string categoria, int edad_min, string consejos_utilizacion, string consejos_retirada,string origen, string proceso_produccion, string impacto, string ods, int id_usuario){
+            this.Id = id;
+            this.Nombre = nombre;
+            this.Categoria = categoria;
+            this.Edad_min = edad_min;
+            this.Consejos_utilizacion = consejos_utilizacion;
+            this.Consejos_retirada = consejos_retirada;
+            this.Origen = origen;
+            this.Proceso_produccion = proceso_produccion;
+            this.Impacto_ambiental_social = impacto;
+            this.Contribucion_ods = ods;
+            this.Id_usuario = id_usuario;
+        }
 
-        [Column("nombre")]
-        public string? Nombre { get; set; }
+        public int getId(){
+            return this.Id;
+        }
 
-        [Column("categoria")]
-        public string? Categoria { get; set; }
-
-        [Column("edad_min")]
-        public int? Edad_min { get; set; }
-
-        [Column("consejos_utilizacion")]
-        public string? Consejos_utilizacion { get; set; }
-
-        [Column("consejos_retirada")]
-        public string? Consejos_retirada { get; set; }
-
-        [Column("origen")]
-        public string? Origen { get; set; }
-
-        [Column("proceso_produccion")]
-        public string? Proceso_produccion { get; set; }
-
-        [Column("impacto_ambiental_social")]
-        public string? Impacto_ambiental_social { get; set; }
-
-        [Column("contribucion_ods")]
-        public string? Contribucion_ods { get; set; }
-
-        [Column("id_usuario")]
-        public int Id_usuario { get; set; }
+        public string getNombre(){
+            return this.Nombre;
+        }
 
     }
+
 }

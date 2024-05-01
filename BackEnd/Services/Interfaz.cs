@@ -19,13 +19,15 @@ namespace backend.Services
     public interface Interfaz
     {
         Task InsertarUser(Usuario nuevouser);
-        Task InsertarCompradorLuis(Compradorluis comprador);
+        Task InsertarCompradorLuis(Comprador comprador);
         Task<bool> UsuarioExistePorApodo(string apodo);
         Task<Usuario> UserByNick(string filtro);
         Task<List<Usuario>> GetAllUsers();
         Task<List<Producto>> GetAllProducts();
         Task<List<Articulo>> GetAllArticles();
         Task InsertarCarrito(CarritoCompra nuevocarrito);
+        Task<List<Articulo>> ObtenerArticulosPorCategoria(string categoria);
+        Task<List<Producto>> ObtenerProductosPorID(int id);
 
         //De momento no sirven
         Task InsertarProducto(Producto nuevoProducto);
@@ -35,7 +37,7 @@ namespace backend.Services
         Task<Usuario> UserByAge(int filtro);
         Task<Producto> ProductByPrice(int filtro);
         Task<List<CarritoCompra>> GetChart();
-        Task<List<Compradorluis>> GetAllBuyers();
+        Task<List<Comprador>> GetAllBuyers();
 
     }
 }

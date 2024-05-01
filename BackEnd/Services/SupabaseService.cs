@@ -7,7 +7,7 @@ using Supabase;
 using Supabase.Interfaces;
 using Microsoft.Extensions.Configuration;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using backend.Models;
+using backend.ModelsSupabase;
 using Postgrest.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -15,10 +15,10 @@ namespace backend.Services
 {
     public class SupabaseService : Interfaz
     {
-        private static SupabaseService _instancia;
+        // private static SupabaseService _instancia;
         private readonly Supabase.Client _supabaseClient;
 
-        private SupabaseService(IConfiguration configuration)
+        public SupabaseService(IConfiguration configuration)
         {
             var supabaseUrl = configuration["Supabase:Url"];
             var supabaseKey = configuration["Supabase:ApiKey"];
@@ -31,13 +31,13 @@ namespace backend.Services
             _supabaseClient = new Supabase.Client(supabaseUrl!, supabaseKey, options);
         }
  
-        public static SupabaseService GetInstance(IConfiguration configuration){
-            if(_instancia == null)
+        // public static SupabaseService GetInstance(IConfiguration configuration){
+        //     if(_instancia == null)
 
-                _instancia = new SupabaseService(configuration);
+        //         _instancia = new SupabaseService(configuration);
             
-            return _instancia;
-        }
+        //     return _instancia;
+        // }
 
         public async Task InitializeSupabaseAsync()
         {
@@ -55,10 +55,10 @@ namespace backend.Services
             Console.WriteLine("User insertado correctamente en Supabase.");
         }
 
-        public async Task InsertarCompradorLuis(Compradorluis comprador)
+        public async Task InsertarCompradorLuis(Comprador comprador)
         {
             await _supabaseClient
-                    .From<Compradorluis>()
+                    .From<Comprador>()
                     .Insert(comprador);
             Console.WriteLine("Comprador insertado correctamente en Supabase.");
         }
@@ -126,6 +126,26 @@ namespace backend.Services
             Console.WriteLine("Carrito insertado correctamente en Supabase.");
         }
 
+        public async Task<List<Articulo>> ObtenerArticulosPorCategoria(string categoria)
+        {
+            var result = await _supabaseClient
+                    .From<Articulo>()
+                    .Where(c => c.Categoria == categoria)
+                    .Get();
+
+            List<Articulo> articulos = result.Models;
+            return articulos;
+        }
+
+        public async Task<List<Producto>> ObtenerProductosPorID(int id)
+        {
+            var result = await _supabaseClient
+                                .From<Producto>()
+                                .Where(a => a.Id_articulo == id)
+                                .Get();
+            List<Producto> articulos = result.Models;
+            return articulos;
+        }
 
         //De momento no sirven
 
@@ -177,13 +197,13 @@ namespace backend.Services
         }
 
         //No se usa
-        public async Task<List<Compradorluis>> GetAllBuyers()
+        public async Task<List<Comprador>> GetAllBuyers()
         {
             var users = await _supabaseClient
-                                .From<Compradorluis>()
+                                .From<Comprador>()
                                 .Get();
 
-            List <Compradorluis> allusers = users.Models;
+            List <Comprador> allusers = users.Models;
             return allusers;
         
         }

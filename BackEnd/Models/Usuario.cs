@@ -1,33 +1,42 @@
-using Postgrest.Attributes;
-using Postgrest.Models;
-
 namespace backend.Models
 {
-    [Table("Usuario")]
-    public class Usuario : BaseModel
-    {
-        [PrimaryKey("id", false)]
-        public int Id { get; set; }
+   public class Usuario{
 
+    private int Id;
+    private string Nombre;
+    private string Nick_name;
+    private string Contraseña;
+    private string Email;
+    private int Edad;
 
-        [Column("nombre")]
-        public string? Nombre { get; set; }
-
-        [Column("nick_name")]
-        public string? Nick_name { get; set; }
-
-        [Column("contraseña")]
-        public string? Contraseña { get; set; }
-
-        [Column("email")]
-        public string? Email { get; set; }
-
-        [Column("edad")]
-        public int Edad { get; set; }
-        // Otros campos que puedas necesitar
-
-
-        // Relación con Cliente si es necesario
-
+    public Usuario(string nombre, string nick_name, string contraseña, string email, int edad){
+        
+        this.Nombre = nombre;
+        this.Nick_name = nick_name;
+        this.Contraseña = contraseña;
+        this.Email = email;
+        this.Edad = edad;
     }
+
+    public int getId(){
+        return this.Id;
+    }
+
+    public string getNick_name(){
+        return this.Nick_name;
+    }
+
+    public string getEmail(){
+        return this.Email;
+    }
+
+    public string getContraseña(){
+        return this.Contraseña;
+    }
+
+    public int getEdad(){
+        return this.Edad;
+    }
+
+   }
 }

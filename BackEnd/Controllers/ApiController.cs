@@ -9,20 +9,20 @@ namespace backend.Controllers
     [Route("api/[controller]")]
     public class ApiController : ControllerBase
     {
-        private static ApiController _instancia;
+        // private static ApiController _instancia;
         private readonly InterfazLogica _logica;
 
-        private ApiController(InterfazLogica logica)
+        public ApiController(InterfazLogica logica)
         {
             this._logica = logica;
         }
   
-        public static ApiController GetInstance(InterfazLogica logica){
-            if(_instancia == null)
-                _instancia = new ApiController(logica);
+        // public static ApiController GetInstance(InterfazLogica logica){
+        //     if(_instancia == null)
+        //         _instancia = new ApiController(logica);
 
-            return _instancia;
-        }
+        //     return _instancia;
+        // }
 
         [HttpPost("registroLuisa")]
         public IActionResult AñadirComprador(RegistroLuisRequest req)
@@ -96,7 +96,12 @@ namespace backend.Controllers
             return Ok(perfil);
         }
 
-
+        [HttpGet("categoria")]
+        public IActionResult ObtenerProductos(string categoria)
+        {
+            var listaProductos = _logica.ObtenerProductosPorCategoria(categoria);
+            return Ok(listaProductos);
+        }
 
         //Hasta el momento no sirven para nada
 
@@ -112,7 +117,7 @@ namespace backend.Controllers
                 // El usuario no está autenticado, puedes devolver un error o redirigir a la página de inicio de sesión
                 return Unauthorized();
             }
-            var userId = user.Id;
+            var userId = user.getId();
             _logica.AgregarAlCarrito(userId, request.ProductId);
             return Ok();
         }
@@ -184,6 +189,8 @@ namespace backend.Controllers
             public string? Nick { get; set; }
             public string? Password { get; set; }
         }
+
+
 
 
     }
