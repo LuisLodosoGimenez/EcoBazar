@@ -2,16 +2,20 @@ using backend.Services;
 using backend.Models;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using backend.ModelsSupabase;
+using backend.Conversiones;
 
 namespace backend.Logica
 {
     public class LogicaClase : InterfazLogica
     {
         private readonly Interfaz interf;
+        private readonly IConversiones convertir;
         private Usuario userlogin;
-        public LogicaClase(Interfaz interf)
+        public LogicaClase(Interfaz interf, IConversiones convertir)
         {
             this.interf = interf;
+            this.convertir = convertir;
         }
 
 
@@ -38,14 +42,19 @@ namespace backend.Logica
                 Usuario usuario = new Usuario(nombre, nick_name, contraseña, email, edad);
 
                 AddMember(usuario);
-                await interf.InsertarUser(usuario);
+                int userId = await interf.InsertarUser(convertir.ConvertirUsuario(usuario));
+                //usuario.setId(userId);
 
-                int userId = ObtenerUsuarioPorNick(nick_name).getId();
+                //int userId = (ObtenerUsuarioPorNick(nick_name)).getId();
+                Console.WriteLine(userId);
 
+                if(limiteGasto > 0) {
+                   
+                    Comprador comprador = new Comprador(nombre, nick_name, contraseña, email, edad, limiteGasto);
+                    await interf.InsertarCompradorLuis(convertir.ConvertirComprador(comprador, userId));
+
+                 }
                 
-                Comprador comprador = new Comprador(nombre, nick_name, contraseña, email, edad, limiteGasto);
-
-                await interf.InsertarCompradorLuis(comprador);
 
             } catch(Exception){
                 
@@ -70,7 +79,7 @@ namespace backend.Logica
 
             if (!nicknamebool && !emailbool)
             {
-                interf.InsertarUser(user);
+                //interf.InsertarUser(convertir.ConvertirUsuario(user));
             }
             else
             {
@@ -91,7 +100,7 @@ namespace backend.Logica
             if (!await interf.UsuarioExistePorApodo(nick)) 
                 throw new UsuarioNoExisteException("El usuario no existe");
 
-            Usuario user =  await interf.UserByNick(nick);
+            Usuario user =  convertir.ConvertirBDaUsuario(await interf.UserByNick(nick));
             
             if (!user.getContraseña()!.Equals(password))
                  throw new ContraseñaIncorrectaException("Contraseña incorrecta");
@@ -105,7 +114,7 @@ namespace backend.Logica
         {
             var productosTask = interf.GetAllUsers();
             productosTask.Wait(); 
-            List<Usuario> productos1 = productosTask.Result;
+            List<Usuario> productos1 = convertir.ConvertirListaBDaUsuario(productosTask.Result);
             return productos1;
         }
 
@@ -114,7 +123,7 @@ namespace backend.Logica
         {
             var productosTask = interf.UserByNick(nick);
             productosTask.Wait(); 
-            Usuario user1 = productosTask.Result;
+            Usuario user1 = convertir.ConvertirBDaUsuario(productosTask.Result);
             return user1;
         }
 
@@ -124,7 +133,7 @@ namespace backend.Logica
             var productosTask = interf.GetAllProducts(); // Obtiene la tarea para obtener todos los productos
             productosTask.Wait(); // Espera a que la tarea se complete
             //return productosTask.Result;
-            List<Producto> productos1 = productosTask.Result;
+            List<Producto> productos1 = convertir.ConvertirListaBDaProducto(productosTask.Result);
             return productos1;
         }
 
@@ -133,7 +142,7 @@ namespace backend.Logica
         {
             var productosTask = interf.GetAllArticles(); 
             productosTask.Wait(); 
-            List<Articulo> productos1 = productosTask.Result;
+            List<Articulo> productos1 = convertir.ConvertirListaBDaArticulo(productosTask.Result);
             return productos1;
         }
 
@@ -169,28 +178,29 @@ namespace backend.Logica
         public void AgregarAlCarrito(int usuarioId, int productoId)
         {
             CarritoCompra nuevoElemento = new CarritoCompra(usuarioId, productoId);
-            interf.InsertarCarrito(nuevoElemento);
+            interf.InsertarCarrito(convertir.ConvertirCarritoCompra(nuevoElemento));
         }
 
         public IList<Producto> ObtenerProductosPorCategoria(string categoria)
         {
             var articulos = interf.ObtenerArticulosPorCategoria(categoria);
             articulos.Wait();
-            IList<Producto> listaProductos = FiltrarArticulos(articulos.Result);
+            IList<Producto> listaProductos = FiltrarArticulos(convertir.ConvertirListaBDaArticulo(articulos.Result));
             return listaProductos;
         }
 
         public  IList<Producto>  FiltrarArticulos(IList<Articulo> filtrados) 
         {
-            int precio_min = 0;
+            
             IList<Producto> listaProductos = new List<Producto>();
 
             foreach(var articuloFiltrado in filtrados)
             {
                 var ejem =  interf.ObtenerProductosPorID(articuloFiltrado.getId());
                 ejem.Wait();
-                List<Producto> e1 = ejem.Result.OrderBy(producto => producto.getPrecio()).ToList();
-                listaProductos.Add(e1[0]);
+                List<Producto> e1 = convertir.ConvertirListaBDaProducto(ejem.Result.OrderBy(producto => producto.Precio_cents).ToList());
+                //hacer algo q compruebe q aún no está
+                listaProductos.Add(e1.First());
             }
             return listaProductos;
         }
@@ -201,16 +211,16 @@ namespace backend.Logica
         {
             var productosTask = interf.GetChart();
             productosTask.Wait(); 
-            List<CarritoCompra> productos1 = productosTask.Result;
+            List<CarritoCompra> productos1 = convertir.ConvertirListaBDaCarritoCompra(productosTask.Result);
             return productos1;
         }
 
 
         public Usuario UpdateEdadUsuario(Usuario usuario,int edad)
         {
-            var usuario1 = interf.UpdateAgeUser(usuario,usuario.getEdad(),edad);
+            var usuario1 = interf.UpdateAgeUser(convertir.ConvertirUsuario(usuario),usuario.getEdad(),edad);
             usuario1.Wait();
-            Usuario user1 = usuario1.Result;
+            Usuario user1 = convertir.ConvertirBDaUsuario(usuario1.Result);
             
             return user1;
 
@@ -220,7 +230,7 @@ namespace backend.Logica
         {
             var productosTask = interf.ProductByPrice(precio); 
             productosTask.Wait(); 
-            Producto user1 = productosTask.Result;
+            Producto user1 = convertir.ConvertirBDaProducto(productosTask.Result);
             return user1;
         }
 

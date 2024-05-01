@@ -47,18 +47,19 @@ namespace backend.Services
         }
         
 
-         public async Task InsertarUser(Usuario nuevouser)
-        {
-            await _supabaseClient
-                    .From<Usuario>()
-                    .Insert(nuevouser);
+         public async Task<int> InsertarUser(UsuarioBD nuevouser)
+        { 
+            var result = await _supabaseClient
+                            .From<UsuarioBD>()
+                            .Insert(nuevouser);
             Console.WriteLine("User insertado correctamente en Supabase.");
+            return result.Model!.Id;
         }
 
-        public async Task InsertarCompradorLuis(Comprador comprador)
+        public async Task InsertarCompradorLuis(CompradorBD comprador)
         {
             await _supabaseClient
-                    .From<Comprador>()
+                    .From<CompradorBD>()
                     .Insert(comprador);
             Console.WriteLine("Comprador insertado correctamente en Supabase.");
         }
@@ -67,7 +68,7 @@ namespace backend.Services
         {
         // Realizar una consulta a la tabla de usuarios para verificar si existe un usuario con el apodo dado
             var result = await _supabaseClient
-                                .From<Usuario>()
+                                .From<UsuarioBD>()
                                 .Where(x => x.Nick_name == apodo)
                                 .Get();
 
@@ -75,157 +76,157 @@ namespace backend.Services
             return result.Models.Any();
         }
 
-        public async Task<Usuario> UserByNick(string filtro)
+        public async Task<UsuarioBD> UserByNick(string filtro)
         {
             var result = await _supabaseClient
-                                .From<Usuario>()
+                                .From<UsuarioBD>()
                                 .Where(x => x.Nick_name == filtro)
                                 .Get();
             
                                 
-            Usuario users = result.Model!;
+            UsuarioBD users = result.Model!;
             return users;                    
         }
 
-        public async Task<List<Usuario>> GetAllUsers()
+        public async Task<List<UsuarioBD>> GetAllUsers()
         {
             var users = await _supabaseClient
-                                .From<Usuario>()
+                                .From<UsuarioBD>()
                                 .Get();
 
-            List <Usuario> allusers = users.Models;
+            List <UsuarioBD> allusers = users.Models;
             return allusers;
         
         }
 
-        public async Task<List<Producto>> GetAllProducts()
+        public async Task<List<ProductoBD>> GetAllProducts()
         {
             var productos = await _supabaseClient
-                                .From<Producto>()
+                                .From<ProductoBD>()
                                 .Get();
 
-            List <Producto> productos1 = productos.Models;
+            List <ProductoBD> productos1 = productos.Models;
             return productos1;
         }
 
-        public async Task<List<Articulo>> GetAllArticles()
+        public async Task<List<ArticuloBD>> GetAllArticles()
         {
             var articulos = await _supabaseClient
-                                .From<Articulo>()
+                                .From<ArticuloBD>()
                                 .Get();
 
-            List <Articulo> articulos1 = articulos.Models;
+            List <ArticuloBD> articulos1 = articulos.Models;
             return articulos1;
         }
 
-        public async Task InsertarCarrito(CarritoCompra nuevocarrito)
+        public async Task InsertarCarrito(CarritoCompraBD nuevocarrito)
         {
             await _supabaseClient
-                    .From<CarritoCompra>()
+                    .From<CarritoCompraBD>()
                     .Insert(nuevocarrito);
             Console.WriteLine("Carrito insertado correctamente en Supabase.");
         }
 
-        public async Task<List<Articulo>> ObtenerArticulosPorCategoria(string categoria)
+        public async Task<List<ArticuloBD>> ObtenerArticulosPorCategoria(string categoria)
         {
             var result = await _supabaseClient
-                    .From<Articulo>()
+                    .From<ArticuloBD>()
                     .Where(c => c.Categoria == categoria)
                     .Get();
 
-            List<Articulo> articulos = result.Models;
+            List<ArticuloBD> articulos = result.Models;
             return articulos;
         }
 
-        public async Task<List<Producto>> ObtenerProductosPorID(int id)
+        public async Task<List<ProductoBD>> ObtenerProductosPorID(int id)
         {
             var result = await _supabaseClient
-                                .From<Producto>()
+                                .From<ProductoBD>()
                                 .Where(a => a.Id_articulo == id)
                                 .Get();
-            List<Producto> articulos = result.Models;
+            List<ProductoBD> articulos = result.Models;
             return articulos;
         }
 
         //De momento no sirven
 
-        public async Task InsertarProducto(Producto nuevoProducto)
+        public async Task InsertarProducto(ProductoBD nuevoProducto)
         {
             await _supabaseClient
-                .From<Producto>()
+                .From<ProductoBD>()
                 .Insert(nuevoProducto);
             Console.WriteLine("Producto insertado correctamente en Supabase.");
         }
 
-        public async Task<List<Producto>> GetProductsById(int y)
+        public async Task<List<ProductoBD>> GetProductsById(int y)
         {
             var result = await _supabaseClient
-                .From<Producto>()
+                .From<ProductoBD>()
                 .Where(x => x.Id == y)
                 .Get();
-            List <Producto> productos = result.Models;
+            List <ProductoBD> productos = result.Models;
             return productos;
         }
 
-        public async Task EliminarProducto(Producto producto)
+        public async Task EliminarProducto(ProductoBD producto)
         {
             await _supabaseClient
-                .From<Producto>()
+                .From<ProductoBD>()
                 .Delete(producto);
         }
 
-        public async Task<Producto> ProductByPrice(int filtro)
+        public async Task<ProductoBD> ProductByPrice(int filtro)
         {
             var result = await _supabaseClient
-                                .From<Producto>()
+                                .From<ProductoBD>()
                                 .Where(x => x.Precio_cents == filtro)
                                 .Get();
             
                                 
-            Producto users = result.Model!;
+            ProductoBD users = result.Model!;
             return users;                    
         }
 
-        public async Task<List<CarritoCompra>> GetChart()
+        public async Task<List<CarritoCompraBD>> GetChart()
         {
             var productos = await _supabaseClient
-                                .From<CarritoCompra>()
+                                .From<CarritoCompraBD>()
                                 .Get();
 
-            List <CarritoCompra> productos1 = productos.Models;
+            List <CarritoCompraBD> productos1 = productos.Models;
             return productos1;
         }
 
         //No se usa
-        public async Task<List<Comprador>> GetAllBuyers()
+        public async Task<List<CompradorBD>> GetAllBuyers()
         {
             var users = await _supabaseClient
-                                .From<Comprador>()
+                                .From<CompradorBD>()
                                 .Get();
 
-            List <Comprador> allusers = users.Models;
+            List <CompradorBD> allusers = users.Models;
             return allusers;
         
         }
 
         
-        public async Task<Usuario> UserByAge(int filtro)
+        public async Task<UsuarioBD> UserByAge(int filtro)
         {
             var result = await _supabaseClient
-                                .From<Usuario>()
+                                .From<UsuarioBD>()
                                 .Where(x => x.Edad == filtro)
                                 .Get();
             
                                 
-            Usuario users = result.Model!;
+            UsuarioBD users = result.Model!;
             return users;                    
         }
 
 
-        public async Task<Usuario> UpdateAgeUser(Usuario usuario,int edad1 ,int edad)
+        public async Task<UsuarioBD> UpdateAgeUser(UsuarioBD usuario,int edad1 ,int edad)
         {
             await _supabaseClient
-                    .From<Usuario>()
+                    .From<UsuarioBD>()
                     .Where(x => x.Edad == edad1)
                     .Set(x => x.Edad, edad)
                     .Update();

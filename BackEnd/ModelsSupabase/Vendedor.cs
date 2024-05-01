@@ -5,7 +5,7 @@ using Postgrest.Models;
 namespace backend.ModelsSupabase
 {
     [Table("Vendedor")]
-    public class Vendedor : Usuario
+    public class VendedorBD : UsuarioBD
     {
 
     }

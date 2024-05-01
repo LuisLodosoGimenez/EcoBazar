@@ -1,3 +1,5 @@
+using backend.ModelsSupabase;
+
 namespace backend.Models
 {
    public class Usuario{
@@ -22,6 +24,14 @@ namespace backend.Models
         return this.Id;
     }
 
+    public void setId(int id){
+        this.Id = id;
+    }
+
+    public string getNombre(){
+        return this.Nombre;
+    }
+
     public string getNick_name(){
         return this.Nick_name;
     }
@@ -37,6 +47,7 @@ namespace backend.Models
     public int getEdad(){
         return this.Edad;
     }
+
 
    }
 }

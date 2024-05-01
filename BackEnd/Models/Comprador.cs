@@ -11,5 +11,11 @@ namespace backend.Models
             
             this.Limite_gasto_cents_mes = limite;
         }
+
+        public int getLimite(){
+            return this.Limite_gasto_cents_mes;
+        }
+
+        
     }
 }

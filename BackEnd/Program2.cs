@@ -1,5 +1,6 @@
 using backend.Services;
 using backend.Logica;
+using backend.Conversiones;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddScoped<SupabaseService>();
 builder.Services.AddScoped<LogicaClase>();
 builder.Services.AddScoped<Interfaz, SupabaseService>();
 builder.Services.AddScoped<InterfazLogica, LogicaClase>();
+builder.Services.AddScoped<IConversiones,Conversiones>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

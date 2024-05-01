@@ -4,7 +4,7 @@ using Postgrest.Models;
 namespace backend.ModelsSupabase
 {
     [Table("Usuario")]
-    public class Usuario : BaseModel
+    public class UsuarioBD : BaseModel
     {
         [PrimaryKey("id", false)]
         public int Id { get; set; }
