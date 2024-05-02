@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Usuario } from '../../usuario';
-import { AppComponent } from '../../app.component';
+import { Usuario } from '../../../domain/classes/usuario';
+import { AppComponent } from '../../../app.component';
 
 @Component({
   selector: 'app-user-profile-personal-info',

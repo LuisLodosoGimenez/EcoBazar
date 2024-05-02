@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { AppComponent } from '../app.component';
-import { Usuario } from '../usuario';
+import { AppComponent } from '../../app.component';
+import { Usuario } from '../../domain/classes/usuario';
 
 @Component({
   selector: 'app-user-profile',

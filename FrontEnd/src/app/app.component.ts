@@ -1,16 +1,20 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit, Injectable, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { Usuario } from './usuario';
-import { ApiService } from './api.service';
+import { Usuario } from './domain/classes/usuario';
+import { ApiService } from './services/api.service';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { SearchBarComponent } from './components/header.folder/header/search-bar/search-bar.component';
+import { HeaderComponent } from './components/header.folder/header/header.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink],
+  imports: [CommonModule, RouterOutlet, RouterLink, HeaderComponent, HomePageComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppComponent implements OnInit {
   constructor(private apiService: ApiService) {}

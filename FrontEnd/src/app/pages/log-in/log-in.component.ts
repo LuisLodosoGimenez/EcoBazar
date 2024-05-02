@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { AppComponent } from '../app.component';
-import { ApiService } from '../api.service';
+import { AppComponent } from '../../app.component';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-log-in',
@@ -42,6 +42,7 @@ export class LogInComponent {
         AppComponent.usuario.edad = data.perfil.edad;
         AppComponent.usuario.carrito_compra = data.articulosEnCarrito;
         this.textoFallo = 'YA PUEDE ACCEDER A SUS ESPACIOS PERSONALES';
+        
       },
       error: (error) => {
         (this.textoFallo = 'Nickname o contraseña inválida!'), (AppComponent.usuario.id = 0);

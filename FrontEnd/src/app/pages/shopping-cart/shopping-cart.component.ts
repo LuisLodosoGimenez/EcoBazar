@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AppComponent } from '../app.component';
-import { Usuario } from '../usuario';
+import { AppComponent } from '../../app.component';
+import { Usuario } from '../../domain/classes/usuario';
 
 @Component({
   selector: 'app-shopping-cart',

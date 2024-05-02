@@ -1,18 +1,19 @@
 import { Routes } from '@angular/router'
-import { UserProfileComponent } from './user-profile/user-profile.component'
+import { UserProfileComponent } from './pages/user-profile/user-profile.component'
 import { AppComponent } from './app.component'
-import { HomePageComponent } from './home-page/home-page.component'
-import { UserProfileInitComponent } from './user-profile/user-profile-init/user-profile-init.component'
-import { UserProfileOrderListComponent } from './user-profile/user-profile-order-list/user-profile-order-list.component'
-import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component'
-import { UserProfilePersonalInfoComponent } from './user-profile/user-profile-personal-info/user-profile-personal-info.component'
-import { LogInComponent } from './log-in/log-in.component'
-import { SignInComponent } from './sign-in/sign-in.component'
+import { HomePageComponent } from './pages/home-page/home-page.component'
+import { UserProfileInitComponent } from './pages/user-profile/user-profile-init/user-profile-init.component'
+import { UserProfileOrderListComponent } from './pages/user-profile/user-profile-order-list/user-profile-order-list.component'
+import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.component'
+import { UserProfilePersonalInfoComponent } from './pages/user-profile/user-profile-personal-info/user-profile-personal-info.component'
+import { LogInComponent } from './pages/log-in/log-in.component'
+import { SignInComponent } from './pages/sign-in/sign-in.component'
+import { CatalogueComponent } from './pages/home-page/catalogue/catalogue.component'
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomePageComponent,
+    component: CatalogueComponent,
   },
   {
     path: 'user-profile',

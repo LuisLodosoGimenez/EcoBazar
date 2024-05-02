@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BasicUser } from './interfaces/basic-user';
-import { Root } from './usuario-login';
-import { UsuarioRegistrarse } from './usuario';
+import { BasicUser } from '../domain/interfaces/basic-user';
+import { Root } from '../domain/interfaces/usuario-login';
+import { UsuarioRegistrarse } from '../domain/classes/usuario';
 
 @Injectable({
   providedIn: 'root',
