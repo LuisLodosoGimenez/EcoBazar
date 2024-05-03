@@ -1,0 +1,11 @@
+<body>
+    CATEGORIAS
+    <div>
+        @for (item of categories; track $index) {
+            <app-category-card [categoryName]="item.name" [categoryDescription]="item.description" [categoryImage]="item.image">
+
+            </app-category-card>
+            
+        }
+    </div>
+</body>

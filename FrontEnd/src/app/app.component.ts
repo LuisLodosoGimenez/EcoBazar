@@ -3,8 +3,6 @@ import { Component, OnInit, Injectable, CUSTOM_ELEMENTS_SCHEMA } from '@angular/
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Usuario } from './domain/classes/usuario';
 import { ApiService } from './services/api.service';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { SearchBarComponent } from './components/header.folder/header/search-bar/search-bar.component';
 import { HeaderComponent } from './components/header.folder/header/header.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 

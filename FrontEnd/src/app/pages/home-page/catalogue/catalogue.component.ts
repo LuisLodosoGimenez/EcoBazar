@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { CategoriesListComponent } from '../../../components/catalogue.foder/categories-list/categories-list.component';
+import { CategoryListComponent } from '../../../components/catalogue.foder/category-list/category-list.component';
+import { ProductListComponent } from '../../../components/catalogue.foder/product-list/product-list.component';
 
 @Component({
   selector: 'app-catalogue',
   standalone: true,
-  imports: [CategoriesListComponent],
+  imports: [CategoryListComponent, ProductListComponent],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.css'
 })
