@@ -29,10 +29,14 @@ namespace backend.Logica
         IList<Articulo> GetArticlesByName(string keyWords);
         IList<CarritoCompra> GetChartByUser(Usuario user);
         IList<Producto> GetProductByChart(CarritoCompra carr);
-         IList<Articulo> GetArticleByProduct(Producto prod);
-        void AgregarAlCarrito(int usuarioId, int productoId);
-        IList<Producto> ObtenerProductosPorCategoria(string keyWords);
-        IList<Producto>  FiltrarArticulos(IList<Articulo> filtrados);
+        IList<Articulo> GetArticleByProduct(Producto prod);
+        bool AgregarAlCarrito(int usuarioId, int productoId);
+        IList<Articulo> ObtenerProductosPorCategoria(string keyWords);
+        // IList<Producto>  FiltrarArticulos(IList<Articulo> filtrados);
+        Producto ObtenerProductoArticulo(int IdArticulo);
+        Producto productoMenorPrecio(IList<Producto> listaProductos);
+        Articulo devolverArticulo(int idArticulo);
+        ImagenProducto ObtenerImagenArticulo(int idArticulo);
         
         
 

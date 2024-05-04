@@ -148,6 +148,35 @@ namespace backend.Services
             return articulos;
         }
 
+        public async Task<UsuarioBD> ObtenerUsuarioPorID(int id){
+            var result = await _supabaseClient
+                                .From<UsuarioBD>()
+                                .Where(u => u.Id == id)
+                                .Get();
+            UsuarioBD user = result.Model!;
+            return user;
+
+        }
+
+        public async Task<ArticuloBD> ObtenerArticuloPorID(int id){
+            var result = await _supabaseClient
+                                .From<ArticuloBD>()
+                                .Where(u => u.Id == id)
+                                .Get();
+            ArticuloBD articulo = result.Model!;
+            return articulo;
+
+        }
+
+        public async Task<ImagenProductoBD> ObtenerImagenPorID(int id){
+            var result = await _supabaseClient
+                                .From<ImagenProductoBD>()
+                                .Where(u => u.Id_articulo == id)
+                                .Get();
+            ImagenProductoBD imagen = result.Model!;
+            return imagen;
+        }
+
         //De momento no sirven
 
         public async Task InsertarProducto(ProductoBD nuevoProducto)

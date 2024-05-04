@@ -15,10 +15,24 @@ using Postgrest.Models;
 
 using backend.Models;
 using backend.ModelsSupabase;
+using backend.Services;
+using backend.Logica;
 
 namespace backend.Conversiones{
 
     public class Conversiones : IConversiones{
+
+        //public int idVendedor;
+        private readonly Interfaz BD;
+        private readonly InterfazLogica interfazLogica;
+
+        public Conversiones(Interfaz baseDatos, InterfazLogica interfazLogica)
+        {
+            this.BD = baseDatos;
+            this.interfazLogica = interfazLogica;
+        }
+
+
         public UsuarioBD ConvertirUsuario(Usuario usuario){
 
             UsuarioBD usuarioConvertido = new UsuarioBD
@@ -54,10 +68,20 @@ namespace backend.Conversiones{
 
         public Producto ConvertirBDaProducto(ProductoBD productoBD){
 
-            Producto productoConvertido = new Producto(productoBD.Id, productoBD.Precio_cents, productoBD.Unidades, productoBD.Id_usuario, productoBD.Id_articulo, ConvertirVendedor(productoBD.Vendedor!), ConvertirArticulo(productoBD.Articulo!));
+            var datosVendedor = BD.ObtenerUsuarioPorID(productoBD.Id_usuario);     
+            datosVendedor.Wait(); 
+            var datosArticulo = BD.ObtenerArticuloPorID(productoBD.Id_articulo);
+            datosArticulo.Wait();
+            Producto productoConvertido = new Producto(productoBD.Id, productoBD.Precio_cents, productoBD.Unidades, productoBD.Id_usuario, productoBD.Id_articulo, ConvertirVendedor(datosVendedor.Result), ConvertirArticulo(datosArticulo.Result));
             return productoConvertido;
 
         }
+
+         public ImagenProducto ConvertirBDaImagen(ImagenProductoBD imagenBD){
+
+             ImagenProducto imagenProducto = new ImagenProducto(imagenBD.Id, imagenBD.Hash, imagenBD.Url, interfazLogica.devolverArticulo(imagenBD.Id_articulo));
+             return imagenProducto;
+         }
 
 
 
@@ -102,9 +126,10 @@ namespace backend.Conversiones{
         }
         
 
-        public Vendedor ConvertirVendedor(VendedorBD vendedor){
+        public Vendedor ConvertirVendedor(UsuarioBD vendedor){
 
-            Vendedor vendedorConvertido = new Vendedor(vendedor.Nombre!, vendedor.Nick_name!, vendedor.Contraseña!, vendedor.Email!, vendedor.Edad);
+            Usuario usuarioVendedor = ConvertirBDaUsuario(vendedor);
+            Vendedor vendedorConvertido =  new Vendedor(usuarioVendedor.getNombre(), usuarioVendedor.getNick_name(), usuarioVendedor.getContraseña(), usuarioVendedor.getEmail(), usuarioVendedor.getEdad());
             return vendedorConvertido;
         }
 

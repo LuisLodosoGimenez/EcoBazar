@@ -96,11 +96,36 @@ namespace backend.Controllers
             return Ok(perfil);
         }
 
-        [HttpGet("categoria")]
+
+        [HttpGet("catalogo")]
         public IActionResult ObtenerProductos(string categoria)
         {
-            var listaProductos = _logica.ObtenerProductosPorCategoria(categoria);
-            return Ok(listaProductos);
+            var respuesta = new List<object>();
+            var listaArticulos = _logica.ObtenerProductosPorCategoria(categoria);
+            foreach(var articulo in listaArticulos)
+            {
+                var producto = _logica.ObtenerProductoArticulo(articulo.getId());
+                var imagen = _logica.ObtenerImagenArticulo(articulo.getId());
+
+                var objeto = new
+                {
+                    id = producto.getId(),
+                    precio_cents = producto.getPrecio(),
+                    categoria = articulo.getCategoria(),
+                    consejos_utilizacion = articulo.getConsejos(),
+                    consejos_retirada = articulo.getConsejosRetirada(),
+                    origen = articulo.getOrigen(),
+                    proceso_produccion = articulo.getProcesoProduccion(),
+                    impacto_ambiental_social = articulo.getImpacto(),
+                    contribucion_ods = articulo.getODS(),
+                    id_imagen = imagen.getId(),
+                    url_imagen = imagen.getURL()
+                };
+                respuesta.Add(objeto);
+
+            }
+            
+            return Ok(respuesta);
         }
 
         //Hasta el momento no sirven para nada

@@ -20,8 +20,10 @@ namespace backend.Conversiones{
         Producto ConvertirBDaProducto(ProductoBD productoBD);
         CarritoCompraBD ConvertirCarritoCompra(CarritoCompra carrito);
         List<Producto> ConvertirListaBDaProducto(List<ProductoBD> listaProductos);
+        ImagenProducto ConvertirBDaImagen(ImagenProductoBD imagenBD);
         List<Usuario> ConvertirListaBDaUsuario(List<UsuarioBD> listaUsuario);
         List<Articulo> ConvertirListaBDaArticulo(List<ArticuloBD> listaArticulos);
         List<CarritoCompra> ConvertirListaBDaCarritoCompra(List<CarritoCompraBD> listaCarrito);
+        Articulo ConvertirArticulo(ArticuloBD articulo);
      }
 }

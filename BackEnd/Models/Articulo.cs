@@ -38,6 +38,33 @@ namespace backend.Models
             return this.Nombre;
         }
 
+        public string getCategoria(){
+            return this.Categoria;
+        }
+
+        public string getConsejos(){
+            return this.Consejos_utilizacion;
+        }
+
+        public string getConsejosRetirada(){
+            return this.Consejos_retirada;
+        }
+
+        public string getOrigen(){
+            return this.Origen;
+        }
+
+        public string getProcesoProduccion(){
+            return this.Proceso_produccion;
+        }
+
+        public string getImpacto(){
+            return this.Impacto_ambiental_social;
+        }
+
+        public string getODS(){
+            return this.Contribucion_ods;
+        }
     }
 
 }

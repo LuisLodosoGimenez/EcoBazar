@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using backend.ModelsSupabase;
 using backend.Conversiones;
+using System.Reflection.Metadata.Ecma335;
 
 namespace backend.Logica
 {
@@ -175,36 +176,79 @@ namespace backend.Logica
             return allContents.ToList();
         } 
 
-        public void AgregarAlCarrito(int usuarioId, int productoId)
+        public bool AgregarAlCarrito(int usuarioId, int productoId)
         {
+          
             CarritoCompra nuevoElemento = new CarritoCompra(usuarioId, productoId);
             interf.InsertarCarrito(convertir.ConvertirCarritoCompra(nuevoElemento));
+            return true;
         }
 
-        public IList<Producto> ObtenerProductosPorCategoria(string categoria)
+        public IList<Articulo> ObtenerProductosPorCategoria(string categoria)
         {
             var articulos = interf.ObtenerArticulosPorCategoria(categoria);
             articulos.Wait();
-            IList<Producto> listaProductos = FiltrarArticulos(convertir.ConvertirListaBDaArticulo(articulos.Result));
-            return listaProductos;
+            IList<Articulo> listaArticulos = convertir.ConvertirListaBDaArticulo(articulos.Result);
+            return listaArticulos;
         }
 
-        public  IList<Producto>  FiltrarArticulos(IList<Articulo> filtrados) 
-        {
+        // public  IList<Producto> FiltrarArticulos(IList<Articulo> filtrados) 
+        // {
             
-            IList<Producto> listaProductos = new List<Producto>();
+        //     IList<Producto> listaProductos = new List<Producto>();
 
-            foreach(var articuloFiltrado in filtrados)
+        //     foreach(var articuloFiltrado in filtrados)
+        //     {
+        //         var ejem =  interf.ObtenerProductosPorID(articuloFiltrado.getId());
+        //         ejem.Wait();
+        //         List<Producto> e1 = convertir.ConvertirListaBDaProducto(ejem.Result.OrderBy(producto => producto.Precio_cents).ToList());
+        //         //hacer algo q compruebe q aún no está
+        //         listaProductos.Add(e1.First());
+        //     }
+        //     return listaProductos;
+        // }
+
+        public Producto ObtenerProductoArticulo(int IdArticulo){
+
+            Producto resultado = null;
+            IList<Producto> listaProductos = ObtenerProductos();
+            foreach(var producto in listaProductos)
             {
-                var ejem =  interf.ObtenerProductosPorID(articuloFiltrado.getId());
-                ejem.Wait();
-                List<Producto> e1 = convertir.ConvertirListaBDaProducto(ejem.Result.OrderBy(producto => producto.Precio_cents).ToList());
-                //hacer algo q compruebe q aún no está
-                listaProductos.Add(e1.First());
+                if(producto.getId_Articulo() == IdArticulo && productoMenorPrecio(listaProductos) == producto){
+
+                    resultado = producto;
+                }
             }
-            return listaProductos;
+            return resultado;
         }
 
+        public Producto productoMenorPrecio(IList<Producto> listaProductos){
+           
+            Producto resultado = null;
+            foreach(var producto in listaProductos)
+            {
+                int precioMin = (int) 10e4;
+                if(precioMin > producto.getPrecio()){
+                    precioMin = producto.getPrecio();
+                    resultado = producto;
+                }
+            }
+            return resultado;
+        }
+
+         public ImagenProducto ObtenerImagenArticulo(int idArticulo){
+            
+             var imagen = interf.ObtenerImagenPorID(idArticulo);
+             imagen.Wait();
+             return convertir.ConvertirBDaImagen(imagen.Result);
+        }
+
+        public Articulo devolverArticulo(int idArticulo){
+
+           var articulo = interf.ObtenerArticuloPorID(idArticulo);
+           articulo.Wait(); 
+           return convertir.ConvertirArticulo(articulo.Result);
+        }
 
         //Supongo que este método es para obtener el carrito de la compra de un usuario
         public IList<CarritoCompra> ObtenerChart()

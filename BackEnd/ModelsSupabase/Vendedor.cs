@@ -8,5 +8,8 @@ namespace backend.ModelsSupabase
     public class VendedorBD : UsuarioBD
     {
 
+        public string getNombre(){
+            return this.Nombre!;
+        }
     }
 }

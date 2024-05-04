@@ -21,9 +21,9 @@ namespace backend.ModelsSupabase
 
         [Column("id_articulo")]
         public int Id_articulo { get; set; }
-        public VendedorBD? Vendedor { get; set; }
+        // public VendedorBD? Vendedor { get; set; }
         
-        public ArticuloBD? Articulo { get; set; }
+        // public ArticuloBD? Articulo { get; set; }
 
     }
 }

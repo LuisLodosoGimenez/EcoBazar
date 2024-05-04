@@ -28,6 +28,9 @@ namespace backend.Services
         Task InsertarCarrito(CarritoCompraBD nuevocarrito);
         Task<List<ArticuloBD>> ObtenerArticulosPorCategoria(string categoria);
         Task<List<ProductoBD>> ObtenerProductosPorID(int id);
+        Task<UsuarioBD> ObtenerUsuarioPorID(int id);
+        Task<ArticuloBD> ObtenerArticuloPorID(int id);
+        Task<ImagenProductoBD> ObtenerImagenPorID(int id);
 
         //De momento no sirven
         Task InsertarProducto(ProductoBD nuevoProducto);
