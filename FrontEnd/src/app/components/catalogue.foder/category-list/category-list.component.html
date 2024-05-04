@@ -1,6 +1,6 @@
 <body>
     CATEGORIAS
-    <div>
+    <div class="flex justify-between p-2">
         @for (item of categories; track $index) {
             <app-category-card [categoryName]="item.name" [categoryDescription]="item.description" [categoryImage]="item.image">
 
