@@ -79,7 +79,9 @@ namespace backend.Conversiones{
 
          public ImagenProducto ConvertirBDaImagen(ImagenProductoBD imagenBD){
 
-             ImagenProducto imagenProducto = new ImagenProducto(imagenBD.Id, imagenBD.Hash, imagenBD.Url, interfazLogica.devolverArticulo(imagenBD.Id_articulo));
+            var articulo = BD.ObtenerArticuloPorID(imagenBD.Id_articulo);
+            articulo.Wait();
+             ImagenProducto imagenProducto = new ImagenProducto(imagenBD.Id, imagenBD.Hash, imagenBD.Url, ConvertirArticulo(articulo.Result));
              return imagenProducto;
          }
 
