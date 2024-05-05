@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\backend.csproj": {}
+    "c:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\backend.csproj": {}
   },
   "projects": {
-    "C:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\backend.csproj": {
+    "c:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\backend.csproj",
+        "projectUniqueName": "c:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\backend.csproj",
         "projectName": "backend",
-        "projectPath": "C:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\backend.csproj",
+        "projectPath": "c:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\backend.csproj",
         "packagesPath": "C:\\Users\\34684\\.nuget\\packages\\",
-        "outputPath": "C:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\obj\\",
+        "outputPath": "c:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\34684\\AppData\\Roaming\\NuGet\\NuGet.Config",

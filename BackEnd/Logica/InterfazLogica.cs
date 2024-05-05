@@ -17,45 +17,32 @@ namespace backend.Logica
 {
     public interface InterfazLogica
     {
-        IList<Producto> ObtenerProductos();
-        IList<Usuario> ObtenerUsuarios();
-        List<Usuario> ObtenerUsuarios2();
-        Boolean Bool1(string nick);
-        IList<Producto> GetContentsByParameters2(int keyWords);
-        void AddMember(Usuario user);
-        Task Login(String nick, String password);
-        Usuario UserLogged();
-        Usuario ObtenerUsuarioPorNick(string nick);
-        Producto ObtenerProductoPorPrecio(int nick);
-        //Comprador ObtenerCompradorPorNick(string nick);
-        Usuario ObtenerUsuarioPorEdad(int edad);
-        Usuario UpdateEdadUsuario(Usuario usuario,int edad);
-        void AddUsuario(Usuario usuario);
-        void AgregarAlCarrito(int usuarioId, int productoId);
-        //void CrearUsuario(string nombre, string nick_name, string contraseña, string email, int edad, int? limiteGasto = null);
-        //void AgregarUsuarioABaseDeDatos(Usuario usuario,int? limiteGasto);
-        IList<CarritoCompra> GetChartByUser(Usuario user);
-        IList<CarritoCompra> ObtenerChart();
-        IList<Articulo> ObtenerArticulos();
-        IList<Articulo> GetArticleByProduct(Producto prod);
-        IList<Producto> GetProductByChart(CarritoCompra carr);
-        //IList<Producto> ObtenerProductosPorNombre(string nombre);
-        void Logout();
-        IList<Articulo> GetArticlesByName(string keyWords);
-        //void CrearUsuario2(string nombre, string nick_name, string contraseña, string email, int edad, int? limiteGasto = null);
-        void AddBuyer(Comprador comp);
-        void AddBuyer2(int limite);
-        void AddBuyer22(string nombre, string nick_name, string contraseña, string email, int edad, int? limiteGasto = null);
-        //void AgregarUsuarioABaseDeDatos2(Usuario usuario, int? limiteGasto);
-        //void CrearUsuario2(string nombre, string nick_name, string contraseña, string email, int edad, int? limiteGasto = null);
+        void RegistrarComprador(Comprador comprador);
 
+        Task<object> IniciarSesion(string nickName, string contraseña);
+       // Usuario ObtenerUsuarioPorNickName(string nickName);
 
-        //   #######################################  LUIS  ########################################################
+///################################################################
 
-        void AñadirComprador(string nombre, string nick_name, string contraseña, string email, int edad, int limiteGasto);
-        //   ########################################################################################################
+        // void AddMember(Usuario user);
+        // Task Login(String nick, String password);
+        //IList<Usuario> ObtenerUsuarios();
+        
+        // IList<Producto> ObtenerProductos();
+        // IList<Articulo> ObtenerArticulos();
+        // IList<Articulo> GetArticlesByName(string keyWords);
+        // //IList<CarritoCompra> GetChartByUser(Usuario user);
+        // //IList<Producto> GetProductByChart(CarritoCompra carr);
+        //  IList<Articulo> GetArticleByProduct(Producto prod);
+        // void AgregarAlCarrito(int usuarioId, int productoId);
+        // IList<Producto> ObtenerProductosPorCategoria(string keyWords);
+        // IList<Producto>  FiltrarArticulos(IList<Articulo> filtrados);
+        
+        
 
-
-
+        // //CONSULTAR SI SIRVEN Y TAL
+        // //IList<CarritoCompra> ObtenerChart();
+        // Usuario UpdateEdadUsuario(Usuario usuario,int edad);
+        // Producto ObtenerProductoPorPrecio(int precio);
     }
 }
