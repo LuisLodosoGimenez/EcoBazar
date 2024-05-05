@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-category-card',
@@ -11,4 +11,11 @@ export class CategoryCardComponent {
   @Input() categoryName!: string;
   @Input() categoryDescription!: string;
   @Input() categoryImage!: string;
+
+  @Output() CategoryEvent = new EventEmitter<string>();
+
+  clickCategory() {
+    this.CategoryEvent.emit(this.categoryName)
+    console.log('CATEGORY CARD: CLICK ON CATEGORY' + this.categoryName);
+  }
 }

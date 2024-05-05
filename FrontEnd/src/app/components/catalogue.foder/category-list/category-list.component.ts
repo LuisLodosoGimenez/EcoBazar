@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CategoryCardComponent } from "./category-card/category-card.component";
 import { category } from '../../../domain/interfaces/category.interface';
 
@@ -10,6 +10,8 @@ import { category } from '../../../domain/interfaces/category.interface';
   imports: [CategoryCardComponent],
 })
 export class CategoryListComponent {
+  @Output() categoryEvent = new EventEmitter<string>();
+  
   categories: category[] = [
     {
       name: 'Electronica',
@@ -43,4 +45,9 @@ export class CategoryListComponent {
         'https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/202312/MIT_Food-Diabetes-01_0.jpg?itok=Mp8FVJkC',
     },
   ];
+
+  clickCategory(category: string) {
+    console.log('CATEGORY LIST: CLICK ON CATEGORY' + category);
+    this.categoryEvent.emit(category)
+  }
 }

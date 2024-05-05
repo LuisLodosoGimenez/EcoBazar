@@ -1,8 +1,10 @@
-<body>
-    CATEGORIAS
-    <div class="flex justify-between p-2">
+<body class="space-y-3">
+    <h1 class="font-extrabold text-2xl ">CATEGORIAS</h1>
+    <div class="flex justify-between">
         @for (item of categories; track $index) {
-            <app-category-card [categoryName]="item.name" [categoryDescription]="item.description" [categoryImage]="item.image">
+            <app-category-card [categoryName]="item.name" [categoryDescription]="item.description" [categoryImage]="item.image"
+            (CategoryEvent)="clickCategory($event)"
+            >
 
             </app-category-card>
             

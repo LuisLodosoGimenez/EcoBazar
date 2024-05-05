@@ -1,12 +1,11 @@
-<div class="rounded overflow-hidden shadow-lg relative h-80 w-56">
-        <img
-          class="object-cover opacity-95 block h-full w-full"
-          src={{categoryImage}}
-          alt="Electronics section"
-        />
-        <div class="px-6 py-4 img-gradient absolute w-full h-full"></div>
-        <div class="text-overlay">
-          <div class="font-extrabold text-2xl mb-2 font-outline">{{categoryName}}</div>
-          <p class="text-base font-bold font-outline">{{categoryDescription}}</p>
-        </div>
-      </div>
+<button class="rounded overflow-hidden shadow-lg relative h-80 w-56 text-start"
+(click)="clickCategory()"
+
+>
+  <img class="object-cover opacity-95 block h-full w-full" src="{{ categoryImage }}" alt="Electronics section" />
+  <div class="px-6 py-4 img-gradient absolute w-full h-full"></div>
+  <div class="text-overlay">
+    <div class="font-extrabold text-2xl mb-2 font-outline">{{ categoryName }}</div>
+    <p class="text-base font-bold font-outline">{{ categoryDescription }}</p>
+  </div>
+</button>

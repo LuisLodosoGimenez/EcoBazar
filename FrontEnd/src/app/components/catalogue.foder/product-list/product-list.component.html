@@ -1,3 +1,46 @@
-<app-product-card></app-product-card>
-<app-product-card></app-product-card>
-<app-product-card></app-product-card>
+<main class="mt-5">
+  <h1 class="text-xl bg-red-300">Productos de la categoría: {{ categoryName }}</h1>
+  <div class="grid grid-cols-3 bg-red-400">
+    @for (product of productos; track $index) {
+      <app-product-card (openProductInfo)="openProductInfo()"> </app-product-card>
+    }
+  </div>
+</main>
+
+@if (true) {
+  <div
+    class="z-50 fixed start-72 top-40 flex h-3/5 w-3/5 rounded-md border bg-orange-200 border-orange-300 overflow-hidden"
+  >
+    <button (click)="closeProductInfo()" class="absolute top-3 end-3 size-8">
+      <svg
+        data-slot="icon"
+        fill="none"
+        stroke-width="1.5"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+
+    <img
+      class="absolute end-1 bottom-1 size-8"
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAACkElEQVR4nO2aT4hNcRTHP1P+pFEWUtJTspNRxAqxscFMVmSI7CgLWU12IpqFjd5ISikzKwubiTIaMyQrioWUjaFMNqZhRiiMfnUWr9tt5t77znlzz7u/T516vc33/L739/f8fhCJRCKRyAdgLhF/gPfAALC23S26k2JAY3wFumhjTi1gwJz0kqW0KRsyGBDiCBViGXA7YcAgFWNnyjCgar3gR8KE9VSMpwkDeqkYVxIGTAPvgBfAA2AIqAOXgPOyohwC9gBbgBrQiWMOZFwhssRPYBJ4CzwHhoG7wHXgInAOOAn0ALuBzcA6oGMxDVglu0ItE1ya97oEBhSN38AXGZKFGShBQ5qNplav3hI0oJmYbnYo1AyTGwP6JcaMNMKc0TQTRskdbUFPu6lhwKBRclsbNLYZaZzVMOCMQWL/gJUNGp3yn7bOXg0DugwS+5ii88lAZ7WGAR1SGdJMbCRF57GyxmcUGVZOLpwhktSVNR5pGtBXMIkp4CVwT7ath4HtwIoUjSXARmCfbG9vSa+YLKh9TdOAXQWT0KKIdjidqrFcDiWeDNiBMs8cGfDXohZx1dEcEC52Sl0gqRuvAvfLXiAZMd4HhDKdCW+c7ATNLnJuODkLbLIy4JiD0+AvmVBNqDmoB4Q6pikTSok+lC12n/zWMiDcV5gypJisRQRDTTldgkbOF/utDVhT8FzQipiSc4s5F0rQ2LQ4QQs5DrySZWcxGz0r5W/zrh+JRCJphFch4zIZzco9X7ir96qTi/55ZufwxMabTu4vstAS1e1IJzfjGRJ74kgnNzMZEvvuSMcksW+OdHKT5VXHqCOd3PRkSOygIx2V16SNcdmhTiG6ZRaekRg1+iKt0olEIpEI7c5/40Av6NIuntEAAAAASUVORK5CYII="
+    />
+
+    <img
+      class="object-contain h-full"
+      src="https://www.trueclassictees.com/cdn/shop/files/4000_CARBON_2_7ee698ff-520f-48e3-9f61-3b1df6619809.jpg?v=1692655880&%3Bwidth=500&em-format=avif&em-width=500"
+      alt=""
+    />
+
+    <div class="flex flex-col justify-start items-start p-4">
+      <h2 class="text-4xl font-medium">Nombre producto</h2>
+      <h3 class="text-2xl font-thin">50.50€</h3>
+      <h3>Categoría: Moda</h3>
+      <h3>Consejos utilización</h3>
+    </div>
+  </div>
+}
