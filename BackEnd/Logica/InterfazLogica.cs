@@ -20,14 +20,17 @@ namespace backend.Logica
         void RegistrarComprador(Comprador comprador);
 
         Task<object> IniciarSesion(string nickName, string contraseña);
-       // Usuario ObtenerUsuarioPorNickName(string nickName);
+
+        Task<IList<Producto>> ObtenerProductosPorCategoria(string categoria);
+
+        
 
 ///################################################################
 
         // void AddMember(Usuario user);
         // Task Login(String nick, String password);
         //IList<Usuario> ObtenerUsuarios();
-        
+
         // IList<Producto> ObtenerProductos();
         // IList<Articulo> ObtenerArticulos();
         // IList<Articulo> GetArticlesByName(string keyWords);
@@ -37,8 +40,8 @@ namespace backend.Logica
         // void AgregarAlCarrito(int usuarioId, int productoId);
         // IList<Producto> ObtenerProductosPorCategoria(string keyWords);
         // IList<Producto>  FiltrarArticulos(IList<Articulo> filtrados);
-        
-        
+
+
 
         // //CONSULTAR SI SIRVEN Y TAL
         // //IList<CarritoCompra> ObtenerChart();

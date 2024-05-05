@@ -83,6 +83,49 @@ namespace backend.Logica
 
 
 
+        public async Task<IList<Producto>> ObtenerProductosPorCategoria(string categoria)
+        {
+            List<Articulo> articulos = await supabaseService.ObtenerArticulosPorCategoria(categoria);
+            articulos = articulos.ConvertAll(ObtenerProductosDeArticulo);
+
+
+            List<Producto> productosMasBaratos = new List<Producto>();
+            
+            foreach (var articulo in articulos)
+            {
+                Producto? producto = ObtenerProductoMasBaratoDeArticulo(articulo);
+                if(producto!=null) productosMasBaratos.Add(producto);
+            }
+            
+            return productosMasBaratos; 
+
+
+
+        }
+        private Articulo ObtenerProductosDeArticulo(Articulo articulo){
+
+            var result = supabaseService.ObtenerProductosPorIDArticulo((int)articulo.Id!);
+            result.Wait();
+
+            List<Producto> productos = result.Result;
+
+            articulo.Productos = productos;
+            return articulo;
+
+        }
+
+        private Producto? ObtenerProductoMasBaratoDeArticulo(Articulo articulo)
+        {
+                List<Producto> productosOrdenados = articulo.Productos.OrderBy(producto => producto.Precio_cents).ToList();
+
+                if(productosOrdenados.Count !=0 )return productosOrdenados.First();
+                else return null;
+        }
+
+
+
+
+
 
 
 

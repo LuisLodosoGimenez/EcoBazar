@@ -21,10 +21,6 @@ namespace backend.Conversiones{
 
     public class Conversiones : IConversiones{
 
-        private readonly ISupabaseService? supabaseService;
-
-
-
 
 
         public UsuarioBD CompradorAUsuarioBD(Comprador comprador){
@@ -87,24 +83,26 @@ namespace backend.Conversiones{
             return productor;
         }
 
-        public async Task<Articulo>  ArticuloBDAArticulo(ArticuloBD articuloBD){
-            Productor? productor = await  supabaseService.ObtenerUsuarioPorId(articuloBD.Id_productor) as Productor; 
-            return new Articulo(articuloBD.Nombre, articuloBD.Categoria, articuloBD.Edad_min,
+        public  Articulo  ArticuloBDAArticulo(ArticuloBD articuloBD, Productor productor, List<string> imagenesArticulo){
+            Articulo articulo = new Articulo(articuloBD.Nombre, articuloBD.Categoria, articuloBD.Edad_min,
             articuloBD.Consejos_utilizacion, articuloBD.Consejos_retirada, articuloBD.Origen, articuloBD.Proceso_produccion,
-            articuloBD.Impacto_ambiental_social, articuloBD.Contribucion_ods, productor!);
+            articuloBD.Impacto_ambiental_social, articuloBD.Contribucion_ods, productor);
+            articulo.Id = articuloBD.Id;
+            articulo.ImagenesUrl = imagenesArticulo;
+            return articulo;
         }
 
-        public  Producto ProductoBDAProducto(ProductoBD productoBD ){
+        public  Producto ProductoBDAProducto(ProductoBD productoBD, Vendedor vendedor, Articulo articulo){
 
-            var art =  supabaseService.ObtenerArticuloPorId(productoBD.Id_articulo);
-            art.Wait();
-            Articulo articulo = art.Result as Articulo;
+            Producto producto = new Producto(productoBD.Precio_cents, productoBD.Unidades, vendedor, articulo);
+            producto.Id = productoBD.Id;
+            return producto;
 
-            var vend = supabaseService.ObtenerUsuarioPorId(productoBD.Id_vendedor);
-            vend.Wait();
-            Vendedor vendedor = (vend.Result as Vendedor)!;
 
-            return new Producto(productoBD.Precio_cents, productoBD.Unidades,vendedor!,articulo);
+        }
+
+        public string ImagenArticuloBDAImagen(ImagenArticuloBD imagenArticuloBD){
+            return imagenArticuloBD.url;
         }
     }
 

@@ -15,6 +15,7 @@ using backend.Conversiones;
 using System.Linq.Expressions;
 using static Postgrest.Constants;
 using Microsoft.AspNetCore.JsonPatch.Internal;
+using Microsoft.VisualBasic;
 
 namespace backend.Services
 {
@@ -193,10 +194,10 @@ namespace backend.Services
 
             var articulo = await _supabaseClient
                             .From<ArticuloBD>()
-                            .Where(x => x.Id.Equals(articuloId))
+                            .Where(x => x.Id == articuloId)
                             .Get();
 
-            return await convertir.ArticuloBDAArticulo(articulo.Model!);
+            return  ConvertirArticuloBDAArticulo(articulo.Model!);
 
         }
 
@@ -228,15 +229,78 @@ namespace backend.Services
 
             Console.WriteLine("");
 
-            return  productos.Models.ConvertAll<Producto>(convertir.ProductoBDAProducto);
+            return  productos.Models.ConvertAll<Producto>(ConvertirProductoBDAProducto);
+        }
 
-            
 
-            
 
+        public async Task<List<Articulo>> ObtenerArticulosPorCategoria(string categoria)
+        {
+            var result = await _supabaseClient
+                    .From<ArticuloBD>()
+                    .Where(c => c.Categoria == categoria)
+                    .Get();
+
+            return  result.Models.ConvertAll<Articulo>(ConvertirArticuloBDAArticulo);
+        }
+
+
+        private async Task<List<string>> ObtenerImagenesArticuloPorId(int idArticulo)
+        {
+            var result = await _supabaseClient
+                    .From<ImagenArticuloBD>()
+                    .Where(x => x.idArticulo == idArticulo)
+                    .Get();
+
+            return result.Models.ConvertAll<string>(convertir.ImagenArticuloBDAImagen);
         }
 
         
+
+
+        private Articulo ConvertirArticuloBDAArticulo( ArticuloBD articuloBD){
+            var usu = ObtenerUsuarioPorId(articuloBD.Id_productor);
+            usu.Wait();
+            Productor? productor = usu.Result as Productor;
+
+            var imagenes = ObtenerImagenesArticuloPorId(articuloBD.Id);
+            imagenes.Wait();
+            List<string> imagenesArticulo = imagenes.Result as List<string>;
+
+            return convertir.ArticuloBDAArticulo(articuloBD, productor!, imagenesArticulo);
+
+
+        }
+
+        public async Task<List<Producto>> ObtenerProductosPorIDArticulo(int idArticulo)
+        {
+            var result = await _supabaseClient
+                                .From<ProductoBD>()
+                                .Where(a => a.Id_articulo == idArticulo)
+                                .Get();
+            
+            return result.Models.ConvertAll(ConvertirProductoBDAProducto);
+        }
+
+        public Producto ConvertirProductoBDAProducto(ProductoBD productoBD)
+        {
+
+            var vend = ObtenerUsuarioPorId(productoBD.Id_vendedor);
+            vend.Wait();
+            Vendedor vendedor = (vend.Result as Vendedor)!;
+
+            var art = ObtenerArticuloPorId(productoBD.Id_articulo);
+            art.Wait();
+            Articulo articulo = art.Result as Articulo;
+
+            
+
+            return convertir.ProductoBDAProducto(productoBD, vendedor!, articulo!);
+        }
+
+
+
+
 
 
 

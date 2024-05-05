@@ -31,6 +31,10 @@ namespace backend.Services
 
         Task<Articulo> ObtenerArticuloPorId(int articuloId);
 
+        Task<List<Articulo>> ObtenerArticulosPorCategoria(string categoria);
+
+        Task<List<Producto>> ObtenerProductosPorIDArticulo(int idArticulo);
+
 
 
         //Task<List<UsuarioBD>> ObtenerTodosLosUsuarios();

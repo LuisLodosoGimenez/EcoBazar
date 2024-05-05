@@ -28,9 +28,11 @@ namespace backend.Conversiones
       Productor UsuarioBDAProductor(UsuarioBD usuarioBD);
 
 
-      Task<Articulo> ArticuloBDAArticulo(ArticuloBD articuloBD);
+      Articulo ArticuloBDAArticulo(ArticuloBD articuloBD, Productor productor, List<string> imagenesArticulo);
 
-      Producto ProductoBDAProducto(ProductoBD productoBD);
+      Producto ProductoBDAProducto(ProductoBD productoBD, Vendedor vendedor, Articulo articulo);
+
+      string ImagenArticuloBDAImagen(ImagenArticuloBD imagenArticuloBD);
 
 
       //   Producto ConvertirBDaProducto(ProductoBD productoBD);
