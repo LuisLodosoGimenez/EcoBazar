@@ -16,14 +16,12 @@ namespace backend.ModelsSupabase
         [Column("unidades")]
         public int Unidades { get; set; }
 
-        [Column("id_usuario")]
-        public int Id_usuario { get; set; }
-
         [Column("id_articulo")]
         public int Id_articulo { get; set; }
-        // public VendedorBD? Vendedor { get; set; }
+
+        [Column("id_vendedor")]
+        public int Id_usuario { get; set; }
         
-        // public ArticuloBD? Articulo { get; set; }
 
     }
 }

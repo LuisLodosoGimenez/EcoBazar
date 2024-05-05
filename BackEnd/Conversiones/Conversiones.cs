@@ -24,15 +24,12 @@ namespace backend.Conversiones{
 
         //public int idVendedor;
         private readonly Interfaz BD;
-        private readonly InterfazLogica interfazLogica;
 
-        public Conversiones(Interfaz baseDatos, InterfazLogica interfazLogica)
+        public Conversiones(Interfaz baseDatos)
         {
             this.BD = baseDatos;
-            this.interfazLogica = interfazLogica;
+
         }
-
-
         public UsuarioBD ConvertirUsuario(Usuario usuario){
 
             UsuarioBD usuarioConvertido = new UsuarioBD

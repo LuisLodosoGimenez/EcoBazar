@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mvict\\NuevoEcoBazar\\EcoBazar\\BackEnd\\backend.csproj": {}
+    "c:\\Users\\mvict\\NuevoEcoBazar\\EcoBazar\\BackEnd\\backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mvict\\NuevoEcoBazar\\EcoBazar\\BackEnd\\backend.csproj": {
+    "c:\\Users\\mvict\\NuevoEcoBazar\\EcoBazar\\BackEnd\\backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mvict\\NuevoEcoBazar\\EcoBazar\\BackEnd\\backend.csproj",
+        "projectUniqueName": "c:\\Users\\mvict\\NuevoEcoBazar\\EcoBazar\\BackEnd\\backend.csproj",
         "projectName": "backend",
-        "projectPath": "C:\\Users\\mvict\\NuevoEcoBazar\\EcoBazar\\BackEnd\\backend.csproj",
+        "projectPath": "c:\\Users\\mvict\\NuevoEcoBazar\\EcoBazar\\BackEnd\\backend.csproj",
         "packagesPath": "C:\\Users\\mvict\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mvict\\NuevoEcoBazar\\EcoBazar\\BackEnd\\obj\\",
+        "outputPath": "c:\\Users\\mvict\\NuevoEcoBazar\\EcoBazar\\BackEnd\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\mvict\\AppData\\Roaming\\NuGet\\NuGet.Config",

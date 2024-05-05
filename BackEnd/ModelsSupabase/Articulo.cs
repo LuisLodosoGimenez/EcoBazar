@@ -36,7 +36,7 @@ namespace backend.ModelsSupabase
         [Column("contribucion_ods")]
         public string? Contribucion_ods { get; set; }
 
-        [Column("id_usuario")]
+        [Column("id_productor")]
         public int Id_usuario { get; set; }
 
     }
