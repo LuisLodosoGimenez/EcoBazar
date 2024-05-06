@@ -1,8 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Models;
 using backend.Logica;
-using Microsoft.VisualBasic;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace backend.Controllers
 {
@@ -29,6 +36,10 @@ namespace backend.Controllers
         // }
 
 
+
+
+
+        // ----------------------------------------------- //
         public class Registro
         {
             public string? Nombre { get; set; }
@@ -38,16 +49,13 @@ namespace backend.Controllers
             public int? Edad { get; set; }
             public int? LimiteGasto { get; set; }
         }
-
         [HttpPost("Registrarse")]
         public IActionResult RegistrarComprador(Registro registro)
         {
 
-            //TODO: CREATE A NEW CLASS OR INTERFACE
-
             try
             {
-                var comprador = new Comprador(registro.Nombre, registro.Nick_name, registro.Contraseña, registro.Email);
+                var comprador = new Comprador(registro.Nombre!, registro.Nick_name!, registro.Contraseña!, registro.Email!);
                 comprador.Edad = registro.Edad;
                 comprador.Limite_gasto_cents_mes = registro.LimiteGasto;
                 _logica.RegistrarComprador(comprador);
@@ -58,21 +66,22 @@ namespace backend.Controllers
                 return BadRequest("fallo " + ex.Message);
             }
 
-
-            return Ok("TODO CORRECTOOOÇ");
+            return Ok();
 
         }
+        // ----------------------------------------------- //
 
 
 
 
+
+
+        // ----------------------------------------------- //
         public class InicioSesion
         {
             public string? Nick_name { get; set; }
             public string? Contraseña { get; set; }
         }
-
-
         [HttpPost("IniciarSesion")]
         public async Task<IActionResult> IniciarSesion(InicioSesion inicioSesion)
         {
@@ -109,8 +118,15 @@ namespace backend.Controllers
             }
             return StatusCode(404, "No se trata de un comprador");
         }
+        // ----------------------------------------------- //
 
 
+
+
+
+
+
+        // ----------------------------------------------- //
         [HttpGet("Categoria")]
         public async Task<IActionResult> ObtenerProductorPorCategoría(string categoria)
         {
@@ -125,17 +141,27 @@ namespace backend.Controllers
             {
                 return StatusCode(500, "Error: " + ex.Message);
             }
-
-
         }
+        // ----------------------------------------------- //
 
 
-        [HttpGet("AñadirProductoACarritoCompra")]
-        public async Task<IActionResult> CarritoCompra(int idComprador, int idProducto)
+
+
+
+
+
+        // ----------------------------------------------- //
+        public class CarritoCompra
+        {
+            public int? id_comprador { get; set; }
+            public int? id_producto { get; set; }
+        }
+        [HttpPost("AñadirProductoACarritoCompra")]
+        public async Task<IActionResult> AñadirProductoACarritoCompra(CarritoCompra carritoCompra)
         {
             try
             {
-                var perfil = await _logica.AñadirProductoACarritoCompra(idComprador, idProducto);
+                var perfil = await _logica.AñadirProductoACarritoCompra((int)carritoCompra.id_comprador!, (int)carritoCompra.id_producto!);
 
                 if (perfil.GetType() == Type.GetType("backend.Models.Comprador"))
                 {
@@ -162,6 +188,45 @@ namespace backend.Controllers
             }
             return StatusCode(404, "No se trata de un comprador");
         }
+
+
+        // ------- //
+
+
+        [HttpPost("EliminarProductoEnCarritoCompra")]
+        public async Task<IActionResult> EliminarProductoEnCarritoCompra(CarritoCompra carritoCompra)
+        {
+            try
+            {
+                var perfil = await _logica.EliminarProductoEnCarritoCompra((int)carritoCompra.id_comprador!, (int)carritoCompra.id_producto!);
+
+                if (perfil.GetType() == Type.GetType("backend.Models.Comprador"))
+                {
+
+                    Comprador? comprador = perfil as Comprador;
+
+                    var responseData = new
+                    {
+                        CarritoCompra = comprador.CarritoCompra,
+                    };
+                    return Ok(responseData);
+
+                }
+            }
+
+
+            catch (UsuarioNoExisteException ex)
+            {
+                return NotFound("Usuario no encontrado: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error: " + ex.Message);
+            }
+            return StatusCode(404, "No se trata de un comprador");
+        }
+        // ----------------------------------------------- //
+
 
 
 

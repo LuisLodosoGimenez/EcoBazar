@@ -247,22 +247,34 @@ namespace backend.Services
 
         public async void AñadirProductoACarritoCompra(int compradorId, int productoId)
         {
-            //todo: add to convertir
-            CarritoCompraBD carritoCompraBD = new CarritoCompraBD
+
+            try
             {
-                Id_comprador = compradorId,
-                Id_producto = productoId,
+
+                //todo: add to convertir
+                CarritoCompraBD carritoCompraBD = new CarritoCompraBD
+                {
+                    Id_comprador = compradorId,
+                    Id_producto = productoId
+                };
+
+
+                await _supabaseClient.From<CarritoCompraBD>().Insert(carritoCompraBD);
+
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             };
 
-
-            await _supabaseClient.From<CarritoCompraBD>().Insert(carritoCompraBD);
 
 
 
         }
 
 
-        public async void EliminarProductoACarritoCompra(int compradorId, int productoId)
+        public async void EliminarProductoEnCarritoCompra(int compradorId, int productoId)
         {
             //todo: add to convertir
             CarritoCompraBD carritoCompraBD = new CarritoCompraBD

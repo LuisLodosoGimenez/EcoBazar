@@ -25,6 +25,8 @@ namespace backend.Logica
 
         Task<Comprador> AñadirProductoACarritoCompra(int idComprador, int idProducto);
 
+        Task<Comprador> EliminarProductoEnCarritoCompra(int idComprador, int idProducto);
+
         ///################################################################
 
         // void AddMember(Usuario user);

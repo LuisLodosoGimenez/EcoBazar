@@ -31,6 +31,8 @@ namespace backend.Services
 
         void AñadirProductoACarritoCompra(int compradorId, int productoId);
 
+        void EliminarProductoEnCarritoCompra(int compradorId, int productoId);
+
         Task<Articulo> ObtenerArticuloPorId(int articuloId);
 
         Task<List<Articulo>> ObtenerArticulosPorCategoria(string categoria);

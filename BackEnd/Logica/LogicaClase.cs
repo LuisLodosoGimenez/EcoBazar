@@ -22,22 +22,33 @@ namespace backend.Logica
         public async void RegistrarComprador(Comprador comprador)
         {
 
-            if (supabaseService.ExisteNickNameEnUsuario(comprador.Nick_name).Result)
+            try
             {
-                throw new Exception("El member con nick " + comprador.Nick_name + " ya existe.");
+                if (supabaseService.ExisteNickNameEnUsuario(comprador.Nick_name).Result)
+                {
+                    throw new ArgumentOutOfRangeException("El member con nick " + comprador.Nick_name + " ya existe.");
+
+                }
+                else if (supabaseService.ExisteEmailEnUsuario(comprador.Email).Result)
+                {
+                    throw new ArgumentOutOfRangeException("El member con correo electrónico " + comprador.Email + " ya existe.");
+                }
+                else
+                {
+                    var idUsuario = await supabaseService.AñadirUsuario(convertir.CompradorAUsuarioBD(comprador));
+                    comprador.Id = idUsuario;
+                    await supabaseService.AñadirComprador(convertir.CompradorACompradorBD(comprador));
+
+                }
 
             }
-            else if (supabaseService.ExisteEmailEnUsuario(comprador.Email).Result)
+            catch (ArgumentOutOfRangeException)
             {
-                throw new Exception("El member con correo electrónico " + comprador.Email + " ya existe.");
-            }
-            else
-            {
-                var idUsuario = await supabaseService.AñadirUsuario(convertir.CompradorAUsuarioBD(comprador));
-                comprador.Id = idUsuario;
-                await supabaseService.AñadirComprador(convertir.CompradorACompradorBD(comprador));
+                throw;
 
             }
+
+
         }
 
 
@@ -127,6 +138,29 @@ namespace backend.Logica
 
                 Comprador? comprador = objeto as Comprador;
                 supabaseService.AñadirProductoACarritoCompra((int)comprador!.Id!, idProducto);
+                ICollection<Producto> productos = await supabaseService.ObtenerCarritoCompra(idComprador);
+
+                comprador!.CarritoCompra = productos;
+
+                return comprador;
+
+            }
+            //todo: make it correctly
+
+            throw new Exception("EL ID DE USUARIO NO ES DE COMPRADOR");
+        }
+
+        public async Task<Comprador> EliminarProductoEnCarritoCompra(int idComprador, int idProducto)
+        {
+
+
+            var objeto = await supabaseService.ObtenerUsuarioPorId(idComprador);
+
+            if (objeto.GetType() == Type.GetType("backend.Models.Comprador"))
+            {
+
+                Comprador? comprador = objeto as Comprador;
+                supabaseService.EliminarProductoEnCarritoCompra((int)comprador!.Id!, idProducto);
                 ICollection<Producto> productos = await supabaseService.ObtenerCarritoCompra(idComprador);
 
                 comprador!.CarritoCompra = productos;
