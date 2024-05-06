@@ -98,7 +98,7 @@ namespace backend.Services
 
         public async Task<bool> ExisteEmailEnUsuario(string email)
         {
-           
+
             var result = await _supabaseClient
                                 .From<UsuarioBD>()
                                 .Where(x => x.Email == email)
@@ -116,13 +116,13 @@ namespace backend.Services
                                 .Get();
 
 
-            
-            if(!usuario.Models.Any()) throw new Exception("NO EXISTE NINGÚN USUARIO CON ESE NICKNAME");
+
+            if (!usuario.Models.Any()) throw new UsuarioNoExisteException("El usuario no corresponde con ningun comprador, vendedor o productor");
             UsuarioBD usuarioBD = usuario.Model!;
 
 
-            return await ObtenerUsuarioPorUsurioBD(usuarioBD);     
-            
+            return await ObtenerUsuarioPorUsurioBD(usuarioBD);
+
         }
 
         public async Task<System.Object> ObtenerUsuarioPorId(int id_usuario)
@@ -137,28 +137,30 @@ namespace backend.Services
             if (!usuario.Models.Any()) throw new Exception("NO EXISTE NINGÚN USUARIO CON ESE ID");
             UsuarioBD usuarioBD = usuario.Model!;
 
-            return  await ObtenerUsuarioPorUsurioBD(usuarioBD);
+            return await ObtenerUsuarioPorUsurioBD(usuarioBD);
 
         }
 
 
-        private async Task<System.Object> ObtenerUsuarioPorUsurioBD(UsuarioBD usuarioBD){
+        private async Task<System.Object> ObtenerUsuarioPorUsurioBD(UsuarioBD usuarioBD)
+        {
 
-            try{
-
-            
-            
-            var primero =   _supabaseClient
-                                .From<CompradorBD>();
-            var segundo = primero.Where(x => x.Id == usuarioBD.Id!);
-
-            var tercero = await segundo.Get();
+            try
+            {
 
 
-            var comprador = await _supabaseClient
-                                .From<CompradorBD>()
-                                .Where(x => x.Id == usuarioBD.Id!)
-                                .Get();
+
+                var primero = _supabaseClient
+                                    .From<CompradorBD>();
+                var segundo = primero.Where(x => x.Id == usuarioBD.Id!);
+
+                var tercero = await segundo.Get();
+
+
+                var comprador = await _supabaseClient
+                                    .From<CompradorBD>()
+                                    .Where(x => x.Id == usuarioBD.Id!)
+                                    .Get();
 
                 if (comprador.Models.Any()) return convertir.UsuarioBDYCompradorBDAComprador(usuarioBD, comprador.Model!);
 
@@ -176,28 +178,32 @@ namespace backend.Services
 
                 if (productor.Models.Any()) return convertir.UsuarioBDAProductor(usuarioBD);
 
-                throw new Exception("El usuario no corresponde con ningun comprador, vendedor o productor");
+                throw new UsuarioNoExisteException("El usuario no corresponde con ningun comprador, vendedor o productor");
 
             }
-            catch(Exception e){
+
+            //TODO: DELETE?
+            catch (Exception e)
+            {
                 Console.WriteLine(e.Message);
                 throw new Exception();
             }
-            
 
-            
+
+
 
         }
 
 
-        public async Task<Articulo> ObtenerArticuloPorId(int articuloId){
+        public async Task<Articulo> ObtenerArticuloPorId(int articuloId)
+        {
 
             var articulo = await _supabaseClient
                             .From<ArticuloBD>()
                             .Where(x => x.Id == articuloId)
                             .Get();
 
-            return  ConvertirArticuloBDAArticulo(articulo.Model!);
+            return ConvertirArticuloBDAArticulo(articulo.Model!);
 
         }
 
@@ -205,33 +211,73 @@ namespace backend.Services
         public async Task<ICollection<Producto>> ObtenerCarritoCompra(int compradorId)
         {
 
-            var primer =  _supabaseClient
-                            .From<CarritoCompraBD>().Where(x => x.Id_comprador == compradorId);
-
-            
-            
-
             var carrito = await _supabaseClient
                             .From<CarritoCompraBD>()
                             .Where(x => x.Id_comprador == compradorId)
                             .Get();
-                            
+
             List<int> lista = new List<int>();
-            lista =  carrito.Models.ConvertAll((CarritoCompraBD carrito)=> carrito.Id_producto);
+            lista = carrito.Models.ConvertAll((CarritoCompraBD carrito) => carrito.Id_producto);
 
-                        
 
-            //TODO: make a for 
-            var productos = await _supabaseClient
-                            .From<ProductoBD>()
-                            .Where(x => lista.Contains(x.Id))
-                            .Get();
+            List<ProductoBD> productosBD = new List<ProductoBD>();
+            //TODO: make a for
+            foreach (var idProducto in lista)
+            {
+
+                var productos = await _supabaseClient
+                        .From<ProductoBD>()
+                        .Where(x => x.Id == idProducto)
+                        .Get();
+
+                if (productos.Model != null) { productosBD.Add(productos.Model); }
+
+
+            }
+
+
+
 
             Console.WriteLine("");
 
-            return  productos.Models.ConvertAll<Producto>(ConvertirProductoBDAProducto);
+            return productosBD.ConvertAll<Producto>(ConvertirProductoBDAProducto);
         }
 
+
+
+        public async void AñadirProductoACarritoCompra(int compradorId, int productoId)
+        {
+            //todo: add to convertir
+            CarritoCompraBD carritoCompraBD = new CarritoCompraBD
+            {
+                Id_comprador = compradorId,
+                Id_producto = productoId,
+            };
+
+
+            await _supabaseClient.From<CarritoCompraBD>().Insert(carritoCompraBD);
+
+
+
+        }
+
+
+        public async void EliminarProductoACarritoCompra(int compradorId, int productoId)
+        {
+            //todo: add to convertir
+            CarritoCompraBD carritoCompraBD = new CarritoCompraBD
+            {
+                Id_comprador = compradorId,
+                Id_producto = productoId,
+            };
+
+
+            var result = await _supabaseClient
+            .From<CarritoCompraBD>().Delete(carritoCompraBD);
+
+
+
+        }
 
 
         public async Task<List<Articulo>> ObtenerArticulosPorCategoria(string categoria)
@@ -241,7 +287,7 @@ namespace backend.Services
                     .Where(c => c.Categoria == categoria)
                     .Get();
 
-            return  result.Models.ConvertAll<Articulo>(ConvertirArticuloBDAArticulo);
+            return result.Models.ConvertAll<Articulo>(ConvertirArticuloBDAArticulo);
         }
 
 
@@ -255,10 +301,11 @@ namespace backend.Services
             return result.Models.ConvertAll<string>(convertir.ImagenArticuloBDAImagen);
         }
 
-        
 
 
-        private Articulo ConvertirArticuloBDAArticulo( ArticuloBD articuloBD){
+
+        private Articulo ConvertirArticuloBDAArticulo(ArticuloBD articuloBD)
+        {
             var usu = ObtenerUsuarioPorId(articuloBD.Id_productor);
             usu.Wait();
             Productor? productor = usu.Result as Productor;
@@ -272,13 +319,15 @@ namespace backend.Services
 
         }
 
-        public async Task<List<Producto>> ObtenerProductosPorIDArticulo(int idArticulo)
+        public async Task<List<Producto>> ObtenerProductosPorIDArticulo(int idArticulo, Articulo? articulo)
         {
             var result = await _supabaseClient
                                 .From<ProductoBD>()
                                 .Where(a => a.Id_articulo == idArticulo)
                                 .Get();
-            
+
+
+
             return result.Models.ConvertAll(ConvertirProductoBDAProducto);
         }
 
@@ -293,7 +342,7 @@ namespace backend.Services
             art.Wait();
             Articulo articulo = art.Result as Articulo;
 
-            
+
 
             return convertir.ProductoBDAProducto(productoBD, vendedor!, articulo!);
         }

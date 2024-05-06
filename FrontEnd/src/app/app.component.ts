@@ -13,39 +13,8 @@ import { HeaderComponent } from './components/header.folder/header/header.compon
   styleUrl: './app.component.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   constructor(private apiService: ApiService) {}
-
-  getAllPosts() {
-    this.apiService.getPosts().subscribe({
-      next: (response) => console.log(response),
-      error: (error) => null,
-    });
-  }
-
-  logIn() {
-    let body = {
-      nick: 'ana123',
-      password: 'contraseña4',
-    };
-
-    this.apiService.logIn(body).subscribe({
-      next: (response) => console.log(response),
-      error: (error) => console.log(error),
-    });
-  }
-
-  ngOnInit(): void {
-    console.log('Inicio proyecto');
-    this.getPosts();
-  }
-
-  getPosts() {
-    fetch('https://jsonplaceholder.typicode.com/posts/1')
-      .then((response) => response.json())
-      .then((json) => console.log(json));
-  }
-
   title = 'userProfileSpringCarrot';
   static usuario: Usuario = {
     id: 0,

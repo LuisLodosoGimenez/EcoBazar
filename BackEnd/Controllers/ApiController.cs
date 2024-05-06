@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Models;
 using backend.Logica;
+using Microsoft.VisualBasic;
 
 
 namespace backend.Controllers
@@ -19,7 +20,7 @@ namespace backend.Controllers
         {
             this._logica = logica;
         }
-  
+
         // public static ApiController GetInstance(InterfazLogica logica){
         //     if(_instancia == null)
         //         _instancia = new ApiController(logica);
@@ -27,38 +28,59 @@ namespace backend.Controllers
         //     return _instancia;
         // }
 
+
+        public class Registro
+        {
+            public string? Nombre { get; set; }
+            public string? Nick_name { get; set; }
+            public string? Contraseña { get; set; }
+            public string? Email { get; set; }
+            public int? Edad { get; set; }
+            public int? LimiteGasto { get; set; }
+        }
+
         [HttpPost("Registrarse")]
-        public IActionResult RegistrarComprador(string nombre, string nick_name, string contraseña, string email, int edad, int limite_gasto_cents_mes)
+        public IActionResult RegistrarComprador(Registro registro)
         {
 
             //TODO: CREATE A NEW CLASS OR INTERFACE
 
-            try{
-                var comprador = new Comprador(nombre, nick_name, contraseña, email);
-                comprador.Edad = edad;
-                comprador.Limite_gasto_cents_mes = limite_gasto_cents_mes;
+            try
+            {
+                var comprador = new Comprador(registro.Nombre, registro.Nick_name, registro.Contraseña, registro.Email);
+                comprador.Edad = registro.Edad;
+                comprador.Limite_gasto_cents_mes = registro.LimiteGasto;
                 _logica.RegistrarComprador(comprador);
 
-            }catch(Exception ex){
-                return BadRequest("fallo "+ ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("fallo " + ex.Message);
             }
 
-            
+
             return Ok("TODO CORRECTOOOÇ");
-            
+
+        }
+
+
+
+
+        public class InicioSesion
+        {
+            public string? Nick_name { get; set; }
+            public string? Contraseña { get; set; }
         }
 
 
         [HttpPost("IniciarSesion")]
-        public async Task<IActionResult> IniciarSesion(string nick_name, string contraseña)
+        public async Task<IActionResult> IniciarSesion(InicioSesion inicioSesion)
         {
             try
             {
+                var perfil = await _logica.IniciarSesion(inicioSesion.Nick_name!, inicioSesion.Contraseña!);
 
-            var perfil = await  _logica.IniciarSesion(nick_name, contraseña);
-
-
-                if (perfil.GetType() == Type.GetType("Comprador"))
+                if (perfil.GetType() == Type.GetType("backend.Models.Comprador"))
                 {
 
                     Comprador? comprador = perfil as Comprador;
@@ -67,42 +89,82 @@ namespace backend.Controllers
                     {
                         Comprador = comprador,
                     };
-                      return Ok(responseData);
+                    return Ok(responseData);
 
-                }}
+                }
+            }
 
-                
-                catch(UsuarioNoExisteException ex)
-                {
-                    return NotFound("Usuario no encontrado: " + ex.Message);
-                }
-                catch(ContraseñaIncorrectaException ex)
-                {
-                    return Unauthorized("Contraseña incorrecta: " + ex.Message);
-                }
-                catch(Exception ex)
-                {
-                    return StatusCode(500, "Error: " + ex.Message);
-                }
-                return StatusCode(400,"error desconocido");
+
+            catch (UsuarioNoExisteException ex)
+            {
+                return NotFound("Usuario no encontrado: " + ex.Message);
+            }
+            catch (ContraseñaIncorrectaException ex)
+            {
+                return Unauthorized("Contraseña incorrecta: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error: " + ex.Message);
+            }
+            return StatusCode(404, "No se trata de un comprador");
         }
 
 
         [HttpGet("Categoria")]
-        public async  Task<IActionResult>  ObtenerProductorPorCategoría(string categoria)
+        public async Task<IActionResult> ObtenerProductorPorCategoría(string categoria)
         {
 
-            try{
+            try
+            {
                 var listaProductos = await _logica.ObtenerProductosPorCategoria(categoria);
                 return Ok(listaProductos);
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return StatusCode(500, "Error: " + ex.Message);
             }
 
 
         }
+
+
+        [HttpGet("AñadirProductoACarritoCompra")]
+        public async Task<IActionResult> CarritoCompra(int idComprador, int idProducto)
+        {
+            try
+            {
+                var perfil = await _logica.AñadirProductoACarritoCompra(idComprador, idProducto);
+
+                if (perfil.GetType() == Type.GetType("backend.Models.Comprador"))
+                {
+
+                    Comprador? comprador = perfil as Comprador;
+
+                    var responseData = new
+                    {
+                        CarritoCompra = comprador.CarritoCompra,
+                    };
+                    return Ok(responseData);
+
+                }
+            }
+
+
+            catch (UsuarioNoExisteException ex)
+            {
+                return NotFound("Usuario no encontrado: " + ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error: " + ex.Message);
+            }
+            return StatusCode(404, "No se trata de un comprador");
+        }
+
+
+
 
 
 
@@ -199,6 +261,8 @@ namespace backend.Controllers
         //         return Ok();
         //     }
 
+
+
         //     [HttpPost("carritomanual")]
         //     public IActionResult AgregarAlCarritoManual([FromBody] CarritoCompraRequest2 request)
         //     {
@@ -239,7 +303,7 @@ namespace backend.Controllers
 
 
 
-        //     //Cuerpo de las respuestas
+        //     //Cuerpo de las respuestas  -->> peticiones en todo caso
 
         //     public class RegistroLuisRequest
         //     {
@@ -255,6 +319,7 @@ namespace backend.Controllers
         //     {
         //         public int ProductId { get; set; }
         //     }
+
         //     public class CarritoCompraRequest2
         //     {
         //         public int UserId {get; set; }

@@ -23,9 +23,9 @@ namespace backend.Logica
 
         Task<IList<Producto>> ObtenerProductosPorCategoria(string categoria);
 
-        
+        Task<Comprador> AñadirProductoACarritoCompra(int idComprador, int idProducto);
 
-///################################################################
+        ///################################################################
 
         // void AddMember(Usuario user);
         // Task Login(String nick, String password);

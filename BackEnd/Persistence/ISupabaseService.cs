@@ -29,11 +29,13 @@ namespace backend.Services
 
         Task<ICollection<Producto>> ObtenerCarritoCompra(int compradorId);
 
+        void AñadirProductoACarritoCompra(int compradorId, int productoId);
+
         Task<Articulo> ObtenerArticuloPorId(int articuloId);
 
         Task<List<Articulo>> ObtenerArticulosPorCategoria(string categoria);
 
-        Task<List<Producto>> ObtenerProductosPorIDArticulo(int idArticulo);
+        Task<List<Producto>> ObtenerProductosPorIDArticulo(int idArticulo, Articulo? articulo);
 
 
 

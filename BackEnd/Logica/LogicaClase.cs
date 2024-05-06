@@ -46,36 +46,24 @@ namespace backend.Logica
         public async Task<object> IniciarSesion(string nickName, string contraseña)
         {
 
-            try{
 
-                var objeto = await supabaseService.ObtenerUsuarioPorNickName(nickName);
+            var objeto = await supabaseService.ObtenerUsuarioPorNickName(nickName);
 
-                var tipoObjeto = objeto.GetType();
-                var supuertoObjeto = Type.GetType("backend.Models.Comprador");
+            if (objeto.GetType() == Type.GetType("backend.Models.Comprador"))
+            {
 
-
-                if (objeto.GetType() == Type.GetType("backend.Models.Comprador"))
-                {
-
-                    Comprador? comprador = objeto as Comprador;
+                Comprador? comprador = objeto as Comprador;
 
 
 
-                    if (comprador!.Contraseña != contraseña) throw new Exception("Contraseña incorrecta");
-                    ICollection<Producto> productos = await supabaseService.ObtenerCarritoCompra((int)comprador.Id!);
+                if (comprador!.Contraseña != contraseña) throw new Exception("Contraseña incorrecta");
+                ICollection<Producto> productos = await supabaseService.ObtenerCarritoCompra((int)comprador.Id!);
 
-                    comprador.CarritoCompra = productos;
+                comprador.CarritoCompra = productos;
 
-                    return comprador;
+                return comprador;
 
-                }
-
-            }catch(Exception ex){
-                throw new Exception("ERROR EN LogicaClase.IniciarSesion. Mensaje excepcion:" +ex.Message);
             }
-
-            
-
             //todo: make it correctly
 
             throw new Exception("ERROR DESCONOCIDOOO");
@@ -90,21 +78,24 @@ namespace backend.Logica
 
 
             List<Producto> productosMasBaratos = new List<Producto>();
-            
+
             foreach (var articulo in articulos)
             {
                 Producto? producto = ObtenerProductoMasBaratoDeArticulo(articulo);
-                if(producto!=null) productosMasBaratos.Add(producto);
+                if (producto != null) productosMasBaratos.Add(producto);
             }
-            
-            return productosMasBaratos; 
+
+            return productosMasBaratos;
 
 
 
         }
-        private Articulo ObtenerProductosDeArticulo(Articulo articulo){
 
-            var result = supabaseService.ObtenerProductosPorIDArticulo((int)articulo.Id!);
+
+        private Articulo ObtenerProductosDeArticulo(Articulo articulo)
+        {
+
+            var result = supabaseService.ObtenerProductosPorIDArticulo((int)articulo.Id!, articulo);
             result.Wait();
 
             List<Producto> productos = result.Result;
@@ -114,12 +105,38 @@ namespace backend.Logica
 
         }
 
+
+
         private Producto? ObtenerProductoMasBaratoDeArticulo(Articulo articulo)
         {
-                List<Producto> productosOrdenados = articulo.Productos.OrderBy(producto => producto.Precio_cents).ToList();
+            List<Producto> productosOrdenados = articulo.Productos.OrderBy(producto => producto.Precio_cents).ToList();
 
-                if(productosOrdenados.Count !=0 )return productosOrdenados.First();
-                else return null;
+            if (productosOrdenados.Count != 0) return productosOrdenados.First();
+            else return null;
+        }
+
+
+        public async Task<Comprador> AñadirProductoACarritoCompra(int idComprador, int idProducto)
+        {
+
+
+            var objeto = await supabaseService.ObtenerUsuarioPorId(idComprador);
+
+            if (objeto.GetType() == Type.GetType("backend.Models.Comprador"))
+            {
+
+                Comprador? comprador = objeto as Comprador;
+                supabaseService.AñadirProductoACarritoCompra((int)comprador!.Id!, idProducto);
+                ICollection<Producto> productos = await supabaseService.ObtenerCarritoCompra(idComprador);
+
+                comprador!.CarritoCompra = productos;
+
+                return comprador;
+
+            }
+            //todo: make it correctly
+
+            throw new Exception("EL ID DE USUARIO NO ES DE COMPRADOR");
         }
 
 
