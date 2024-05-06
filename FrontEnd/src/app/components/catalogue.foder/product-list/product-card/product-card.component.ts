@@ -10,9 +10,19 @@ import { Producto } from '../../../../domain/interfaces/category-products';
 })
 export class ProductCardComponent {
   @Input() product!: Producto;
-  @Output() openProductInfo = new EventEmitter<string>();
+  @Output() openProductInfo = new EventEmitter<Producto>();
 
   ClickProduct() {
-    this.openProductInfo.emit();
+    this.openProductInfo.emit(this.product);
+  }
+
+  ReturnPrice() {
+    const precioCentString = this.product.precio_cents + '';
+    return (
+      precioCentString.substring(0, precioCentString.length - 2) +
+      ',' +
+      precioCentString.substring(precioCentString.length - 2) +
+      '€'
+    );
   }
 }

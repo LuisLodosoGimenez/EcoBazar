@@ -1,17 +1,20 @@
 <main class="mt-5">
-  <h1 class="text-xl bg-red-300">Productos de la categoría: {{ categoryName }}</h1>
-  <div class="grid grid-cols-3 bg-red-400">
-    @for (product of productos; track $index) {
-      <app-product-card (openProductInfo)="openProductInfo()"> </app-product-card>
+  <h1 class="text-xl">Productos de la categoría: {{ categoryName }}</h1>
+  <div class="grid grid-cols-3">
+    @for (product of productsByCategory; track $index) {
+      <app-product-card [product]="product" (openProductInfo)="openProductInfo($event)"> </app-product-card>
     }
   </div>
 </main>
 
-@if (true) {
+@if (productInfoState) {
   <div
-    class="z-50 fixed start-72 top-40 flex h-3/5 w-3/5 rounded-md border bg-orange-200 border-orange-300 overflow-hidden"
+    class="z-50 fixed start-72 top-40 flex h-3/5 w-3/5 rounded-md bg-orange-200 border-orange-300 border-4 overflow-hidden"
   >
-    <button (click)="closeProductInfo()" class="absolute top-3 end-3 size-8">
+    <button
+      (click)="closeProductInfo()"
+      class="transition bg-orange-400 rounded-md hover:bg-orange-500 absolute top-3 end-3 size-8 z-50"
+    >
       <svg
         data-slot="icon"
         fill="none"
@@ -26,21 +29,55 @@
     </button>
 
     <img
-      class="absolute end-1 bottom-1 size-8"
-      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAACkElEQVR4nO2aT4hNcRTHP1P+pFEWUtJTspNRxAqxscFMVmSI7CgLWU12IpqFjd5ISikzKwubiTIaMyQrioWUjaFMNqZhRiiMfnUWr9tt5t77znlzz7u/T516vc33/L739/f8fhCJRCKRyAdgLhF/gPfAALC23S26k2JAY3wFumhjTi1gwJz0kqW0KRsyGBDiCBViGXA7YcAgFWNnyjCgar3gR8KE9VSMpwkDeqkYVxIGTAPvgBfAA2AIqAOXgPOyohwC9gBbgBrQiWMOZFwhssRPYBJ4CzwHhoG7wHXgInAOOAn0ALuBzcA6oGMxDVglu0ItE1ya97oEBhSN38AXGZKFGShBQ5qNplav3hI0oJmYbnYo1AyTGwP6JcaMNMKc0TQTRskdbUFPu6lhwKBRclsbNLYZaZzVMOCMQWL/gJUNGp3yn7bOXg0DugwS+5ii88lAZ7WGAR1SGdJMbCRF57GyxmcUGVZOLpwhktSVNR5pGtBXMIkp4CVwT7ath4HtwIoUjSXARmCfbG9vSa+YLKh9TdOAXQWT0KKIdjidqrFcDiWeDNiBMs8cGfDXohZx1dEcEC52Sl0gqRuvAvfLXiAZMd4HhDKdCW+c7ATNLnJuODkLbLIy4JiD0+AvmVBNqDmoB4Q6pikTSok+lC12n/zWMiDcV5gypJisRQRDTTldgkbOF/utDVhT8FzQipiSc4s5F0rQ2LQ4QQs5DrySZWcxGz0r5W/zrh+JRCJphFch4zIZzco9X7ir96qTi/55ZufwxMabTu4vstAS1e1IJzfjGRJ74kgnNzMZEvvuSMcksW+OdHKT5VXHqCOd3PRkSOygIx2V16SNcdmhTiG6ZRaekRg1+iKt0olEIpEI7c5/40Av6NIuntEAAAAASUVORK5CYII="
-    />
-
-    <img
-      class="object-contain h-full"
-      src="https://www.trueclassictees.com/cdn/shop/files/4000_CARBON_2_7ee698ff-520f-48e3-9f61-3b1df6619809.jpg?v=1692655880&%3Bwidth=500&em-format=avif&em-width=500"
+      class="object-cover h-full w-80 min-w-80 bg-orange-200"
+      src="{{ productDetails!.articulo!.imagenesUrl[0] }}"
       alt=""
     />
 
-    <div class="flex flex-col justify-start items-start p-4">
-      <h2 class="text-4xl font-medium">Nombre producto</h2>
-      <h3 class="text-2xl font-thin">50.50€</h3>
-      <h3>Categoría: Moda</h3>
-      <h3>Consejos utilización</h3>
+    <div class="relative flex flex-1 flex-col justify-start items-start p-4">
+      <button
+        class="absolute flex justify-center items-center space-x-4 w-5/6 h-20 rounded hover:bg-teal-500 bg-teal-600 border border-teal-800 bottom-5 start-10"
+      >
+        <h3 class="font-medium text-2xl">AÑADIR A CARRITO</h3>
+        <img
+          class="size-14"
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAACkElEQVR4nO2aT4hNcRTHP1P+pFEWUtJTspNRxAqxscFMVmSI7CgLWU12IpqFjd5ISikzKwubiTIaMyQrioWUjaFMNqZhRiiMfnUWr9tt5t77znlzz7u/T516vc33/L739/f8fhCJRCKRyAdgLhF/gPfAALC23S26k2JAY3wFumhjTi1gwJz0kqW0KRsyGBDiCBViGXA7YcAgFWNnyjCgar3gR8KE9VSMpwkDeqkYVxIGTAPvgBfAA2AIqAOXgPOyohwC9gBbgBrQiWMOZFwhssRPYBJ4CzwHhoG7wHXgInAOOAn0ALuBzcA6oGMxDVglu0ItE1ya97oEBhSN38AXGZKFGShBQ5qNplav3hI0oJmYbnYo1AyTGwP6JcaMNMKc0TQTRskdbUFPu6lhwKBRclsbNLYZaZzVMOCMQWL/gJUNGp3yn7bOXg0DugwS+5ii88lAZ7WGAR1SGdJMbCRF57GyxmcUGVZOLpwhktSVNR5pGtBXMIkp4CVwT7ath4HtwIoUjSXARmCfbG9vSa+YLKh9TdOAXQWT0KKIdjidqrFcDiWeDNiBMs8cGfDXohZx1dEcEC52Sl0gqRuvAvfLXiAZMd4HhDKdCW+c7ATNLnJuODkLbLIy4JiD0+AvmVBNqDmoB4Q6pikTSok+lC12n/zWMiDcV5gypJisRQRDTTldgkbOF/utDVhT8FzQipiSc4s5F0rQ2LQ4QQs5DrySZWcxGz0r5W/zrh+JRCJphFch4zIZzco9X7ir96qTi/55ZufwxMabTu4vstAS1e1IJzfjGRJ74kgnNzMZEvvuSMcksW+OdHKT5VXHqCOd3PRkSOygIx2V16SNcdmhTiG6ZRaekRg1+iKt0olEIpEI7c5/40Av6NIuntEAAAAASUVORK5CYII="
+        />
+      </button>
+      <div class="h-3/4 overflow-y-auto">
+        <h2 class="text-4xl font-medium">{{ productDetails?.articulo?.nombre }}</h2>
+        <div class="relative mt-3 w-full flex space-x-16">
+          <span class="text-2xl font-thin">{{ ReturnPrice() }}</span>
+          <span class="absolute end-10 text-2xl font-normal italic underline">Electronica</span>
+        </div>
+        <div class="flex my-4 space-x-8">
+          <span class="font-sans">VENDEDOR: {{ productDetails?.vendedor?.nombre }}</span>
+          <span class="font-sans">PRODUCTOR: {{ productDetails?.articulo?.productor?.nombre }}</span>
+        </div>
+        <div class="max-h-max">
+          <p><span class="font-bold underline mr-3">Origen:</span><span class="font-bold">España</span></p>
+          <p>
+            <span class="underline mr-3">Consejos utilizacion:</span
+            ><span>{{ productDetails?.articulo?.consejos_retirada }}</span>
+          </p>
+          <p>
+            <span class="underline mr-3">Consejos retirada:</span
+            ><span>{{ productDetails?.articulo?.consejos_retirada }}</span>
+          </p>
+          <p>
+            <span class="underline mr-3">Consejos produccion:</span
+            ><span>{{ productDetails?.articulo?.proceso_produccion }}</span>
+          </p>
+          <p>
+            <span class="underline mr-3">Impacto ambienta:</span
+            ><span>{{ productDetails?.articulo?.impacto_ambiental_social }}</span>
+          </p>
+          <p>
+            <span class="underline mr-3">Contribución ODS:</span
+            ><span>{{ productDetails?.articulo?.contribucion_ods }}</span>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 }

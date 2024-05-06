@@ -1,20 +1,39 @@
 <button
   (click)="ClickProduct()"
-  class="relative m-4 w-11/12 flex rounded-md border bg-orange-200 border-orange-300 overflow-hidden"
+  class="relative m-4 h-60 flex rounded-md border-2 bg-orange-200 border-orange-400 overflow-hidden"
 >
   <img
     class="absolute end-1 bottom-1 size-8"
     src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAACkElEQVR4nO2aT4hNcRTHP1P+pFEWUtJTspNRxAqxscFMVmSI7CgLWU12IpqFjd5ISikzKwubiTIaMyQrioWUjaFMNqZhRiiMfnUWr9tt5t77znlzz7u/T516vc33/L739/f8fhCJRCKRyAdgLhF/gPfAALC23S26k2JAY3wFumhjTi1gwJz0kqW0KRsyGBDiCBViGXA7YcAgFWNnyjCgar3gR8KE9VSMpwkDeqkYVxIGTAPvgBfAA2AIqAOXgPOyohwC9gBbgBrQiWMOZFwhssRPYBJ4CzwHhoG7wHXgInAOOAn0ALuBzcA6oGMxDVglu0ItE1ya97oEBhSN38AXGZKFGShBQ5qNplav3hI0oJmYbnYo1AyTGwP6JcaMNMKc0TQTRskdbUFPu6lhwKBRclsbNLYZaZzVMOCMQWL/gJUNGp3yn7bOXg0DugwS+5ii88lAZ7WGAR1SGdJMbCRF57GyxmcUGVZOLpwhktSVNR5pGtBXMIkp4CVwT7ath4HtwIoUjSXARmCfbG9vSa+YLKh9TdOAXQWT0KKIdjidqrFcDiWeDNiBMs8cGfDXohZx1dEcEC52Sl0gqRuvAvfLXiAZMd4HhDKdCW+c7ATNLnJuODkLbLIy4JiD0+AvmVBNqDmoB4Q6pikTSok+lC12n/zWMiDcV5gypJisRQRDTTldgkbOF/utDVhT8FzQipiSc4s5F0rQ2LQ4QQs5DrySZWcxGz0r5W/zrh+JRCJphFch4zIZzco9X7ir96qTi/55ZufwxMabTu4vstAS1e1IJzfjGRJ74kgnNzMZEvvuSMcksW+OdHKT5VXHqCOd3PRkSOygIx2V16SNcdmhTiG6ZRaekRg1+iKt0olEIpEI7c5/40Av6NIuntEAAAAASUVORK5CYII="
   />
 
-  <img
-    class="size-44 object-contain h-full"
-    src="https://www.trueclassictees.com/cdn/shop/files/4000_CARBON_2_7ee698ff-520f-48e3-9f61-3b1df6619809.jpg?v=1692655880&%3Bwidth=500&em-format=avif&em-width=500"
-    alt=""
-  />
+  <img class="size-44 object-cover h-full" src="{{ product.articulo.imagenesUrl[0] }}" alt="" />
 
   <div class="flex flex-col flex-1 justify-start items-start p-2">
-    <h2 class="textxl">Nombre producto</h2>
-    <h3>50.50€</h3>
+    <h2 class="text-xl font-semibold">{{ product.articulo.nombre }}</h2>
+    <h3 class="underline">{{ ReturnPrice() }}</h3>
+    <div class="max-h-max text-start text-sm mt-4 line-clamp-5">
+      <p>
+        <span class="font-bold underline mr-3">Origen:</span
+        ><span class="font-bold">{{ product.articulo.origen }}</span>
+      </p>
+      <p>
+        <span class="underline mr-3">Consejos utilizacion:</span
+        ><span>{{ product.articulo.consejos_utilizacion }}</span>
+      </p>
+      <p>
+        <span class="underline mr-3">Consejos retirada:</span><span>{{ product.articulo.consejos_retirada }}</span>
+      </p>
+      <p>
+        <span class="underline mr-3">Consejos produccion:</span><span>{{ product.articulo.proceso_produccion }}</span>
+      </p>
+      <p>
+        <span class="underline mr-3">Impacto ambienta:</span
+        ><span>{{ product.articulo.impacto_ambiental_social }}</span>
+      </p>
+      <p>
+        <span class="underline mr-3">Contribución ODS:</span><span>{{ product.articulo.contribucion_ods }}</span>
+      </p>
+    </div>
   </div>
 </button>

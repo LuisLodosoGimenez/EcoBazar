@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { CategoryCardComponent } from "./category-card/category-card.component";
+import { CategoryCardComponent } from './category-card/category-card.component';
 import { category } from '../../../domain/interfaces/category.interface';
 
 @Component({
@@ -11,7 +11,7 @@ import { category } from '../../../domain/interfaces/category.interface';
 })
 export class CategoryListComponent {
   @Output() categoryEvent = new EventEmitter<string>();
-  
+
   categories: category[] = [
     {
       name: 'Electronica',
@@ -29,7 +29,7 @@ export class CategoryListComponent {
       image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_jeSGARGMd-97fEm_dtmHYa55TGO1SCSmtk8Sg7E7CQ&s',
     },
     {
-      name: 'Higiene pers.',
+      name: 'Higiene',
       description: 'Gel de ducha, jabón, cepillo de dientes...',
       image: 'https://convoyofhope.org/wp-content/uploads/2023/04/Travel-Hygiene-Kits-1.jpg.webp',
     },
@@ -48,6 +48,6 @@ export class CategoryListComponent {
 
   clickCategory(category: string) {
     console.log('CATEGORY LIST: CLICK ON CATEGORY' + category);
-    this.categoryEvent.emit(category)
+    this.categoryEvent.emit(category);
   }
 }

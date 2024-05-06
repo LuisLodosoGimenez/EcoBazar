@@ -19,18 +19,29 @@ export class ProductListComponent {
   @Input() productsByCategory!: Productos;
   productos = ['producto1', 'producto2', 'producto3', 'producto4', 'producto5'];
   productInfoState: State = 0;
+  productDetails?: Producto;
 
   constructor(private renderer2: Renderer2) {}
 
   @ViewChild('fullPage') fullPage!: ElementRef;
 
-  openProductInfo() {
-    console.log('open');
+  openProductInfo(product: Producto) {
+    this.productDetails = product;
     this.productInfoState = 1;
   }
 
   closeProductInfo() {
     console.log('close');
     this.productInfoState = 0;
+  }
+
+  ReturnPrice() {
+    const precioCentString = this.productDetails!.precio_cents + '';
+    return (
+      precioCentString.substring(0, precioCentString.length - 2) +
+      ',' +
+      precioCentString.substring(precioCentString.length - 2) +
+      '€'
+    );
   }
 }
