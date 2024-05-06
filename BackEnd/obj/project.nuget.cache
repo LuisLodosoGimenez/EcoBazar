@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8Uz5szf2IN4hfJ4L1k2h/luiPEEmZE6LXWSc0YNibyFNetmxBSS3cH1Y+NlLlM0/1Xnqbxj3GScVGs18bD0R1A==",
+  "dgSpecHash": "2MbirhEItQoCQXYPzDeXXBNPYcBgXhnujDInTYF7xxSfyndLehb3fYB99zRWYAEvCB+YSR1wEmKwokE6aqgcJA==",
   "success": true,
-  "projectFilePath": "c:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\backend.csproj",
+  "projectFilePath": "C:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\34684\\.nuget\\packages\\functions-csharp\\1.3.1\\functions-csharp.1.3.1.nupkg.sha512",
     "C:\\Users\\34684\\.nuget\\packages\\gotrue-csharp\\4.2.6\\gotrue-csharp.4.2.6.nupkg.sha512",

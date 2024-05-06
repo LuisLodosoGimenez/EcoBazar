@@ -50,7 +50,7 @@ namespace backend.Controllers
             public int? LimiteGasto { get; set; }
         }
         [HttpPost("Registrarse")]
-        public IActionResult RegistrarComprador(Registro registro)
+        public async Task<IActionResult> RegistrarCompradorAsync(Registro registro)
         {
 
             try
@@ -58,12 +58,12 @@ namespace backend.Controllers
                 var comprador = new Comprador(registro.Nombre!, registro.Nick_name!, registro.Contraseña!, registro.Email!);
                 comprador.Edad = registro.Edad;
                 comprador.Limite_gasto_cents_mes = registro.LimiteGasto;
-                _logica.RegistrarComprador(comprador);
+                await _logica.RegistrarComprador(comprador);
 
             }
             catch (Exception ex)
             {
-                return BadRequest("fallo " + ex.Message);
+                return BadRequest(ex.Message);
             }
 
             return Ok();
@@ -102,21 +102,12 @@ namespace backend.Controllers
 
                 }
             }
-
-
-            catch (UsuarioNoExisteException ex)
-            {
-                return NotFound("Usuario no encontrado: " + ex.Message);
-            }
-            catch (ContraseñaIncorrectaException ex)
-            {
-                return Unauthorized("Contraseña incorrecta: " + ex.Message);
-            }
             catch (Exception ex)
             {
-                return StatusCode(500, "Error: " + ex.Message);
+                return BadRequest(ex.Message);
             }
-            return StatusCode(404, "No se trata de un comprador");
+
+            return BadRequest("No se trata de un comprador");
         }
         // ----------------------------------------------- //
 
@@ -139,7 +130,7 @@ namespace backend.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "Error: " + ex.Message);
+                return BadRequest(ex.Message);
             }
         }
         // ----------------------------------------------- //
@@ -176,17 +167,11 @@ namespace backend.Controllers
 
                 }
             }
-
-
-            catch (UsuarioNoExisteException ex)
-            {
-                return NotFound("Usuario no encontrado: " + ex.Message);
-            }
             catch (Exception ex)
             {
-                return StatusCode(500, "Error: " + ex.Message);
+                return BadRequest("Error: " + ex.Message);
             }
-            return StatusCode(404, "No se trata de un comprador");
+            return BadRequest("No se trata de un comprador");
         }
 
 
@@ -213,15 +198,9 @@ namespace backend.Controllers
 
                 }
             }
-
-
-            catch (UsuarioNoExisteException ex)
-            {
-                return NotFound("Usuario no encontrado: " + ex.Message);
-            }
             catch (Exception ex)
             {
-                return StatusCode(500, "Error: " + ex.Message);
+                return BadRequest("Error: " + ex.Message);
             }
             return StatusCode(404, "No se trata de un comprador");
         }

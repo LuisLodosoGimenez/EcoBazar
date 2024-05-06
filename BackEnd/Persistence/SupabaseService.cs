@@ -117,7 +117,7 @@ namespace backend.Services
 
 
 
-            if (!usuario.Models.Any()) throw new UsuarioNoExisteException("El usuario no corresponde con ningun comprador, vendedor o productor");
+            if (!usuario.Models.Any()) throw new Exception("El NickName '" + nickName + "' no corresponde a ningún usuario.");
             UsuarioBD usuarioBD = usuario.Model!;
 
 
@@ -134,7 +134,7 @@ namespace backend.Services
 
 
 
-            if (!usuario.Models.Any()) throw new Exception("NO EXISTE NINGÚN USUARIO CON ESE ID");
+            if (!usuario.Models.Any()) throw new Exception("El id '" + id_usuario + "' no corresponde a ningún usuario.");
             UsuarioBD usuarioBD = usuario.Model!;
 
             return await ObtenerUsuarioPorUsurioBD(usuarioBD);
@@ -178,7 +178,7 @@ namespace backend.Services
 
                 if (productor.Models.Any()) return convertir.UsuarioBDAProductor(usuarioBD);
 
-                throw new UsuarioNoExisteException("El usuario no corresponde con ningun comprador, vendedor o productor");
+                throw new Exception("El usuario no corresponde con ningun comprador, vendedor o productor.");
 
             }
 

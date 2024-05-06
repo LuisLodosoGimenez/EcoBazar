@@ -17,7 +17,7 @@ namespace backend.Logica
 {
     public interface InterfazLogica
     {
-        void RegistrarComprador(Comprador comprador);
+        Task RegistrarComprador(Comprador comprador);
 
         Task<object> IniciarSesion(string nickName, string contraseña);
 

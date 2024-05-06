@@ -19,36 +19,24 @@ namespace backend.Logica
         }
 
 
-        public async void RegistrarComprador(Comprador comprador)
+        public async Task RegistrarComprador(Comprador comprador)
         {
-
-            try
+            if (supabaseService.ExisteNickNameEnUsuario(comprador.Nick_name).Result)
             {
-                if (supabaseService.ExisteNickNameEnUsuario(comprador.Nick_name).Result)
-                {
-                    throw new ArgumentOutOfRangeException("El member con nick " + comprador.Nick_name + " ya existe.");
-
-                }
-                else if (supabaseService.ExisteEmailEnUsuario(comprador.Email).Result)
-                {
-                    throw new ArgumentOutOfRangeException("El member con correo electrónico " + comprador.Email + " ya existe.");
-                }
-                else
-                {
-                    var idUsuario = await supabaseService.AñadirUsuario(convertir.CompradorAUsuarioBD(comprador));
-                    comprador.Id = idUsuario;
-                    await supabaseService.AñadirComprador(convertir.CompradorACompradorBD(comprador));
-
-                }
+                throw new Exception("NickName '" + comprador.Nick_name + "' ya en uso.");
 
             }
-            catch (ArgumentOutOfRangeException)
+            else if (supabaseService.ExisteEmailEnUsuario(comprador.Email).Result)
             {
-                throw;
+                throw new Exception("Email '" + comprador.Email + "' ya en uso.");
+            }
+            else
+            {
+                var idUsuario = await supabaseService.AñadirUsuario(convertir.CompradorAUsuarioBD(comprador));
+                comprador.Id = idUsuario;
+                await supabaseService.AñadirComprador(convertir.CompradorACompradorBD(comprador));
 
             }
-
-
         }
 
 
