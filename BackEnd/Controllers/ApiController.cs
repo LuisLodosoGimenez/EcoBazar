@@ -63,7 +63,11 @@ namespace backend.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var errorResponse = new
+                {
+                    response = ex.Message,
+                };
+                return BadRequest(errorResponse);
             }
 
             return Ok();
@@ -104,7 +108,11 @@ namespace backend.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var errorResponse = new
+                {
+                    response = ex.Message,
+                };
+                return BadRequest(errorResponse);
             }
 
             return BadRequest("No se trata de un comprador");
@@ -130,7 +138,11 @@ namespace backend.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                var errorResponse = new
+                {
+                    response = ex.Message,
+                };
+                return BadRequest(errorResponse);
             }
         }
         // ----------------------------------------------- //
@@ -169,7 +181,11 @@ namespace backend.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Error: " + ex.Message);
+                var errorResponse = new
+                {
+                    response = ex.Message,
+                };
+                return BadRequest(errorResponse);
             }
             return BadRequest("No se trata de un comprador");
         }
@@ -200,9 +216,18 @@ namespace backend.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Error: " + ex.Message);
+                var errorResponse = new
+                {
+                    response = ex.Message,
+                };
+                return BadRequest(errorResponse);
             }
-            return StatusCode(404, "No se trata de un comprador");
+
+            var error = new
+            {
+                response = "No se trata de un comprador",
+            };
+            return BadRequest(error);
         }
         // ----------------------------------------------- //
 

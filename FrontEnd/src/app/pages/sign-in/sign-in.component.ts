@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { ApiService } from '../../services/api.service';
+import { SignInApiService } from '../../services/sign-in-api.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -12,9 +12,9 @@ import { ApiService } from '../../services/api.service';
   styleUrls: ['./sign-in.component.scss'],
 })
 export class SignInComponent {
-  textoFallo: String = '';
+  failText?: String;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private signInApiService: SignInApiService) {}
 
   result = '';
   result1 = '';
@@ -31,22 +31,22 @@ export class SignInComponent {
   registrase() {
     let body = {
       nombre: String(this.formularioRegistro.value.nombre) + String(this.formularioRegistro.value.apellidos),
-      nick: String(this.formularioRegistro.value.nickname),
-      password: String(this.formularioRegistro.value.contraseña),
+      nick_name: String(this.formularioRegistro.value.nickname),
+      contraseña: String(this.formularioRegistro.value.contraseña),
       email: String(this.formularioRegistro.value.mail),
       edad: Number(this.formularioRegistro.value.edad),
       limiteGasto: 100,
     };
 
-    this.apiService.signIn(body).subscribe({
+    this.signInApiService.signIn(body).subscribe({
       next: (data) => {
         console.log(data);
 
-        this.textoFallo = 'REGISTRO CORRECTO';
+        this.failText = 'REGISTRO CORRECTO. INICIE SESION';
       },
       error: (error) => {
         console.log(error);
-        this.textoFallo = 'REGISTRO INCORRECTO';
+        this.failText = error['error']['response'];
       },
     });
   }

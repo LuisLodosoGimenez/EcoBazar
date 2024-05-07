@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink, RouterModule } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppComponent } from '../../app.component';
-import { ApiService } from '../../services/api.service';
+import { LogInApiService } from '../../services/log-in-api.service';
 
 @Component({
   selector: 'app-log-in',
@@ -12,10 +12,25 @@ import { ApiService } from '../../services/api.service';
   templateUrl: './log-in.component.html',
   styleUrls: ['./log-in.component.scss'],
 })
-export class LogInComponent {
-  textoFallo: String = '';
+export class LogInComponent implements OnInit {
+  failText: String = '';
+  url?: String;
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private router: Router,
+    private logInApiService: LogInApiService,
+    private route: ActivatedRoute,
+  ) {}
+
+  ngOnInit() {
+    console.log('hola');
+    this.route.queryParams.subscribe((params) => {
+      this.url = params['page'];
+      console.log(this.url); // { order: "popular" }
+      // popular
+    });
+    console.log(this.url!);
+  }
 
   formularioInicioSesion = new FormGroup({
     nickname: new FormControl('', [Validators.required]),
@@ -28,29 +43,20 @@ export class LogInComponent {
 
   iniciarSesion() {
     let body = {
-      nick: String(this.formularioInicioSesion.value.nickname),
-      password: String(this.formularioInicioSesion.value.contraseña),
+      nick_name: String(this.formularioInicioSesion.value.nickname),
+      contraseña: String(this.formularioInicioSesion.value.contraseña),
     };
 
-    this.apiService.logIn(body).subscribe({
+    this.logInApiService.logIn(body).subscribe({
       next: (data) => {
-        console.log(data.articulosEnCarrito);
-        AppComponent.usuario.id = data.perfil.id;
-        AppComponent.usuario.nombre = data.perfil.nombre;
-        AppComponent.usuario.nick_name = data.perfil.nick_name;
-        AppComponent.usuario.email = data.perfil.email;
-        AppComponent.usuario.edad = data.perfil.edad;
-        AppComponent.usuario.carrito_compra = data.articulosEnCarrito;
-        this.textoFallo = 'YA PUEDE ACCEDER A SUS ESPACIOS PERSONALES';
-        
+        AppComponent.usuario = data;
+
+        console.log(data);
+        if (this.url == null) this.router.navigate(['../']);
+        this.router.navigate([this.url]);
       },
       error: (error) => {
-        (this.textoFallo = 'Nickname o contraseña inválida!'), (AppComponent.usuario.id = 0);
-        AppComponent.usuario.nombre = '';
-        AppComponent.usuario.nick_name = '';
-        AppComponent.usuario.email = '';
-        AppComponent.usuario.edad = 0;
-        AppComponent.usuario.carrito_compra = [];
+        this.failText = error['error']['response'];
       },
     });
   }

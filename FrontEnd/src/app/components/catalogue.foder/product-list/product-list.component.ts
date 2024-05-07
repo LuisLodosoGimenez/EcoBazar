@@ -1,6 +1,9 @@
 import { Component, ElementRef, Input, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { ProductCardComponent } from './product-card/product-card.component';
 import { Producto, Productos } from '../../../domain/interfaces/category-products';
+import { ShoppingCartApiService } from '../../../services/shopping-cart-api.service';
+import { AppComponent } from '../../../app.component';
+import { Router } from '@angular/router';
 
 enum State {
   astive = 1,
@@ -20,8 +23,13 @@ export class ProductListComponent {
   productos = ['producto1', 'producto2', 'producto3', 'producto4', 'producto5'];
   productInfoState: State = 0;
   productDetails?: Producto;
+  failText?: string;
 
-  constructor(private renderer2: Renderer2) {}
+  constructor(
+    private renderer2: Renderer2,
+    private shoppingCartApiService: ShoppingCartApiService,
+    private router: Router,
+  ) {}
 
   @ViewChild('fullPage') fullPage!: ElementRef;
 
@@ -43,5 +51,28 @@ export class ProductListComponent {
       precioCentString.substring(precioCentString.length - 2) +
       '€'
     );
+  }
+
+  AddProductToShoppingCart() {
+    if (AppComponent.usuario == undefined) this.router.navigate(['/log-in']);
+    console.log('ID_PRODUCTO:' + this.productDetails!.id);
+    let shoppingCart = {
+      id_comprador: AppComponent.usuario!.comprador.id,
+      id_producto: this.productDetails!.id,
+    };
+    this.shoppingCartApiService.AddProductToShoppingCart(shoppingCart).subscribe({
+      next: (data) => {
+        AppComponent.usuario!.comprador.carritoCompra = data.carritoCompra;
+        console.log(data);
+        this.productDetails = undefined;
+        this.productInfoState = 0;
+
+        this.failText = 'REGISTRO CORRECTO. INICIE SESION';
+      },
+      error: (error) => {
+        console.log(error);
+        this.failText = error['error']['response'];
+      },
+    });
   }
 }

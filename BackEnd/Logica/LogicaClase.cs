@@ -125,7 +125,7 @@ namespace backend.Logica
             {
 
                 Comprador? comprador = objeto as Comprador;
-                supabaseService.AñadirProductoACarritoCompra((int)comprador!.Id!, idProducto);
+                await supabaseService.AñadirProductoACarritoCompra((int)comprador!.Id!, idProducto);
                 ICollection<Producto> productos = await supabaseService.ObtenerCarritoCompra(idComprador);
 
                 comprador!.CarritoCompra = productos;
@@ -148,7 +148,7 @@ namespace backend.Logica
             {
 
                 Comprador? comprador = objeto as Comprador;
-                supabaseService.EliminarProductoEnCarritoCompra((int)comprador!.Id!, idProducto);
+                await supabaseService.EliminarProductoEnCarritoCompra((int)comprador!.Id!, idProducto);
                 ICollection<Producto> productos = await supabaseService.ObtenerCarritoCompra(idComprador);
 
                 comprador!.CarritoCompra = productos;

@@ -1,31 +1,70 @@
-<main class="size-full bg-slate-50 p-8 space-y-9">
+<main class="size-full bg-orange-100 p-8 space-y-9">
   <h1 class="font-bold leading-none tracking-tight text-black text-3xl">Cesta de la compra</h1>
   <div class="size-full grid grid-cols-5 space-x-3">
     <div class="size-full col-span-4 space-y-4 p-4 border-r border-amber-700">
-      @for (producto of usuario.carrito_compra; track $index) {
-        <div id="TARJETA" class="w-full grid grid-cols-9 rounded overflow-hidden bg-white">
+      @for (producto of usuario?.comprador?.carritoCompra; track $index) {
+        <div
+          id="TARJETA"
+          class="w-full relative grid grid-cols-9 rounded overflow-hidden border-2 border-orange-400 bg-orange-200"
+        >
+          <button (click)="RemoveProductFromShoppintCart(producto.id)" class="absolute end-2 top-2">
+            <svg
+              class="size-6"
+              data-slot="icon"
+              fill="none"
+              stroke-width="1.5"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+            </svg>
+          </button>
           <div class="col-span-2">
-            <img
-              class="h-full w-full object-cover object-center"
-              src="https://shop.athletic-club.eus/cdn/shop/files/AC2200ADUEFARJBL_02_430x.jpg?v=1688041863"
-              alt="camiseta-athleti"
-            />
+            <img class="h-full w-full object-cover object-center" src="{{ producto.articulo.imagenesUrl[0] }}" alt="" />
           </div>
-          <div class="col-span-7 flex flex-col p-6 border-y-2 border-r-2 space-y-5" style="border-color: #adc178">
-            <h2 class="font-semibold leading-none tracking-tight text-black text-xl">{{ producto.nombre }}</h2>
-            <p class="flex-1">
-              {{ producto.categoria }} || {{ producto.consejos_retirada }} || {{ producto.consejos_utilizacion }} ||
-              {{ producto.contribucion_ods }} || {{ producto.impacto_ambiental_social }} ||
-              {{ producto.proceso_produccion }} ||
-              {{ producto.origen }}
-            </p>
-            <h3 class="font-semibold leading-none tracking-tight text-black text-xl">##.##€</h3>
+          <div class="col-span-7 p-4 overflow-y-auto">
+            <h2 class="text-4xl font-medium">{{ producto.articulo.nombre }}</h2>
+            <div class="relative mt-3 w-full flex space-x-16">
+              <span class="text-2xl font-thin">{{ ReturnPrice(producto.precio_cents) }}</span>
+              <span class="absolute end-10 text-2xl font-normal italic underline">Electronica</span>
+            </div>
+            <div class="flex my-4 space-x-8">
+              <span class="font-sans">VENDEDOR: {{ producto.vendedor.nombre }}</span>
+              <span class="font-sans">PRODUCTOR: {{ producto.articulo.productor.nombre }}</span>
+            </div>
+            <div class="max-h-max">
+              <p><span class="font-bold underline mr-3">Origen:</span><span class="font-bold">España</span></p>
+              <p>
+                <span class="underline mr-3">Consejos utilizacion:</span
+                ><span>{{ producto.articulo.consejos_retirada }}</span>
+              </p>
+              <p>
+                <span class="underline mr-3">Consejos retirada:</span
+                ><span>{{ producto.articulo.consejos_retirada }}</span>
+              </p>
+              <p>
+                <span class="underline mr-3">Consejos produccion:</span
+                ><span>{{ producto.articulo.proceso_produccion }}</span>
+              </p>
+              <p>
+                <span class="underline mr-3">Impacto ambienta:</span
+                ><span>{{ producto.articulo.impacto_ambiental_social }}</span>
+              </p>
+              <p>
+                <span class="underline mr-3">Contribución ODS:</span
+                ><span>{{ producto.articulo.contribucion_ods }}</span>
+              </p>
+            </div>
           </div>
         </div>
       }
     </div>
     <div class="col-span-1 p-4 pt-32 flex flex-col items-center space-y-3">
-      <h1 class="font-semibold leading-none tracking-tight text-black text-l">TOTAL (X Productos): ##.##</h1>
+      <h1 class="font-semibold leading-none tracking-tight text-black text-l">
+        TOTAL ({{ ReturnShoppingCartSize() }} Productos): {{ ReturnTotalPrice() }}
+      </h1>
       <div class="bg-yellow-300 shadow w-48 text-center rounded-md hover:bg-yellow-400">
         <button>Tramitar pedido</button>
       </div>

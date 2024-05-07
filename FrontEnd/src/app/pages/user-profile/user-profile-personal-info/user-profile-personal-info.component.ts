@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Usuario } from '../../../domain/classes/usuario';
 import { AppComponent } from '../../../app.component';
+import { CompradorLogin } from '../../../domain/interfaces/buyer';
 
 @Component({
   selector: 'app-user-profile-personal-info',
@@ -10,15 +10,7 @@ import { AppComponent } from '../../../app.component';
   styleUrl: './user-profile-personal-info.component.css',
 })
 export class UserProfilePersonalInfoComponent {
-  usuario: Usuario = {
-    id: 0,
-    nombre: '',
-    nick_name: '',
-    email: '',
-    edad: 0,
-    pedidos: [],
-    carrito_compra: [],
-  };
+  usuario?: CompradorLogin;
 
   constructor() {
     this.usuario = AppComponent.usuario;

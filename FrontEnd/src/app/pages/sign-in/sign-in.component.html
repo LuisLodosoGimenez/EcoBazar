@@ -1,8 +1,8 @@
-<body class="bg-slate-50">
+<body class="bg-orange-100">
   <div class="flex flex-col items-center h-screen py-10">
     <p
+      class="text-teal-800"
       style="
-        color: rgb(161, 180, 111);
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-size: 2rem;
         text-align: start;
@@ -19,7 +19,7 @@
           id="rectangle-bg"
           class="p-8 flex flex-col items-center border-r-8 shadow"
           style="
-            background-color: #adc178;
+            background-color: rgb(254 215 170 / var(--tw-bg-opacity));
             border: #9ca3af 2px solid;
             border-radius: 10px 10px 10px 10px;
             box-shadow:
@@ -58,12 +58,13 @@
           >
             <div class="flex items-center text-center p-2">Registrarse</div>
           </button>
-          {{ textoFallo }}
+          <H1 class="text-red-600">{{ failText }}</H1>
+
           <div class="p-3 text-red-700">
             <!-- {{ result }} {{ result1 }} -->
           </div>
           <p style="font-family: Arial, Helvetica, sans-serif; font-weight: 100">
-            ¿Ya tienes cuenta?<a href="/log-in" class="font-semibold text-black hover:text-white">Iniciar Sesión</a>
+            ¿Ya tienes cuenta? <a href="/log-in" class="font-semibold text-black hover:text-white">Iniciar Sesión</a>
           </p>
         </div>
       </div>

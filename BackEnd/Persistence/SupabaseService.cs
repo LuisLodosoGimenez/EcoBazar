@@ -147,16 +147,6 @@ namespace backend.Services
 
             try
             {
-
-
-
-                var primero = _supabaseClient
-                                    .From<CompradorBD>();
-                var segundo = primero.Where(x => x.Id == usuarioBD.Id!);
-
-                var tercero = await segundo.Get();
-
-
                 var comprador = await _supabaseClient
                                     .From<CompradorBD>()
                                     .Where(x => x.Id == usuarioBD.Id!)
@@ -245,28 +235,22 @@ namespace backend.Services
 
 
 
-        public async void AñadirProductoACarritoCompra(int compradorId, int productoId)
+        public async Task AñadirProductoACarritoCompra(int compradorId, int productoId)
         {
 
-            try
+
+
+            //todo: add to convertir
+            CarritoCompraBD carritoCompraBD = new CarritoCompraBD
             {
-
-                //todo: add to convertir
-                CarritoCompraBD carritoCompraBD = new CarritoCompraBD
-                {
-                    Id_comprador = compradorId,
-                    Id_producto = productoId
-                };
-
-
-                await _supabaseClient.From<CarritoCompraBD>().Insert(carritoCompraBD);
-
-
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
+                Id_comprador = compradorId,
+                Id_producto = productoId
             };
+
+
+            await _supabaseClient.From<CarritoCompraBD>().Insert(carritoCompraBD);
+
+
 
 
 
@@ -274,7 +258,7 @@ namespace backend.Services
         }
 
 
-        public async void EliminarProductoEnCarritoCompra(int compradorId, int productoId)
+        public async Task EliminarProductoEnCarritoCompra(int compradorId, int productoId)
         {
             //todo: add to convertir
             CarritoCompraBD carritoCompraBD = new CarritoCompraBD

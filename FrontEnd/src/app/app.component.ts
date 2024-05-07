@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { Usuario } from './domain/classes/usuario';
-import { ApiService } from './services/api.service';
 import { HeaderComponent } from './components/header.folder/header/header.component';
+import { CompradorLogin } from './domain/interfaces/buyer';
 
 @Component({
   selector: 'app-root',
@@ -14,29 +13,12 @@ import { HeaderComponent } from './components/header.folder/header/header.compon
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppComponent {
-  constructor(private apiService: ApiService) {}
+  constructor() {}
   title = 'userProfileSpringCarrot';
-  static usuario: Usuario = {
-    id: 0,
-    nombre: '',
-    nick_name: '',
-    email: '',
-    edad: 0,
-    pedidos: [],
-    carrito_compra: [],
-  };
+  static usuario?: CompradorLogin;
 
   haIniciado() {
-    if (
-      AppComponent.usuario.id == 0 &&
-      AppComponent.usuario.nombre == '' &&
-      AppComponent.usuario.nick_name == '' &&
-      AppComponent.usuario.email == '' &&
-      AppComponent.usuario.edad == 0 &&
-      AppComponent.usuario.pedidos.length == 0 &&
-      AppComponent.usuario.carrito_compra.length == 0
-    )
-      return false;
+    if (AppComponent.usuario == null) return false;
     else return true;
   }
 }

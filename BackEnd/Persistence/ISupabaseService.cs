@@ -29,9 +29,9 @@ namespace backend.Services
 
         Task<ICollection<Producto>> ObtenerCarritoCompra(int compradorId);
 
-        void AñadirProductoACarritoCompra(int compradorId, int productoId);
+        Task AñadirProductoACarritoCompra(int compradorId, int productoId);
 
-        void EliminarProductoEnCarritoCompra(int compradorId, int productoId);
+        Task EliminarProductoEnCarritoCompra(int compradorId, int productoId);
 
         Task<Articulo> ObtenerArticuloPorId(int articuloId);
 
