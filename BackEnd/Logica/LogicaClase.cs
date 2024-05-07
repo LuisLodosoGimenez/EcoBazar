@@ -73,13 +73,23 @@ namespace backend.Logica
         public async Task<IList<Producto>> ObtenerProductosPorCategoria(string categoria)
         {
             List<Articulo> articulos = await supabaseService.ObtenerArticulosPorCategoria(categoria);
+
+
+            //TODO: en vez de obtener todos los productos de un artículo para que se complete 
+            //      su lista de productos, obtener directamente el más barato.
+            //      el diseño de las clases de la logica se queda así por si en un futuro es de utilidad
+            //      darle el uso correspondiente a según que atributo.
+
             articulos = articulos.ConvertAll(ObtenerProductosDeArticulo);
+
 
 
             List<Producto> productosMasBaratos = new List<Producto>();
 
             foreach (var articulo in articulos)
             {
+
+
                 Producto? producto = ObtenerProductoMasBaratoDeArticulo(articulo);
                 if (producto != null) productosMasBaratos.Add(producto);
             }

@@ -197,6 +197,39 @@ namespace backend.Services
 
         }
 
+        public async Task<List<Producto>> ObtenerProductosPorIDArticulo(int idArticulo, Articulo? articulo)
+        {
+            var result = await _supabaseClient
+                                .From<ProductoBD>()
+                                .Where(a => a.Id_articulo == idArticulo)
+                                .Get();
+
+
+
+            return result.Models.ConvertAll(ConvertirProductoBDAProducto);
+        }
+
+        public async Task<List<Articulo>> ObtenerArticulosPorCategoria(string categoria)
+        {
+            var result = await _supabaseClient
+                    .From<ArticuloBD>()
+                    .Where(c => c.Categoria == categoria)
+                    .Get();
+
+            return result.Models.ConvertAll<Articulo>(ConvertirArticuloBDAArticulo);
+        }
+
+
+        private async Task<List<string>> ObtenerImagenesArticuloPorId(int idArticulo)
+        {
+            var result = await _supabaseClient
+                    .From<ImagenArticuloBD>()
+                    .Where(x => x.idArticulo == idArticulo)
+                    .Get();
+
+            return result.Models.ConvertAll<string>(convertir.ImagenArticuloBDAImagen);
+        }
+
 
         public async Task<ICollection<Producto>> ObtenerCarritoCompra(int compradorId)
         {
@@ -224,15 +257,9 @@ namespace backend.Services
 
 
             }
-
-
-
-
             Console.WriteLine("");
-
             return productosBD.ConvertAll<Producto>(ConvertirProductoBDAProducto);
         }
-
 
 
         public async Task AñadirProductoACarritoCompra(int compradorId, int productoId)
@@ -249,12 +276,6 @@ namespace backend.Services
 
 
             await _supabaseClient.From<CarritoCompraBD>().Insert(carritoCompraBD);
-
-
-
-
-
-
         }
 
 
@@ -270,32 +291,10 @@ namespace backend.Services
 
             var result = await _supabaseClient
             .From<CarritoCompraBD>().Delete(carritoCompraBD);
-
-
-
         }
 
 
-        public async Task<List<Articulo>> ObtenerArticulosPorCategoria(string categoria)
-        {
-            var result = await _supabaseClient
-                    .From<ArticuloBD>()
-                    .Where(c => c.Categoria == categoria)
-                    .Get();
 
-            return result.Models.ConvertAll<Articulo>(ConvertirArticuloBDAArticulo);
-        }
-
-
-        private async Task<List<string>> ObtenerImagenesArticuloPorId(int idArticulo)
-        {
-            var result = await _supabaseClient
-                    .From<ImagenArticuloBD>()
-                    .Where(x => x.idArticulo == idArticulo)
-                    .Get();
-
-            return result.Models.ConvertAll<string>(convertir.ImagenArticuloBDAImagen);
-        }
 
 
 
@@ -315,17 +314,7 @@ namespace backend.Services
 
         }
 
-        public async Task<List<Producto>> ObtenerProductosPorIDArticulo(int idArticulo, Articulo? articulo)
-        {
-            var result = await _supabaseClient
-                                .From<ProductoBD>()
-                                .Where(a => a.Id_articulo == idArticulo)
-                                .Get();
 
-
-
-            return result.Models.ConvertAll(ConvertirProductoBDAProducto);
-        }
 
         public Producto ConvertirProductoBDAProducto(ProductoBD productoBD)
         {

@@ -3,6 +3,8 @@ import { AppComponent } from '../../app.component';
 import { CompradorLogin } from '../../domain/interfaces/buyer';
 import { CarritoCompra } from '../../domain/interfaces/shopping-cart';
 import { ShoppingCartApiService } from '../../services/shopping-cart-api.service';
+import { Producto } from '../../domain/interfaces/category-products';
+import { ComponentNavigationService } from '../../services/component-navigation-services/component-navigation.service';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -14,12 +16,17 @@ import { ShoppingCartApiService } from '../../services/shopping-cart-api.service
 export class ShoppingCartComponent {
   usuario?: CompradorLogin;
 
-  constructor(private shoppingCartApiService: ShoppingCartApiService) {
+  constructor(
+    private shoppingCartApiService: ShoppingCartApiService,
+    private notificationsService: ComponentNavigationService,
+  ) {
     this.usuario = AppComponent.usuario;
   }
 
   ReturnTotalPrice() {
     const precioCentString = this.usuario?.comprador.carritoCompra.reduce((a, b) => a + b.precio_cents, 0) + '';
+
+    if (precioCentString == '0') return '00.00€';
     return (
       precioCentString.substring(0, precioCentString.length - 2) +
       ',' +
@@ -40,15 +47,16 @@ export class ShoppingCartComponent {
     );
   }
 
-  RemoveProductFromShoppintCart(productoId: number) {
+  RemoveProductFromShoppintCart(producto: Producto) {
     let shoppingCart = {
       id_comprador: AppComponent.usuario!.comprador.id,
-      id_producto: productoId,
+      id_producto: producto.id,
     };
     this.shoppingCartApiService.DeleteProductFromShoppingCart(shoppingCart).subscribe({
       next: (data) => {
         AppComponent.usuario!.comprador.carritoCompra = data.carritoCompra;
         console.log(data);
+        this.notificationsService.showNotification(producto.articulo.nombre + ' HA SIDO ELIMINADO DEL CARRITO');
       },
       error: (error) => {
         console.log(error);

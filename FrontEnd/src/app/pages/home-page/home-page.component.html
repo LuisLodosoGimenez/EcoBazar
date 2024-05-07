@@ -1,7 +1,7 @@
 <body class="p-4">
   <app-category-list (categoryEvent)="searchProductsByCategory($event)"></app-category-list>
 
-  @if (true) {
+  @if (productsByCategory.length != 0) {
     <app-product-list [categoryName]="category" [productsByCategory]="productsByCategory"></app-product-list>
   }
 </body>
