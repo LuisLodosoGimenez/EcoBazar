@@ -30,7 +30,7 @@ export class SignInComponent {
 
   registrase() {
     let body = {
-      nombre: String(this.formularioRegistro.value.nombre) + String(this.formularioRegistro.value.apellidos),
+      nombre: String(this.formularioRegistro.value.nombre) + " " + String(this.formularioRegistro.value.apellidos),
       nick_name: String(this.formularioRegistro.value.nickname),
       contraseña: String(this.formularioRegistro.value.contraseña),
       email: String(this.formularioRegistro.value.mail),
