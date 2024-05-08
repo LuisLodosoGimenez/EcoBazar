@@ -7,12 +7,9 @@ namespace backend.Memento{
 
     public class RegistroCarrito{
 
-        //ICollection<Producto> CarritoCompra {get; set;}
-
         ICollection<InstantaneaCarrito> CarritosAnteriores {get; set;}
 
         public RegistroCarrito(){
-            //this.CarritoCompra = new Collection<Producto>();
             this.CarritosAnteriores = new Collection<InstantaneaCarrito>();
 
         }
@@ -27,7 +24,7 @@ namespace backend.Memento{
                 
                 foreach(InstantaneaCarrito carrito in CarritosAnteriores)
                 {
-                    carrito.GetInstantaneaCarrito();
+                    carrito.ObtenerInstantaneaCarrito();
                 }
             }else {
                 Console.WriteLine("Carrito vacío");

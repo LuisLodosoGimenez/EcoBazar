@@ -33,12 +33,8 @@ namespace backend.Models
                     carritoAnterior = new Collection<Producto>(carritoActual);
                 }
 
-                public Collection<Producto> ObtenerCarritoAnterior()
-                {
-                    return (Collection<Producto>) this.carritoAnterior;
-                }
 
-                public InstantaneaCarrito GetInstantaneaCarrito(){
+                public InstantaneaCarrito ObtenerInstantaneaCarrito(){
                     return this;
                 }
             
