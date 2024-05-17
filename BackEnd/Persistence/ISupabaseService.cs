@@ -19,6 +19,8 @@ namespace backend.Services
 {
     public interface ISupabaseService
     {
+
+        /*
         Task AñadirComprador(CompradorBD compradorBD);
         Task<int> AñadirUsuario(UsuarioBD nuevouser);
         Task<bool> ExisteNickNameEnUsuario(string nickName);
@@ -38,7 +40,7 @@ namespace backend.Services
         Task<List<Articulo>> ObtenerArticulosPorCategoria(string categoria);
 
         Task<List<Producto>> ObtenerProductosPorIDArticulo(int idArticulo, Articulo? articulo);
-
+*/
 
 
         //Task<List<UsuarioBD>> ObtenerTodosLosUsuarios();

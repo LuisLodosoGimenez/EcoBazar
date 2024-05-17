@@ -5,36 +5,32 @@ using System.Runtime.InteropServices;
 using backend.ModelsSupabase;
 using backend.Conversiones;
 using System.Collections.ObjectModel;
+using backend.Mapper;
 
 namespace backend.Logica
 {
     public class LogicaClase : InterfazLogica
     {
-        private readonly ISupabaseService supabaseService;
-        private readonly IConversiones convertir;
-        public LogicaClase(ISupabaseService supabaseService, IConversiones convertir)
-        {
-            this.supabaseService = supabaseService;
-            this.convertir = convertir;
-        }
+        public LogicaClase() { }
+
 
 
         public async Task RegistrarComprador(Comprador comprador)
         {
-            if (supabaseService.ExisteNickNameEnUsuario(comprador.Nick_name).Result)
+            if (UsuarioMapper.ExisteNickNameEnUsuario(comprador.Nick_name).Result)
             {
                 throw new Exception("NickName '" + comprador.Nick_name + "' ya en uso.");
 
             }
-            else if (supabaseService.ExisteEmailEnUsuario(comprador.Email).Result)
+            else if (UsuarioMapper.ExisteEmailEnUsuario(comprador.Email).Result)
             {
                 throw new Exception("Email '" + comprador.Email + "' ya en uso.");
             }
             else
             {
-                var idUsuario = await supabaseService.AñadirUsuario(convertir.CompradorAUsuarioBD(comprador));
+                var idUsuario = await UsuarioMapper.AñadirUsuario(CompradorMapper.CompradorAUsuarioBD(comprador));
                 comprador.Id = idUsuario;
-                await supabaseService.AñadirComprador(convertir.CompradorACompradorBD(comprador));
+                await CompradorMapper.AñadirComprador(CompradorMapper.CompradorACompradorBD(comprador));
 
             }
         }
@@ -46,7 +42,7 @@ namespace backend.Logica
         {
 
 
-            var objeto = await supabaseService.ObtenerUsuarioPorNickName(nickName);
+            var objeto = await UsuarioMapper.ObtenerUsuarioPorNickName(nickName);
 
             if (objeto.GetType() == Type.GetType("backend.Models.Comprador"))
             {
@@ -56,7 +52,7 @@ namespace backend.Logica
 
 
                 if (comprador!.Contraseña != contraseña) throw new Exception("Contraseña incorrecta");
-                ICollection<Producto> productos = await supabaseService.ObtenerCarritoCompra((int)comprador.Id!);
+                ICollection<Producto> productos = await CompradorMapper.ObtenerCarritoCompra((int)comprador.Id!);
 
                 comprador.CarritoCompra = productos;
 
@@ -72,7 +68,7 @@ namespace backend.Logica
 
         public async Task<IList<Producto>> ObtenerProductosPorCategoria(string categoria)
         {
-            List<Articulo> articulos = await supabaseService.ObtenerArticulosPorCategoria(categoria);
+            List<Articulo> articulos = await ArticuloMapper.ObtenerArticulosPorCategoria(categoria);
 
 
             //TODO: en vez de obtener todos los productos de un artículo para que se complete 
@@ -104,7 +100,7 @@ namespace backend.Logica
         private Articulo ObtenerProductosDeArticulo(Articulo articulo)
         {
 
-            var result = supabaseService.ObtenerProductosPorIDArticulo((int)articulo.Id!, articulo);
+            var result = ProductoMapper.ObtenerProductosPorIDArticulo((int)articulo.Id!, articulo);
             result.Wait();
 
             List<Producto> productos = result.Result;
@@ -129,14 +125,14 @@ namespace backend.Logica
         {
 
 
-            var objeto = await supabaseService.ObtenerUsuarioPorId(idComprador);
+            var objeto = await UsuarioMapper.ObtenerUsuarioPorId(idComprador);
 
             if (objeto.GetType() == Type.GetType("backend.Models.Comprador"))
             {
 
                 Comprador? comprador = objeto as Comprador;
-                await supabaseService.AñadirProductoACarritoCompra((int)comprador!.Id!, idProducto);
-                ICollection<Producto> productos = await supabaseService.ObtenerCarritoCompra(idComprador);
+                await CompradorMapper.AñadirProductoACarritoCompra((int)comprador!.Id!, idProducto);
+                ICollection<Producto> productos = await CompradorMapper.ObtenerCarritoCompra(idComprador);
 
                 comprador!.CarritoCompra = productos;
 
@@ -152,14 +148,14 @@ namespace backend.Logica
         {
 
 
-            var objeto = await supabaseService.ObtenerUsuarioPorId(idComprador);
+            var objeto = await UsuarioMapper.ObtenerUsuarioPorId(idComprador);
 
             if (objeto.GetType() == Type.GetType("backend.Models.Comprador"))
             {
 
                 Comprador? comprador = objeto as Comprador;
-                await supabaseService.EliminarProductoEnCarritoCompra((int)comprador!.Id!, idProducto);
-                ICollection<Producto> productos = await supabaseService.ObtenerCarritoCompra(idComprador);
+                await CompradorMapper.EliminarProductoEnCarritoCompra((int)comprador!.Id!, idProducto);
+                ICollection<Producto> productos = await CompradorMapper.ObtenerCarritoCompra(idComprador);
 
                 comprador!.CarritoCompra = productos;
 

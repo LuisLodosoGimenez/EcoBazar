@@ -23,4 +23,12 @@ export class HeaderComponent {
       this.router.navigate(['/log-in'], { queryParams: { page: '/user-profile' } });
     else this.router.navigate(['/user-profile']);
   }
+
+  IsUserUndefined(): boolean {
+    return AppComponent.usuario == undefined;
+  }
+  GetShoppingCartSize(): number {
+    if (AppComponent.usuario == undefined) return 0;
+    return AppComponent.usuario.comprador.carritoCompra.length;
+  }
 }

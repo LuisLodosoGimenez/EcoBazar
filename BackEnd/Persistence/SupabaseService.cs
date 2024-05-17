@@ -16,12 +16,13 @@ using System.Linq.Expressions;
 using static Postgrest.Constants;
 using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.VisualBasic;
+using backend.Mapper;
 
 namespace backend.Services
 {
     public class SupabaseService : ISupabaseService
     {
-        // private static SupabaseService _instancia;
+
         private readonly Supabase.Client _supabaseClient;
         private readonly IConversiones convertir;
 
@@ -40,14 +41,6 @@ namespace backend.Services
             _supabaseClient = new Supabase.Client(supabaseUrl!, supabaseKey, options);
         }
 
-        // public static SupabaseService GetInstance(IConfiguration configuration){
-        //     if(_instancia == null)
-
-        //         _instancia = new SupabaseService(configuration);
-
-        //     return _instancia;
-        // }
-
         public async Task InitializeSupabaseAsync()
         {
             Console.WriteLine("Iniciando la conexión a Supabase...");
@@ -57,208 +50,217 @@ namespace backend.Services
 
 
 
-
-
-
+        /*
 
 
         public async Task AñadirComprador(CompradorBD compradorBD)
         {
 
-            await _supabaseClient
-                    .From<CompradorBD>()
-                    .Insert(compradorBD);
-            Console.WriteLine("Comprador insertado correctamente en Supabase.");
-
-
+            // await _supabaseClient
+            //         .From<CompradorBD>()
+            //         .Insert(compradorBD);
+            // Console.WriteLine("Comprador insertado correctamente en Supabase.");
         }
 
 
         public async Task<int> AñadirUsuario(UsuarioBD nuevouser)
         {
-            var result = await _supabaseClient
-                            .From<UsuarioBD>()
-                            .Insert(nuevouser);
-            Console.WriteLine("User insertado correctamente en Supabase.");
-            return (int)result.Model!.Id!;
+            return 5;
+            // var result = await _supabaseClient
+            //                 .From<UsuarioBD>()
+            //                 .Insert(nuevouser);
+            // Console.WriteLine("User insertado correctamente en Supabase.");
+            // return (int)result.Model!.Id!;
         }
 
 
 
         public async Task<bool> ExisteNickNameEnUsuario(string nickName)
         {
-            var result = await _supabaseClient
-                                .From<UsuarioBD>()
-                                .Where(x => x.Nick_name == nickName)
-                                .Get();
 
-            return result.Models.Any();
+            return true;
+            // var result = await _supabaseClient
+            //                     .From<UsuarioBD>()
+            //                     .Where(x => x.Nick_name == nickName)
+            //                     .Get();
+
+            // return result.Models.Any();
         }
 
 
         public async Task<bool> ExisteEmailEnUsuario(string email)
         {
 
-            var result = await _supabaseClient
-                                .From<UsuarioBD>()
-                                .Where(x => x.Email == email)
-                                .Get();
+            return true;
 
-            return result.Models.Any();
+            // var result = await _supabaseClient
+            //                     .From<UsuarioBD>()
+            //                     .Where(x => x.Email == email)
+            //                     .Get();
+
+            // return result.Models.Any();
         }
 
 
         public async Task<System.Object> ObtenerUsuarioPorNickName(string nickName)
         {
-            var usuario = await _supabaseClient
-                                .From<UsuarioBD>()
-                                .Where(x => x.Nick_name == nickName)
-                                .Get();
+            return null;
+            // var usuario = await _supabaseClient
+            //                     .From<UsuarioBD>()
+            //                     .Where(x => x.Nick_name == nickName)
+            //                     .Get();
 
 
 
-            if (!usuario.Models.Any()) throw new Exception("El NickName '" + nickName + "' no corresponde a ningún usuario.");
-            UsuarioBD usuarioBD = usuario.Model!;
+            // if (!usuario.Models.Any()) throw new Exception("El NickName '" + nickName + "' no corresponde a ningún usuario.");
+            // UsuarioBD usuarioBD = usuario.Model!;
 
 
-            return await ObtenerUsuarioPorUsurioBD(usuarioBD);
+            // return await ObtenerUsuarioPorUsurioBD(usuarioBD);
 
         }
 
         public async Task<System.Object> ObtenerUsuarioPorId(int id_usuario)
         {
-            var usuario = await _supabaseClient
-                                .From<UsuarioBD>()
-                                .Where(x => x.Id == id_usuario)
-                                .Get();
+            return null;
+            // var usuario = await _supabaseClient
+            //                     .From<UsuarioBD>()
+            //                     .Where(x => x.Id == id_usuario)
+            //                     .Get();
 
 
 
-            if (!usuario.Models.Any()) throw new Exception("El id '" + id_usuario + "' no corresponde a ningún usuario.");
-            UsuarioBD usuarioBD = usuario.Model!;
+            // if (!usuario.Models.Any()) throw new Exception("El id '" + id_usuario + "' no corresponde a ningún usuario.");
+            // return usuario.Model!;
 
-            return await ObtenerUsuarioPorUsurioBD(usuarioBD);
+            // return await ObtenerUsuarioPorUsurioBD(usuarioBD);
 
         }
 
 
         private async Task<System.Object> ObtenerUsuarioPorUsurioBD(UsuarioBD usuarioBD)
         {
+            return null;
 
-            try
-            {
-                var comprador = await _supabaseClient
-                                    .From<CompradorBD>()
-                                    .Where(x => x.Id == usuarioBD.Id!)
-                                    .Get();
+            // try
+            // {
+            //     var comprador = await _supabaseClient
+            //                         .From<CompradorBD>()
+            //                         .Where(x => x.Id == usuarioBD.Id!)
+            //                         .Get();
 
-                if (comprador.Models.Any()) return convertir.UsuarioBDYCompradorBDAComprador(usuarioBD, comprador.Model!);
+            //     if (comprador.Models.Any()) return comprador.Model!;
 
-                var vendedor = await _supabaseClient
-                                    .From<VendedorBD>()
-                                    .Where(x => x.Id == usuarioBD.Id)
-                                    .Get();
+            //     var vendedor = await _supabaseClient
+            //                         .From<VendedorBD>()
+            //                         .Where(x => x.Id == usuarioBD.Id)
+            //                         .Get();
 
-                if (vendedor.Models.Any()) return convertir.UsuarioBDAVendedor(usuarioBD);
+            //     if (vendedor.Models.Any()) return convertir.UsuarioBDAVendedor(usuarioBD);
 
-                var productor = await _supabaseClient
-                                    .From<ProductorBD>()
-                                    .Where(x => x.Id == usuarioBD.Id)
-                                    .Get();
+            //     var productor = await _supabaseClient
+            //                         .From<ProductorBD>()
+            //                         .Where(x => x.Id == usuarioBD.Id)
+            //                         .Get();
 
-                if (productor.Models.Any()) return convertir.UsuarioBDAProductor(usuarioBD);
+            //     if (productor.Models.Any()) return convertir.UsuarioBDAProductor(usuarioBD);
 
-                throw new Exception("El usuario no corresponde con ningun comprador, vendedor o productor.");
+            //     throw new Exception("El usuario no corresponde con ningun comprador, vendedor o productor.");
 
-            }
+            // }
 
-            //TODO: DELETE?
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception();
-            }
-
-
-
-
+            // //TODO: DELETE?
+            // catch (Exception e)
+            // {
+            //     Console.WriteLine(e.Message);
+            //     throw new Exception();
+            // }
         }
 
 
         public async Task<Articulo> ObtenerArticuloPorId(int articuloId)
         {
 
-            var articulo = await _supabaseClient
-                            .From<ArticuloBD>()
-                            .Where(x => x.Id == articuloId)
-                            .Get();
+            return null;
 
-            return ConvertirArticuloBDAArticulo(articulo.Model!);
+            // var articulo = await _supabaseClient
+            //                 .From<ArticuloBD>()
+            //                 .Where(x => x.Id == articuloId)
+            //                 .Get();
+
+            // return ConvertirArticuloBDAArticulo(articulo.Model!);
 
         }
 
         public async Task<List<Producto>> ObtenerProductosPorIDArticulo(int idArticulo, Articulo? articulo)
         {
-            var result = await _supabaseClient
-                                .From<ProductoBD>()
-                                .Where(a => a.Id_articulo == idArticulo)
-                                .Get();
+            return null;
+
+            // var result = await _supabaseClient
+            //                     .From<ProductoBD>()
+            //                     .Where(a => a.Id_articulo == idArticulo)
+            //                     .Get();
 
 
 
-            return result.Models.ConvertAll(ConvertirProductoBDAProducto);
+            // return result.Models.ConvertAll(ConvertirProductoBDAProducto);
         }
 
         public async Task<List<Articulo>> ObtenerArticulosPorCategoria(string categoria)
         {
-            var result = await _supabaseClient
-                    .From<ArticuloBD>()
-                    .Where(c => c.Categoria == categoria)
-                    .Get();
 
-            return result.Models.ConvertAll<Articulo>(ConvertirArticuloBDAArticulo);
+            return null;
+            // var result = await _supabaseClient
+            //         .From<ArticuloBD>()
+            //         .Where(c => c.Categoria == categoria)
+            //         .Get();
+
+            // return result.Models.ConvertAll<Articulo>(ConvertirArticuloBDAArticulo);
         }
 
 
         private async Task<List<string>> ObtenerImagenesArticuloPorId(int idArticulo)
         {
-            var result = await _supabaseClient
-                    .From<ImagenArticuloBD>()
-                    .Where(x => x.idArticulo == idArticulo)
-                    .Get();
 
-            return result.Models.ConvertAll<string>(convertir.ImagenArticuloBDAImagen);
+            return null;
+            // var result = await _supabaseClient
+            //         .From<ImagenArticuloBD>()
+            //         .Where(x => x.idArticulo == idArticulo)
+            //         .Get();
+
+            // return result.Models.ConvertAll<string>(convertir.ImagenArticuloBDAImagen);
         }
 
 
         public async Task<ICollection<Producto>> ObtenerCarritoCompra(int compradorId)
         {
+            return null;
 
-            var carrito = await _supabaseClient
-                            .From<CarritoCompraBD>()
-                            .Where(x => x.Id_comprador == compradorId)
-                            .Get();
+            // var carrito = await _supabaseClient
+            //                 .From<CarritoCompraBD>()
+            //                 .Where(x => x.Id_comprador == compradorId)
+            //                 .Get();
 
-            List<int> lista = new List<int>();
-            lista = carrito.Models.ConvertAll((CarritoCompraBD carrito) => carrito.Id_producto);
-
-
-            List<ProductoBD> productosBD = new List<ProductoBD>();
-            //TODO: make a for
-            foreach (var idProducto in lista)
-            {
-
-                var productos = await _supabaseClient
-                        .From<ProductoBD>()
-                        .Where(x => x.Id == idProducto)
-                        .Get();
-
-                if (productos.Model != null) { productosBD.Add(productos.Model); }
+            // List<int> lista = new List<int>();
+            // lista = carrito.Models.ConvertAll((CarritoCompraBD carrito) => carrito.Id_producto);
 
 
-            }
-            Console.WriteLine("");
-            return productosBD.ConvertAll<Producto>(ConvertirProductoBDAProducto);
+            // List<ProductoBD> productosBD = new List<ProductoBD>();
+            // //TODO: make a for
+            // foreach (var idProducto in lista)
+            // {
+
+            //     var productos = await _supabaseClient
+            //             .From<ProductoBD>()
+            //             .Where(x => x.Id == idProducto)
+            //             .Get();
+
+            //     if (productos.Model != null) { productosBD.Add(productos.Model); }
+
+
+            // }
+            // Console.WriteLine("");
+            // return productosBD.ConvertAll<Producto>(ConvertirProductoBDAProducto);
         }
 
 
@@ -301,15 +303,16 @@ namespace backend.Services
 
         private Articulo ConvertirArticuloBDAArticulo(ArticuloBD articuloBD)
         {
-            var usu = ObtenerUsuarioPorId(articuloBD.Id_productor);
-            usu.Wait();
-            Productor? productor = usu.Result as Productor;
+            return null;
+            // var usu = UsuarioMapper.ObtenerUsuarioPorId(articuloBD.Id_productor);
+            // usu.Wait();
+            // Productor? productor = usu.Result as Productor;
 
-            var imagenes = ObtenerImagenesArticuloPorId(articuloBD.Id);
-            imagenes.Wait();
-            List<string> imagenesArticulo = imagenes.Result as List<string>;
+            // var imagenes = ObtenerImagenesArticuloPorId(articuloBD.Id);
+            // imagenes.Wait();
+            // List<string> imagenesArticulo = imagenes.Result as List<string>;
 
-            return convertir.ArticuloBDAArticulo(articuloBD, productor!, imagenesArticulo);
+            // return convertir.ArticuloBDAArticulo(articuloBD, productor!, imagenesArticulo);
 
 
         }
@@ -319,21 +322,23 @@ namespace backend.Services
         public Producto ConvertirProductoBDAProducto(ProductoBD productoBD)
         {
 
-            var vend = ObtenerUsuarioPorId(productoBD.Id_vendedor);
-            vend.Wait();
-            Vendedor vendedor = (vend.Result as Vendedor)!;
+            return null;
 
-            var art = ObtenerArticuloPorId(productoBD.Id_articulo);
-            art.Wait();
-            Articulo articulo = art.Result as Articulo;
+            // var vend = UsuarioMapper.ObtenerUsuarioPorId(productoBD.Id_vendedor);
+            // vend.Wait();
+            // Vendedor vendedor = (vend.Result as Vendedor)!;
+
+            // var art = ObtenerArticuloPorId(productoBD.Id_articulo);
+            // art.Wait();
+            // Articulo articulo = art.Result as Articulo;
 
 
 
-            return convertir.ProductoBDAProducto(productoBD, vendedor!, articulo!);
+            // return convertir.ProductoBDAProducto(productoBD, vendedor!, articulo!);
         }
 
 
-
+*/
 
 
 

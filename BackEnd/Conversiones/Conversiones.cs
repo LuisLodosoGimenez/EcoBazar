@@ -17,99 +17,122 @@ using backend.Models;
 using backend.ModelsSupabase;
 using backend.Services;
 
-namespace backend.Conversiones{
+namespace backend.Conversiones
+{
 
-    public class Conversiones : IConversiones{
-
-
-
-        public UsuarioBD CompradorAUsuarioBD(Comprador comprador){
-
-            return new UsuarioBD
-            {
-                Id = comprador.Id,
-                Nombre = comprador.Nombre,
-                Nick_name = comprador.Nick_name,
-                Contraseña = comprador.Contraseña,
-                Email = comprador.Email,
-                Edad = comprador.Edad,
-            };
-
-        }
-
-        public CompradorBD CompradorACompradorBD(Comprador comprador){
-
-            return new CompradorBD
-            {
-                Id = comprador.Id,
-                Limite_gasto_cents_mes = comprador.Limite_gasto_cents_mes
-            };
-
-        }
-
-        public Usuario UsuarioBDAUsuario(UsuarioBD usuarioBD){
-
-            var usuario = new Usuario(usuarioBD.Nombre, usuarioBD.Nick_name, usuarioBD.Contraseña, usuarioBD.Email);
-            usuario.Edad = usuarioBD.Edad;
-            return usuario;
-
-        }
-
-        public Comprador UsuarioBDYCompradorBDAComprador(UsuarioBD usuarioBD, CompradorBD compradorBD){
-            var comprador = new Comprador(usuarioBD.Nombre, usuarioBD.Nick_name, usuarioBD.Contraseña, usuarioBD.Email);
-            comprador.Id = usuarioBD.Id;
-            comprador.Edad = usuarioBD.Edad;
-            comprador.Limite_gasto_cents_mes = compradorBD.Limite_gasto_cents_mes;
-            comprador.ImagenesUrl = usuarioBD.ImagenUrl;
-            return comprador;
-        }
+    public class Conversiones : IConversiones
+    {
 
 
-        public Vendedor UsuarioBDAVendedor(UsuarioBD usuarioBD)
+        /*
+
+
+
+        public UsuarioBD CompradorAUsuarioBD(Comprador comprador)
         {
-            var vendedor = new Vendedor(usuarioBD.Nombre, usuarioBD.Nick_name, usuarioBD.Contraseña, usuarioBD.Email);
-            vendedor.Id = usuarioBD.Id;
-            vendedor.Edad = usuarioBD.Edad;
-            vendedor.ImagenesUrl = usuarioBD.ImagenUrl;
-            return vendedor;
+            return null;
+
+            // return new UsuarioBD
+            // {
+            //     Id = comprador.Id,
+            //     Nombre = comprador.Nombre,
+            //     Nick_name = comprador.Nick_name,
+            //     Contraseña = comprador.Contraseña,
+            //     Email = comprador.Email,
+            //     Edad = comprador.Edad,
+            // };
+
         }
 
-        public Productor UsuarioBDAProductor(UsuarioBD usuarioBD)
+        public CompradorBD CompradorACompradorBD(Comprador comprador)
         {
-            var productor = new Productor(usuarioBD.Nombre, usuarioBD.Nick_name, usuarioBD.Contraseña, usuarioBD.Email);
-            productor.Id = usuarioBD.Id;
-            productor.Edad = usuarioBD.Edad;
-            productor.ImagenesUrl = usuarioBD.ImagenUrl;
-            return productor;
-        }
+            return null;
 
-        public  Articulo  ArticuloBDAArticulo(ArticuloBD articuloBD, Productor productor, List<string> imagenesArticulo){
-            Articulo articulo = new Articulo(articuloBD.Nombre, articuloBD.Categoria, articuloBD.Edad_min,
-            articuloBD.Consejos_utilizacion, articuloBD.Consejos_retirada, articuloBD.Origen, articuloBD.Proceso_produccion,
-            articuloBD.Impacto_ambiental_social, articuloBD.Contribucion_ods, productor);
-            articulo.Id = articuloBD.Id;
-            articulo.ImagenesUrl = imagenesArticulo;
-            return articulo;
-        }
-
-        public  Producto ProductoBDAProducto(ProductoBD productoBD, Vendedor vendedor, Articulo articulo){
-
-            Producto producto = new Producto(productoBD.Precio_cents, productoBD.Unidades, vendedor, articulo);
-            producto.Id = productoBD.Id;
-            return producto;
-
+            // return new CompradorBD
+            // {
+            //     Id = comprador.Id,
+            //     Limite_gasto_cents_mes = comprador.Limite_gasto_cents_mes
+            // };
 
         }
 
-        public string ImagenArticuloBDAImagen(ImagenArticuloBD imagenArticuloBD){
-            return imagenArticuloBD.url;
+        public Usuario UsuarioBDAUsuario(UsuarioBD usuarioBD)
+        {
+
+            return null;
+
+            // var usuario = new Usuario(usuarioBD.Nombre, usuarioBD.Nick_name, usuarioBD.Contraseña, usuarioBD.Email);
+            // usuario.Edad = usuarioBD.Edad;
+            // return usuario;
+
         }
+
+        // public Comprador UsuarioBDYCompradorBDAComprador(UsuarioBD usuarioBD, CompradorBD compradorBD){
+        //     var comprador = new Comprador(usuarioBD.Nombre, usuarioBD.Nick_name, usuarioBD.Contraseña, usuarioBD.Email);
+        //     comprador.Id = usuarioBD.Id;
+        //     comprador.Edad = usuarioBD.Edad;
+        //     comprador.Limite_gasto_cents_mes = compradorBD.Limite_gasto_cents_mes;
+        //     comprador.ImagenesUrl = usuarioBD.ImagenUrl;
+        //     return comprador;
+        // }
+
+
+        // public Vendedor UsuarioBDAVendedor(UsuarioBD usuarioBD)
+        // {
+        //     var vendedor = new Vendedor(usuarioBD.Nombre, usuarioBD.Nick_name, usuarioBD.Contraseña, usuarioBD.Email);
+        //     vendedor.Id = usuarioBD.Id;
+        //     vendedor.Edad = usuarioBD.Edad;
+        //     vendedor.ImagenesUrl = usuarioBD.ImagenUrl;
+        //     return vendedor;
+        // }
+
+        // public Productor UsuarioBDAProductor(UsuarioBD usuarioBD)
+        // {
+        //     var productor = new Productor(usuarioBD.Nombre, usuarioBD.Nick_name, usuarioBD.Contraseña, usuarioBD.Email);
+        //     productor.Id = usuarioBD.Id;
+        //     productor.Edad = usuarioBD.Edad;
+        //     productor.ImagenesUrl = usuarioBD.ImagenUrl;
+        //     return productor;
+        // }
+
+        public Articulo ArticuloBDAArticulo(ArticuloBD articuloBD, Productor productor, List<string> imagenesArticulo)
+        {
+
+            return null;
+            // Articulo articulo = new Articulo(articuloBD.Nombre, articuloBD.Categoria, articuloBD.Edad_min,
+            // articuloBD.Consejos_utilizacion, articuloBD.Consejos_retirada, articuloBD.Origen, articuloBD.Proceso_produccion,
+            // articuloBD.Impacto_ambiental_social, articuloBD.Contribucion_ods, productor);
+            // articulo.Id = articuloBD.Id;
+            // articulo.ImagenesUrl = imagenesArticulo;
+            // return articulo;
+        }
+
+        public Producto ProductoBDAProducto(ProductoBD productoBD, Vendedor vendedor, Articulo articulo)
+        {
+
+            return null;
+
+            // Producto producto = new Producto(productoBD.Precio_cents, productoBD.Unidades, vendedor, articulo);
+            // producto.Id = productoBD.Id;
+            // return producto;
+
+
+        }
+
+        public string ImagenArticuloBDAImagen(ImagenArticuloBD imagenArticuloBD)
+        {
+            return null;
+            // return imagenArticuloBD.url;
+        }
+
+
+        */
     }
 
 
 
 
-        
+
 
     //     public Producto ConvertirBDaProducto(ProductoBD productoBD){
 
@@ -121,7 +144,7 @@ namespace backend.Conversiones{
 
 
     //     public List<Producto> ConvertirListaBDaProducto(List<ProductoBD> listaProductos){
-            
+
     //         List<Producto> listaProductosConvertida = new List<Producto>();
     //         foreach(var product in listaProductos)
     //         {
@@ -131,7 +154,7 @@ namespace backend.Conversiones{
     //     }
 
     //     public List<Usuario> ConvertirListaBDaUsuario(List<UsuarioBD> listaUsuario){
-            
+
     //         List<Usuario> listaUsuarioConvertida = new List<Usuario>();
     //         foreach(var user in listaUsuario)
     //         {
@@ -141,7 +164,7 @@ namespace backend.Conversiones{
     //     }
 
     //     public List<Articulo> ConvertirListaBDaArticulo(List<ArticuloBD> listaArticulos){
-            
+
     //         List<Articulo> listaArticulosConvertida = new List<Articulo>();
     //         foreach(var product in listaArticulos)
     //         {
@@ -151,7 +174,7 @@ namespace backend.Conversiones{
     //     }
 
     //     public List<CarritoCompra> ConvertirListaBDaCarritoCompra(List<CarritoCompraBD> listaCarrito){
-            
+
     //         List<CarritoCompra> listaCarritoConvertida = new List<CarritoCompra>();
     //         foreach(var carrito in listaCarrito)
     //         {
@@ -159,7 +182,7 @@ namespace backend.Conversiones{
     //         }
     //         return listaCarritoConvertida;
     //     }
-        
+
 
     //     public Vendedor ConvertirVendedor(VendedorBD vendedor){
 

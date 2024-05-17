@@ -1,20 +1,17 @@
 import { Component } from '@angular/core';
-import { AppComponent } from '../../app.component';
 import { CompradorLogin } from '../../domain/interfaces/buyer';
-import { CarritoCompra } from '../../domain/interfaces/shopping-cart';
 import { ShoppingCartApiService } from '../../services/shopping-cart-api.service';
-import { Producto } from '../../domain/interfaces/category-products';
 import { ComponentNavigationService } from '../../services/component-navigation-services/component-navigation.service';
-import { RouterLink } from '@angular/router';
+import { AppComponent } from '../../app.component';
 
 @Component({
-  selector: 'app-shopping-cart',
+  selector: 'app-process-order',
   standalone: true,
-  imports: [RouterLink],
-  templateUrl: './shopping-cart.component.html',
-  styleUrl: './shopping-cart.component.css',
+  imports: [],
+  templateUrl: './process-order.component.html',
+  styleUrl: './process-order.component.css',
 })
-export class ShoppingCartComponent {
+export class ProcessOrderComponent {
   usuario?: CompradorLogin;
 
   constructor(
@@ -46,24 +43,5 @@ export class ShoppingCartComponent {
       precioCentString.substring(precioCentString.length - 2) +
       '€'
     );
-  }
-
-  RemoveProductFromShoppintCart(producto: Producto) {
-    let shoppingCart = {
-      id_comprador: AppComponent.usuario!.comprador.id,
-      id_producto: producto.id,
-    };
-    this.shoppingCartApiService.DeleteProductFromShoppingCart(shoppingCart).subscribe({
-      next: (data) => {
-        AppComponent.usuario!.comprador.carritoCompra = data.carritoCompra;
-        console.log(data);
-        this.notificationsService.showNotification(producto.articulo.nombre + ' HA SIDO ELIMINADO DEL CARRITO');
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
-
-    this.shoppingCartApiService.DeleteProductFromShoppingCart;
   }
 }

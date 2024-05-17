@@ -16,16 +16,17 @@ namespace backend.Conversiones
 {
    public interface IConversiones
    {
+      /*
       UsuarioBD CompradorAUsuarioBD(Comprador comprador);
 
       CompradorBD CompradorACompradorBD(Comprador comprador);
       Usuario UsuarioBDAUsuario(UsuarioBD usuarioBD);
 
-      Comprador UsuarioBDYCompradorBDAComprador(UsuarioBD usuarioBD, CompradorBD compradorBD);
+      // Comprador UsuarioBDYCompradorBDAComprador(UsuarioBD usuarioBD, CompradorBD compradorBD);
 
-      Vendedor UsuarioBDAVendedor(UsuarioBD usuarioBD);
+      // Vendedor UsuarioBDAVendedor(UsuarioBD usuarioBD);
 
-      Productor UsuarioBDAProductor(UsuarioBD usuarioBD);
+      // Productor UsuarioBDAProductor(UsuarioBD usuarioBD);
 
 
       Articulo ArticuloBDAArticulo(ArticuloBD articuloBD, Productor productor, List<string> imagenesArticulo);
@@ -33,6 +34,8 @@ namespace backend.Conversiones
       Producto ProductoBDAProducto(ProductoBD productoBD, Vendedor vendedor, Articulo articulo);
 
       string ImagenArticuloBDAImagen(ImagenArticuloBD imagenArticuloBD);
+
+      */
 
 
       //   Producto ConvertirBDaProducto(ProductoBD productoBD);

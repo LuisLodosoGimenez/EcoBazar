@@ -8,6 +8,7 @@ import { ShoppingCartComponent } from './pages/shopping-cart/shopping-cart.compo
 import { UserProfilePersonalInfoComponent } from './pages/user-profile/user-profile-personal-info/user-profile-personal-info.component';
 import { LogInComponent } from './pages/log-in/log-in.component';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
+import { ProcessOrderComponent } from './pages/process-order/process-order.component';
 
 export const routes: Routes = [
   {
@@ -36,6 +37,11 @@ export const routes: Routes = [
     path: 'shopping-cart',
     component: ShoppingCartComponent,
   },
+  {
+    path: 'process-order',
+    component: ProcessOrderComponent,
+  },
+
   {
     path: 'log-in',
     component: LogInComponent,
