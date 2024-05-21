@@ -1274,19 +1274,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\34684\\.nuget\\packages\\": {}
+    "C:\\Users\\mvict\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\backend.csproj",
+      "projectUniqueName": "C:\\Users\\mvict\\Ptoyecto Nuevo Ecobazar\\EcoBazar\\BackEnd\\backend.csproj",
       "projectName": "backend",
-      "projectPath": "C:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\backend.csproj",
-      "packagesPath": "C:\\Users\\34684\\.nuget\\packages\\",
-      "outputPath": "C:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\obj\\",
+      "projectPath": "C:\\Users\\mvict\\Ptoyecto Nuevo Ecobazar\\EcoBazar\\BackEnd\\backend.csproj",
+      "packagesPath": "C:\\Users\\mvict\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\mvict\\Ptoyecto Nuevo Ecobazar\\EcoBazar\\BackEnd\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\34684\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\mvict\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1306,11 +1306,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -1345,24 +1340,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[7.0.19, 7.0.19]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[7.0.19, 7.0.19]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[7.0.19, 7.0.19]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[7.0.19, 7.0.19]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -1371,7 +1348,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }
