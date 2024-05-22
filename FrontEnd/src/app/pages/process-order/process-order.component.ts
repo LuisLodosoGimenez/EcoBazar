@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { CompradorLogin } from '../../domain/interfaces/buyer';
+import { Comprador } from '../../domain/interfaces/buyer';
 import { ShoppingCartApiService } from '../../services/shopping-cart-api.service';
 import { ComponentNavigationService } from '../../services/component-navigation-services/component-navigation.service';
 import { AppComponent } from '../../app.component';
+import { CreateOrderApiService } from '../../services/create-order-api.service';
 
 @Component({
   selector: 'app-process-order',
@@ -12,17 +13,38 @@ import { AppComponent } from '../../app.component';
   styleUrl: './process-order.component.css',
 })
 export class ProcessOrderComponent {
-  usuario?: CompradorLogin;
+  usuario?: Comprador;
 
   constructor(
     private shoppingCartApiService: ShoppingCartApiService,
     private notificationsService: ComponentNavigationService,
+    private createOrderApiService: CreateOrderApiService,
   ) {
     this.usuario = AppComponent.usuario;
   }
 
+  CreateOrder() {
+    this.createOrderApiService.createOrder(this.usuario!).subscribe({
+      next: (data) => {
+        console.log('aque');
+        console.log(data);
+        AppComponent.usuario = data.comprador;
+        this.usuario = data.comprador;
+        this.notificationsService.showNotification('PEDIDO REALIZADO CON EXITO');
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }
+
+  GetDate(days: number) {
+    const today = new Date();
+    return new Date(today.setDate(today.getDate() + days)).toLocaleDateString();
+  }
+
   ReturnTotalPrice() {
-    const precioCentString = this.usuario?.comprador.carritoCompra.reduce((a, b) => a + b.precio_cents, 0) + '';
+    const precioCentString = this.usuario?.carritoCompra.reduce((a, b) => a + b.precio_cents, 0) + '';
 
     if (precioCentString == '0') return '00.00€';
     return (
@@ -33,7 +55,7 @@ export class ProcessOrderComponent {
     );
   }
   ReturnShoppingCartSize() {
-    return this.usuario?.comprador.carritoCompra.length;
+    return this.usuario?.carritoCompra.length;
   }
   ReturnPrice(price: number) {
     const precioCentString = price + '';

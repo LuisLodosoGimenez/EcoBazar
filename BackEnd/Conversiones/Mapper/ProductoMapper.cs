@@ -57,7 +57,7 @@ namespace backend.Mapper
         public static Producto ProductoBDAProducto(ProductoBD productoBD, Vendedor vendedor, Articulo articulo)
         {
 
-            Producto producto = new Producto(productoBD.Precio_cents, productoBD.Unidades, vendedor, articulo);
+            Producto producto = new Producto(productoBD.Precio_cents, productoBD.Unidades, productoBD.Dias_entrega, vendedor, articulo);
             producto.Id = productoBD.Id;
             return producto;
 

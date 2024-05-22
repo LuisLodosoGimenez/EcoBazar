@@ -1,12 +1,13 @@
-import { CarritoCompra } from './shopping-cart';
+import { Producto, Productos } from './category-products';
 
-export interface CompradorLogin {
+export interface RespuestaLogIn {
   comprador: Comprador;
 }
 
 export interface Comprador {
   limite_gasto_cents_mes: number;
-  carritoCompra: CarritoCompra[];
+  carritoCompra: Productos;
+  pedidos: Pedido[];
   id: number;
   nombre: string;
   nick_name: string;
@@ -14,4 +15,10 @@ export interface Comprador {
   email: string;
   edad: number;
   imagenesUrl: any;
+}
+
+export interface Pedido {
+  id: number;
+  estado: string;
+  productosPedido: Producto[];
 }

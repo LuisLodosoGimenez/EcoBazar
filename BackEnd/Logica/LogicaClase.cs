@@ -6,6 +6,7 @@ using backend.ModelsSupabase;
 using backend.Conversiones;
 using System.Collections.ObjectModel;
 using backend.Mapper;
+using System.Collections;
 
 namespace backend.Logica
 {
@@ -49,17 +50,13 @@ namespace backend.Logica
 
                 Comprador? comprador = objeto as Comprador;
 
-
-
                 if (comprador!.Contraseña != contraseña) throw new Exception("Contraseña incorrecta");
-                ICollection<Producto> productos = await CompradorMapper.ObtenerCarritoCompra((int)comprador.Id!);
-
-                comprador.CarritoCompra = productos;
+                comprador.CarritoCompra = await CompradorMapper.ObtenerCarritoCompra((int)comprador.Id!);
+                comprador.Pedidos = await PedidoMapper.ObtenerPedidosComprador((int)comprador.Id!);
 
                 return comprador;
 
             }
-            //todo: make it correctly
 
             throw new Exception("ERROR DESCONOCIDOOO");
         }
@@ -165,6 +162,21 @@ namespace backend.Logica
             //todo: make it correctly
 
             throw new Exception("EL ID DE USUARIO NO ES DE COMPRADOR");
+        }
+
+
+
+        public async Task<Comprador> CrearPedidoAComprador(Comprador comprador)
+        {
+
+            await PedidoMapper.CrearPedido((int)comprador.Id!, comprador.CarritoCompra);
+            await CompradorMapper.EliminarCarritoCompra((int)comprador.Id!);
+
+            comprador.CarritoCompra = new Collection<Producto>();
+            comprador.Pedidos = await PedidoMapper.ObtenerPedidosComprador((int)comprador.Id!);
+            return comprador;
+
+
         }
 
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { Router, RouterLink } from '@angular/router';
 import { AppComponent } from '../../../app.component';
+import { Comprador } from '../../../domain/interfaces/buyer';
 
 @Component({
   selector: 'app-header',
@@ -29,6 +30,6 @@ export class HeaderComponent {
   }
   GetShoppingCartSize(): number {
     if (AppComponent.usuario == undefined) return 0;
-    return AppComponent.usuario.comprador.carritoCompra.length;
+    return AppComponent.usuario.carritoCompra.length;
   }
 }

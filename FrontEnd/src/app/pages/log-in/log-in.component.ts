@@ -49,9 +49,10 @@ export class LogInComponent implements OnInit {
 
     this.logInApiService.logIn(body).subscribe({
       next: (data) => {
-        AppComponent.usuario = data;
-
         console.log(data);
+        AppComponent.usuario = data.comprador;
+
+        console.log(AppComponent.usuario);
         if (this.url == null) this.router.navigate(['../']);
         this.router.navigate([this.url]);
       },

@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { AppComponent } from '../../app.component';
-import { CompradorLogin } from '../../domain/interfaces/buyer';
-import { CarritoCompra } from '../../domain/interfaces/shopping-cart';
 import { ShoppingCartApiService } from '../../services/shopping-cart-api.service';
 import { Producto } from '../../domain/interfaces/category-products';
 import { ComponentNavigationService } from '../../services/component-navigation-services/component-navigation.service';
 import { RouterLink } from '@angular/router';
+import { Comprador } from '../../domain/interfaces/buyer';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -15,7 +14,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './shopping-cart.component.css',
 })
 export class ShoppingCartComponent {
-  usuario?: CompradorLogin;
+  usuario?: Comprador;
 
   constructor(
     private shoppingCartApiService: ShoppingCartApiService,
@@ -25,7 +24,7 @@ export class ShoppingCartComponent {
   }
 
   ReturnTotalPrice() {
-    const precioCentString = this.usuario?.comprador.carritoCompra.reduce((a, b) => a + b.precio_cents, 0) + '';
+    const precioCentString = this.usuario?.carritoCompra.reduce((a, b) => a + b.precio_cents, 0) + '';
 
     if (precioCentString == '0') return '00.00€';
     return (
@@ -36,7 +35,7 @@ export class ShoppingCartComponent {
     );
   }
   ReturnShoppingCartSize() {
-    return this.usuario?.comprador.carritoCompra.length;
+    return AppComponent.usuario!.carritoCompra.length;
   }
   ReturnPrice(price: number) {
     const precioCentString = price + '';
@@ -50,12 +49,12 @@ export class ShoppingCartComponent {
 
   RemoveProductFromShoppintCart(producto: Producto) {
     let shoppingCart = {
-      id_comprador: AppComponent.usuario!.comprador.id,
+      id_comprador: AppComponent.usuario!.id,
       id_producto: producto.id,
     };
     this.shoppingCartApiService.DeleteProductFromShoppingCart(shoppingCart).subscribe({
       next: (data) => {
-        AppComponent.usuario!.comprador.carritoCompra = data.carritoCompra;
+        AppComponent.usuario!.carritoCompra = data.carritoCompra;
         console.log(data);
         this.notificationsService.showNotification(producto.articulo.nombre + ' HA SIDO ELIMINADO DEL CARRITO');
       },

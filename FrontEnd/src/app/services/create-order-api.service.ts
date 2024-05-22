@@ -1,21 +1,20 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { LogInUser } from '../domain/interfaces/log-in-user';
-import { SignInUser } from '../domain/interfaces/sign-in-user';
+import { Injectable } from '@angular/core';
+import { Comprador, RespuestaLogIn } from '../domain/interfaces/buyer';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SignInApiService {
+export class CreateOrderApiService {
   constructor(private http: HttpClient) {}
 
-  signIn(body: SignInUser) {
+  createOrder(body: Comprador) {
     const headers = new HttpHeaders({
       accept: '*/*',
       'Content-Type': 'application/json-patch+json',
       'Access-Control-Allow-Origin': '*',
     });
 
-    return this.http.post(`http://localhost:5237/api/Api/Registrarse`, body);
+    return this.http.post<RespuestaLogIn>(`http://localhost:5237/api/Api/CrearPedido`, body);
   }
 }

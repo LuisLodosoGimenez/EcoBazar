@@ -234,6 +234,41 @@ namespace backend.Controllers
 
 
 
+        // ----------------------------------------------- //
+        [HttpPost("CrearPedido")]
+        public async Task<IActionResult> CrearPedidoAComprador(Comprador comprador)
+        {
+
+            try
+            {
+                var comp = await _logica.CrearPedidoAComprador(comprador);
+
+                var responseData = new
+                {
+                    Comprador = comprador,
+                };
+                return Ok(responseData);
+
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new
+                {
+                    response = ex.Message,
+                };
+                return BadRequest(errorResponse);
+            }
+        }
+        // ----------------------------------------------- //
+
+
+
+
+
+
+
+
+
 
 
 

@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header.folder/header/header.component';
-import { CompradorLogin } from './domain/interfaces/buyer';
 import { ComponentNavigationService } from './services/component-navigation-services/component-navigation.service';
+import { Comprador } from './domain/interfaces/buyer';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,7 @@ import { ComponentNavigationService } from './services/component-navigation-serv
 })
 export class AppComponent implements OnInit {
   title = 'userProfileSpringCarrot';
-  static usuario?: CompradorLogin;
+  static usuario?: Comprador;
   notification: boolean = false;
   notificationMessage: string = '';
   @ViewChild('fullPage') fullPage!: ElementRef;

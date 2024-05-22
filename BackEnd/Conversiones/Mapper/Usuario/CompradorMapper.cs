@@ -131,5 +131,13 @@ namespace backend.Mapper
             comprador.ImagenesUrl = usuarioBD.ImagenUrl;
             return comprador;
         }
+
+        public static async Task EliminarCarritoCompra(int id_comprador)
+        {
+            await _supabaseClient
+            .From<CarritoCompraBD>().Where(x => x.Id_comprador == id_comprador).Delete();
+        }
+
+
     }
 }

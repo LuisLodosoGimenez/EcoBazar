@@ -58,12 +58,12 @@ export class ProductListComponent {
   AddProductToShoppingCart() {
     if (AppComponent.usuario == undefined) this.router.navigate(['/log-in']);
     let shoppingCart = {
-      id_comprador: AppComponent.usuario!.comprador.id,
+      id_comprador: AppComponent.usuario!.id,
       id_producto: this.productDetails!.id,
     };
     this.shoppingCartApiService.AddProductToShoppingCart(shoppingCart).subscribe({
       next: (data) => {
-        AppComponent.usuario!.comprador.carritoCompra = data.carritoCompra;
+        AppComponent.usuario!.carritoCompra = data.carritoCompra;
         console.log(data);
         this.componentNavigationService.showNotification(
           this.productDetails?.articulo.nombre + ' AÑADIDO CORRECTAMENTE AL CARRITO',
