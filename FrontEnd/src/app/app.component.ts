@@ -18,6 +18,10 @@ export class AppComponent implements OnInit {
   static usuario?: Comprador;
   notification: boolean = false;
   notificationMessage: string = '';
+  confirmationDialog: boolean = false;
+  confirmationDialogMessage: string = '';
+  confirmationDialogButtonMessage: string = '';
+  confirmationDialogFunc: Function = () => {};
   @ViewChild('fullPage') fullPage!: ElementRef;
 
   constructor(
@@ -26,13 +30,23 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.componentNavigationService.alert.subscribe((res: any) => {
+    this.componentNavigationService.notification.subscribe((res: any) => {
+      console.log('mostrar panel notificaciónas');
       this.componentNavigationService.modifyOpacity(true);
       this.notification = true;
       this.notificationMessage = res.message;
       if (res.time != undefined) {
         setTimeout(() => this.closeNotification, res.time);
       }
+    });
+
+    this.componentNavigationService.confirmationDialog.subscribe((res: any) => {
+      console.log('mostrar panel confirmacion');
+      this.componentNavigationService.modifyOpacity(true);
+      this.confirmationDialog = true;
+      this.confirmationDialogMessage = res.message;
+      this.confirmationDialogButtonMessage = res.buttonMessage;
+      this.confirmationDialogFunc = res.func;
     });
 
     this.componentNavigationService.bgOpacity.subscribe((lowOpacity: any) => {
@@ -55,5 +69,16 @@ export class AppComponent implements OnInit {
     this.componentNavigationService.modifyOpacity(false);
     this.notificationMessage = '';
     this.notification = false;
+  }
+
+  closeConfirmationDialog() {
+    this.componentNavigationService.modifyOpacity(false);
+    this.confirmationDialog = false;
+    this.confirmationDialogMessage = '';
+    this.confirmationDialogButtonMessage = '';
+  }
+
+  confirmAction() {
+    this.confirmationDialogFunc();
   }
 }

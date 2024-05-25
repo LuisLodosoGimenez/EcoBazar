@@ -65,9 +65,6 @@ export class ProductListComponent {
       next: (data) => {
         AppComponent.usuario!.carritoCompra = data.carritoCompra;
         console.log(data);
-        this.componentNavigationService.showNotification(
-          this.productDetails?.articulo.nombre + ' AÑADIDO CORRECTAMENTE AL CARRITO',
-        );
         this.productDetails = undefined;
         this.productInfoState = 0;
       },

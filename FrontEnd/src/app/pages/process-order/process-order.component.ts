@@ -29,20 +29,24 @@ export class ProcessOrderComponent {
   }
 
   CreateOrder() {
-    this.createOrderApiService.createOrder(this.usuario!).subscribe({
-      next: (data) => {
-        console.log('aque');
-        console.log(data);
-        AppComponent.usuario = data.comprador;
-        this.usuario = data.comprador;
-        this.notificationsService.showNotification('PEDIDO REALIZADO CON EXITO');
-        this.router.navigate(['../']);
-      },
-      error: (error) => {
-        this.notificationsService.showNotification('PROBLEMA INTERNO DEL SERVIDOR');
-        console.log(error);
-      },
-    });
+    const func = () => {
+      this.createOrderApiService.createOrder(this.usuario!).subscribe({
+        next: (data) => {
+          console.log('aque');
+          console.log(data);
+          AppComponent.usuario = data.comprador;
+          this.usuario = data.comprador;
+          this.notificationsService.showNotification('PEDIDO REALIZADO CON EXITO');
+          this.router.navigate(['../']);
+        },
+        error: (error) => {
+          this.notificationsService.showNotification('PROBLEMA INTERNO DEL SERVIDOR');
+          console.log(error);
+        },
+      });
+    };
+
+    this.notificationsService.showConfirmationDialog('¿DESEA FINALIZAR EL PEDIDO?', 'FINALIZAR', func);
   }
 
   GetDate(days: number) {

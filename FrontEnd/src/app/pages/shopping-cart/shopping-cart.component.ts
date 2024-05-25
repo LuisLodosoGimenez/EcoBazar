@@ -56,17 +56,22 @@ export class ShoppingCartComponent {
       id_comprador: AppComponent.usuario!.id,
       id_producto: producto.id,
     };
-    this.shoppingCartApiService.DeleteProductFromShoppingCart(shoppingCart).subscribe({
-      next: (data) => {
-        AppComponent.usuario!.carritoCompra = data.carritoCompra;
-        console.log(data);
-        this.notificationsService.showNotification(producto.articulo.nombre + ' HA SIDO ELIMINADO DEL CARRITO');
-      },
-      error: (error) => {
-        this.notificationsService.showNotification('PROBLEMA INTERNO DEL SERVIDOR');
-      },
-    });
-
-    this.shoppingCartApiService.DeleteProductFromShoppingCart;
+    const func = () => {
+      this.shoppingCartApiService.DeleteProductFromShoppingCart(shoppingCart).subscribe({
+        next: (data) => {
+          AppComponent.usuario!.carritoCompra = data.carritoCompra;
+          console.log(data);
+        },
+        error: (error) => {
+          this.notificationsService.showNotification('PROBLEMA INTERNO DEL SERVIDOR');
+        },
+      });
+    };
+    console.log('pulsado eliminar producto ');
+    this.notificationsService.showConfirmationDialog(
+      '¿DESEA ELIMINAR ' + producto.articulo.nombre + ' DEL CARRITO?',
+      'ELIMINAR',
+      func,
+    );
   }
 }

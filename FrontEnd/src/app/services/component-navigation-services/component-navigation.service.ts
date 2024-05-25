@@ -5,16 +5,24 @@ import { Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class ComponentNavigationService {
-  private alertSource = new Subject();
-  alert = this.alertSource.asObservable();
+  private notificationSource = new Subject();
+  notification = this.notificationSource.asObservable();
+
+  private confirmationDialogSource = new Subject();
+  confirmationDialog = this.confirmationDialogSource.asObservable();
 
   private bgOpacitySource = new Subject();
   bgOpacity = this.bgOpacitySource.asObservable();
 
   constructor() {}
 
+  showConfirmationDialog(message: string, buttonMessage: string, func: () => void) {
+    console.log('servicio confirmación');
+    this.confirmationDialogSource.next({ message, buttonMessage, func });
+  }
+
   showNotification(message: string, time?: number) {
-    this.alertSource.next({ message, time });
+    this.notificationSource.next({ message, time });
   }
 
   modifyOpacity(lowOpacity: boolean) {
