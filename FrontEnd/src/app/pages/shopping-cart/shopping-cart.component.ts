@@ -3,7 +3,7 @@ import { AppComponent } from '../../app.component';
 import { ShoppingCartApiService } from '../../services/shopping-cart-api.service';
 import { Producto } from '../../domain/interfaces/category-products';
 import { ComponentNavigationService } from '../../services/component-navigation-services/component-navigation.service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Comprador } from '../../domain/interfaces/buyer';
 
 @Component({
@@ -19,8 +19,12 @@ export class ShoppingCartComponent {
   constructor(
     private shoppingCartApiService: ShoppingCartApiService,
     private notificationsService: ComponentNavigationService,
+    private router: Router,
   ) {
     this.usuario = AppComponent.usuario;
+    if (AppComponent.usuario == undefined) {
+      router.navigate(['../']);
+    }
   }
 
   ReturnTotalPrice() {
@@ -59,7 +63,7 @@ export class ShoppingCartComponent {
         this.notificationsService.showNotification(producto.articulo.nombre + ' HA SIDO ELIMINADO DEL CARRITO');
       },
       error: (error) => {
-        console.log(error);
+        this.notificationsService.showNotification('PROBLEMA INTERNO DEL SERVIDOR');
       },
     });
 

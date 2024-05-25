@@ -4,11 +4,12 @@ import { ShoppingCartApiService } from '../../services/shopping-cart-api.service
 import { ComponentNavigationService } from '../../services/component-navigation-services/component-navigation.service';
 import { AppComponent } from '../../app.component';
 import { CreateOrderApiService } from '../../services/create-order-api.service';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-process-order',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './process-order.component.html',
   styleUrl: './process-order.component.css',
 })
@@ -19,8 +20,12 @@ export class ProcessOrderComponent {
     private shoppingCartApiService: ShoppingCartApiService,
     private notificationsService: ComponentNavigationService,
     private createOrderApiService: CreateOrderApiService,
+    private router: Router,
   ) {
     this.usuario = AppComponent.usuario;
+    if (AppComponent.usuario == undefined) {
+      router.navigate(['../']);
+    }
   }
 
   CreateOrder() {
@@ -31,8 +36,10 @@ export class ProcessOrderComponent {
         AppComponent.usuario = data.comprador;
         this.usuario = data.comprador;
         this.notificationsService.showNotification('PEDIDO REALIZADO CON EXITO');
+        this.router.navigate(['../']);
       },
       error: (error) => {
+        this.notificationsService.showNotification('PROBLEMA INTERNO DEL SERVIDOR');
         console.log(error);
       },
     });

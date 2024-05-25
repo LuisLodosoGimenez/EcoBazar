@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { SignInApiService } from '../../services/sign-in-api.service';
+import { ComponentNavigationService } from '../../services/component-navigation-services/component-navigation.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -14,7 +15,10 @@ import { SignInApiService } from '../../services/sign-in-api.service';
 export class SignInComponent {
   failText?: String;
 
-  constructor(private signInApiService: SignInApiService) {}
+  constructor(
+    private signInApiService: SignInApiService,
+    private notificationsService: ComponentNavigationService,
+  ) {}
 
   result = '';
   result1 = '';
@@ -30,7 +34,7 @@ export class SignInComponent {
 
   registrase() {
     let body = {
-      nombre: String(this.formularioRegistro.value.nombre) + " " + String(this.formularioRegistro.value.apellidos),
+      nombre: String(this.formularioRegistro.value.nombre) + ' ' + String(this.formularioRegistro.value.apellidos),
       nick_name: String(this.formularioRegistro.value.nickname),
       contraseña: String(this.formularioRegistro.value.contraseña),
       email: String(this.formularioRegistro.value.mail),
@@ -45,8 +49,7 @@ export class SignInComponent {
         this.failText = 'REGISTRO CORRECTO. INICIE SESION';
       },
       error: (error) => {
-        console.log(error);
-        this.failText = error['error']['response'];
+        this.notificationsService.showNotification('PROBLEMA INTERNO DEL SERVIDOR');
       },
     });
   }

@@ -1,5 +1,5 @@
 <main class="mt-10">
-  <h1 class="text-xl font-medium">Productos de la categoría: {{ categoryName }}</h1>
+  <h1 class="text-xl font-bold">Productos de la categoría: {{ categoryName }}</h1>
   <div class="grid grid-cols-3">
     @for (product of productsByCategory; track $index) {
       <app-product-card [product]="product" (openProductInfo)="openProductInfo($event)"> </app-product-card>

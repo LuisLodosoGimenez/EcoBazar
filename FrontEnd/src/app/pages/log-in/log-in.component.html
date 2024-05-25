@@ -1,5 +1,5 @@
 <body class="bg-orange-100">
-  <div class="flex flex-col items-center h-screen py-10 text-teal-800">
+  <div class="flex flex-col items-center py-10 text-teal-800">
     <p
       style="
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -12,8 +12,8 @@
     >
       Inicio Sesión
     </p>
-    <form [formGroup]="formularioInicioSesion" class="flex justify-center items-center h-screen">
-      <div class="flex flex-col items-center h-screen">
+    <form [formGroup]="formularioInicioSesion" class="flex justify-center items-center">
+      <div class="flex flex-col items-center">
         <div
           id="rectangle-bg"
           class="p-8 flex flex-col items-center"
@@ -28,9 +28,9 @@
         >
           <div class="grid grid-cols-2 space-y-5">
             <p style="font-family: Arial, Helvetica, sans-serif; margin-top: 1.5rem">NickName</p>
-            <input id="registerandlogin-input" type="text" formControlName="nickname" required />
+            <input class="pr-1" id="registerandlogin-input" type="text" formControlName="nickname" required />
             <p style="font-family: Arial, Helvetica, sans-serif">Contraseña</p>
-            <input id="registerandlogin-input" type="password" formControlName="contraseña" required />
+            <input class="pr-1" id="registerandlogin-input" type="password" formControlName="contraseña" required />
           </div>
           <button
             (click)="iniciarSesion()"

@@ -1,7 +1,10 @@
 <main class="size-full bg-orange-100 p-8 space-y-9">
-  <h1 class="font-bold leading-none tracking-tight text-black text-3xl">TRAMITACIÓN PEDIDO</h1>
-  <div class="size-full grid grid-cols-5 space-x-3">
-    <div class="size-full col-span-4 space-y-4 p-4 border-r border-amber-700">
+  <span class="font-bold leading-none tracking-tight text-black text-3xl underline">
+    <button class="underline" routerLink="/shopping-cart">Carrito de la compra</button>
+  </span>
+  <span class="font-bold leading-none tracking-tight text-black text-3xl ml-2">- Tramitación pedido</span>
+  <div class="grid grid-cols-5 space-x-3">
+    <div class="col-span-4 space-y-4 p-4 border-r border-amber-700">
       @for (producto of usuario?.carritoCompra; track $index) {
         <div
           id="TARJETA"

@@ -1,40 +1,48 @@
 <main class="p-6">
   <h2 class="font-semibold leading-none tracking-tight text-black text-2xl">Pedidos recientes:</h2>
+  @if (usuario?.pedidos?.length == 0) {
+    <h2 class="font-semibold leading-none tracking-tight text-black text-xl italic ml-10 mt-10">
+      ~ No tienes ningún pedido ~
+    </h2>
+  } @else {
+    <div class="p-5 pl-0 space-y-8">
+      @for (pedido of usuario?.pedidos; track $index) {
+        <div
+          id="TARJETA"
+          class="relative h-80 w-full grid grid-cols-9 rounded rounded-l-none border-2 overflow-hidden border-teal-700 bg-orange-200"
+        >
+          <div class="absolute end-3 top-3">ESTADO: {{ pedido.estado }}</div>
+          <div class="col-span-2 overflow-hidden">
+            <img
+              class="h-full w-full object-cover object-center overflow-hidden"
+              src="{{ pedido.productosPedido[0].articulo.imagenesUrl[0] }}"
+              alt=""
+            />
+          </div>
 
-  <div class="p-5 pl-0 space-y-8">
-    @for (pedido of usuario?.pedidos; track $index) {
-      <div id="TARJETA" class="relative h-80 w-full grid grid-cols-9 overflow-hidden bg-orange-200">
-        <div class="absolute end-3 top-3">ESTADO: {{ pedido.estado }}</div>
-        <div class="col-span-2">
-          <img
-            class="h-full w-full object-cover object-center"
-            src="{{ pedido.productosPedido[0].articulo.imagenesUrl[0] }}"
-            alt=""
-          />
-        </div>
-
-        <div class="col-span-7 p-6 rounded rounded-l-none border-y-2 border-r-2" style="border-color: #adc178">
-          <h4 class="font-semibold leading-none tracking-tight text-black text-xl">Pedido numero: {{ pedido.id }}</h4>
-          <div class="grid grid-cols-5 size-full p-6">
-            <div class="col-span-5 pr-14 flex flex-col justify-between">
-              <h5 class="font-semibold leading-none tracking-tight text-black text-lg">Productos del pedido:</h5>
-              <div class="flex flex-col p-3 mt-1 pl-12 max-h-36 space-y-2 overflow-y-auto flex-1">
-                @for (producto of pedido.productosPedido; track $index) {
-                  <div>
-                    <span class="font-semibold leading-none tracking-tight text-black text-sm mr-4">{{
-                      producto.articulo.nombre
-                    }}</span>
-                    <span>{{ ReturnPrice(producto.precio_cents) }}</span>
-                  </div>
-                }
-              </div>
-              <div class="font-semibold leading-none tracking-tight text-black text-lg">
-                TOTAL: {{ ReturnTotalPrice(pedido) }}
+          <div class="col-span-7 p-6" style="border-color: #adc178">
+            <h4 class="font-semibold leading-none tracking-tight text-black text-xl">Pedido numero: {{ pedido.id }}</h4>
+            <div class="grid grid-cols-5 size-full p-6">
+              <div class="col-span-5 pr-14 flex flex-col justify-between">
+                <h5 class="font-semibold leading-none tracking-tight text-black text-lg">Productos del pedido:</h5>
+                <div class="flex flex-col p-3 mt-1 pl-12 max-h-36 space-y-2 overflow-y-auto flex-1">
+                  @for (producto of pedido.productosPedido; track $index) {
+                    <div>
+                      <span class="font-semibold leading-none tracking-tight text-black text-sm mr-4">{{
+                        producto.articulo.nombre
+                      }}</span>
+                      <span>{{ ReturnPrice(producto.precio_cents) }}</span>
+                    </div>
+                  }
+                </div>
+                <div class="font-semibold leading-none tracking-tight text-black text-lg">
+                  TOTAL: {{ ReturnTotalPrice(pedido) }}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    }
-  </div>
+      }
+    </div>
+  }
 </main>

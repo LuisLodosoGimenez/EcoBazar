@@ -4,6 +4,7 @@ import { RouterOutlet, RouterLink, RouterModule, ActivatedRoute, Router } from '
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AppComponent } from '../../app.component';
 import { LogInApiService } from '../../services/log-in-api.service';
+import { ComponentNavigationService } from '../../services/component-navigation-services/component-navigation.service';
 
 @Component({
   selector: 'app-log-in',
@@ -20,6 +21,7 @@ export class LogInComponent implements OnInit {
     private router: Router,
     private logInApiService: LogInApiService,
     private route: ActivatedRoute,
+    private notificationsService: ComponentNavigationService,
   ) {}
 
   ngOnInit() {
@@ -57,7 +59,7 @@ export class LogInComponent implements OnInit {
         this.router.navigate([this.url]);
       },
       error: (error) => {
-        this.failText = error['error']['response'];
+        this.notificationsService.showNotification('PROBLEMA INTERNO DEL SERVIDOR');
       },
     });
   }

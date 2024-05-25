@@ -11,6 +11,11 @@ import { AppComponent } from '../../app.component';
   styleUrl: './user-profile.component.css',
 })
 export class UserProfileComponent {
+  constructor(private router: Router) {
+    if (AppComponent.usuario == undefined) {
+      router.navigate(['../']);
+    }
+  }
   cerrarSesion() {
     AppComponent.usuario = undefined;
   }
