@@ -1,7 +1,7 @@
 using backend.Models;
 
 namespace backend.Logica{
-    public interface IComprador{
+    public interface IObservador{
         string Actualizar(Producto productoBajoEnExistencias);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using backend.Logica;
 
 namespace backend.Models
 {
@@ -10,7 +11,7 @@ namespace backend.Models
     public Vendedor vendedor{get;set;}
     public Articulo articulo{get;set;}
 
-    public ICollection<Comprador> compradoresProducto {get; set;}
+    public ICollection<IObservador> observadoresProducto {get; set;}
 
     public Producto(int precio_cents, int unidades, Vendedor vendedor, Articulo articulo){
         
@@ -18,29 +19,31 @@ namespace backend.Models
         this.Unidades = unidades;
         this.vendedor = vendedor;
         this.articulo = articulo;
-        this.compradoresProducto = new List<Comprador>();
+        this.observadoresProducto = new List<IObservador>();
     }
 
-    public void InteresadosEnProducto(Comprador comprador){
-        compradoresProducto.Add(comprador);
+    public void InteresadosEnProducto(IObservador observador){
+        observadoresProducto.Add(observador);
     }
 
-    public void NOInteresadosEnProducto(Comprador comprador){
-        compradoresProducto.Remove(comprador);
+    public void NOInteresadosEnProducto(IObservador observador){
+        observadoresProducto.Remove(observador);
     }
 
-    public void NotificarComprador(){
-        foreach (Comprador comprador in compradoresProducto)
+    public void Notificar(){
+        foreach (IObservador observador in observadoresProducto)
         {
-            comprador.Actualizar(this);
+            observador.Actualizar(this);
         }
     }
 
-    public void CambioExistencias(){
+    public void VenderProducto(int CantidadVendida){
+
+        this.Unidades -= CantidadVendida;
 
         if(this.Unidades < 5)
         {
-            NotificarComprador();
+            Notificar();
         }
 
     }

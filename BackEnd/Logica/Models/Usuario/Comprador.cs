@@ -6,7 +6,7 @@ using Postgrest.Models;
 
 namespace backend.Models
 {
-    public class Comprador : Usuario, IComprador{
+    public class Comprador : Usuario, IObservador{
 
         public int? Limite_gasto_cents_mes{get;set;}
         public ICollection<Producto> CarritoCompra{get;set;}
