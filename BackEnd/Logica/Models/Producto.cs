@@ -13,6 +13,9 @@ namespace backend.Models
 
     public ICollection<IObservador> observadoresProducto {get; set;}
 
+    public IDescuento descuentoAplicado {get; set;}
+
+
     public Producto(int precio_cents, int unidades, Vendedor vendedor, Articulo articulo){
         
         this.Precio_cents = precio_cents;
@@ -20,6 +23,7 @@ namespace backend.Models
         this.vendedor = vendedor;
         this.articulo = articulo;
         this.observadoresProducto = new List<IObservador>();
+        descuentoAplicado = new SinDescuento();
     }
 
     public void InteresadosEnProducto(IObservador observador){
@@ -47,5 +51,14 @@ namespace backend.Models
         }
 
     }
+
+    public int AplicarDescuentoAProducto(){
+        return descuentoAplicado.AplicarDescuento(this.Precio_cents);
+    }
+
+    // public string ObtenerInfoDescuento(){
+    //     return descuentoAplicado.GetType().Name;
+    // }
+
    } 
 }

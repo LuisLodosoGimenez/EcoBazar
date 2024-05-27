@@ -133,6 +133,11 @@ namespace backend.Logica
                 Comprador? comprador = objeto as Comprador;
                 await CompradorMapper.AñadirProductoACarritoCompra((int)comprador!.Id!, idProducto);
                 ICollection<Producto> productos = await CompradorMapper.ObtenerCarritoCompra(idComprador);
+                
+                // foreach(Producto producto in productos){
+                //     producto.descuentoAplicado = new DescuentoInvierno();
+                //     producto.Precio_cents = producto.descuentoAplicado.AplicarDescuento(producto.Precio_cents);
+                // }
 
                 comprador!.CarritoCompra = productos;
 
