@@ -134,10 +134,10 @@ namespace backend.Logica
                 await CompradorMapper.AñadirProductoACarritoCompra((int)comprador!.Id!, idProducto);
                 ICollection<Producto> productos = await CompradorMapper.ObtenerCarritoCompra(idComprador);
                 
-                // foreach(Producto producto in productos){
-                //     producto.descuentoAplicado = new DescuentoInvierno();
-                //     producto.Precio_cents = producto.descuentoAplicado.AplicarDescuento(producto.Precio_cents);
-                // }
+                foreach(Producto producto in productos){
+                    producto.descuentoAplicado = DeterminarDescuento(producto);
+                    producto.Precio_cents = producto.CalcularDescuento();
+                }
 
                 comprador!.CarritoCompra = productos;
 
@@ -148,6 +148,35 @@ namespace backend.Logica
 
             throw new Exception("EL ID DE USUARIO NO ES DE COMPRADOR");
         }
+
+        private IDescuento DeterminarDescuento(Producto producto){
+
+            int mesActual = DateTime.Now.Month;
+            IDescuento descuento = new SinDescuento();
+
+            switch(mesActual){
+                case 1:
+                    descuento = new DescuentoInvierno();
+                    break;
+               
+                case 4:
+                    descuento = new DescuentoPrimavera();
+                    break;
+               
+                case 7:
+                    descuento = new DescuentoVerano();
+                    break;
+                
+                case 11:
+                    descuento = new DescuentoOtonyo();
+                    break;
+            
+            }
+
+            return descuento;
+
+        }
+
 
         public async Task<Comprador> EliminarProductoEnCarritoCompra(int idComprador, int idProducto)
         {

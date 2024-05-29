@@ -59,35 +59,12 @@ namespace backend.Mapper
 
             Producto producto = new Producto(productoBD.Precio_cents, productoBD.Unidades, vendedor, articulo);
             producto.Id = productoBD.Id;
-            return ProductoConDescuento(producto);
-
-
-        }
-
-        public static Producto ProductoConDescuento(Producto producto){
-
-            int mesActual = DateTime.Now.Month;
-
-            switch(mesActual){
-                case 1:
-                    producto.descuentoAplicado = new DescuentoInvierno();
-                    break;
-               
-                case 4:
-                    producto.descuentoAplicado = new DescuentoPrimavera();
-                    break;
-               
-                case 7:
-                    producto.descuentoAplicado = new DescuentoVerano();
-                    break;
-                
-                case 11:
-                    producto.descuentoAplicado = new DescuentoOtonyo();
-                    break;
-            
-            }
             return producto;
+
+
         }
+
+       
 
     }
 }

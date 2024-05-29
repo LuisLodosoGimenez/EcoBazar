@@ -3,7 +3,7 @@ using backend.Logica;
 
 namespace backend.Models
 {
-   public class Producto{
+   public class Producto : ISujeto{
 
     public int? Id{get;set;}
     public int Precio_cents{get;set;}
@@ -26,11 +26,11 @@ namespace backend.Models
         descuentoAplicado = new SinDescuento();
     }
 
-    public void InteresadosEnProducto(IObservador observador){
+    public void AñadirObservadoresALista(IObservador observador){
         observadoresProducto.Add(observador);
     }
 
-    public void NOInteresadosEnProducto(IObservador observador){
+    public void BorrarObservadoresALista(IObservador observador){
         observadoresProducto.Remove(observador);
     }
 
@@ -52,13 +52,11 @@ namespace backend.Models
 
     }
 
-    public int AplicarDescuentoAProducto(){
+    public int CalcularDescuento(){
         return descuentoAplicado.AplicarDescuento(this.Precio_cents);
     }
 
-    // public string ObtenerInfoDescuento(){
-    //     return descuentoAplicado.GetType().Name;
-    // }
+    
 
    } 
 }
