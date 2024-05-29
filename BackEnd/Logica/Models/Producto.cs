@@ -30,7 +30,7 @@ namespace backend.Models
         observadoresProducto.Add(observador);
     }
 
-    public void BorrarObservadoresALista(IObservador observador){
+    public void BorrarObservadoresDeLista(IObservador observador){
         observadoresProducto.Remove(observador);
     }
 
