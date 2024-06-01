@@ -11,7 +11,6 @@ using backend.ModelsSupabase;
 using Postgrest.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using backend.Models;
-using backend.Conversiones;
 using System.Linq.Expressions;
 using static Postgrest.Constants;
 using Microsoft.AspNetCore.JsonPatch.Internal;
@@ -24,12 +23,10 @@ namespace backend.Services
     {
 
         private readonly Supabase.Client _supabaseClient;
-        private readonly IConversiones convertir;
 
-        public SupabaseService(IConfiguration configuration, IConversiones convertir)
+        public SupabaseService(IConfiguration configuration)
         {
 
-            this.convertir = convertir;
             var supabaseUrl = configuration["Supabase:Url"];
             var supabaseKey = configuration["Supabase:ApiKey"];
 
