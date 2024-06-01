@@ -6,7 +6,8 @@ namespace backend.Models
    public class Producto : ISujeto{
 
     public int? Id{get;set;}
-    public int Precio_cents{get;set;}
+
+    public int PrecioCents{get;set;}
     public int Unidades{get;set;}
     public Vendedor vendedor{get;set;}
     public Articulo articulo{get;set;}
@@ -16,15 +17,16 @@ namespace backend.Models
     public IDescuento descuentoAplicado {get; set;}
 
 
-    public Producto(int precio_cents, int unidades, Vendedor vendedor, Articulo articulo){
+    public Producto(int precioCents, int unidades, Vendedor vendedor, Articulo articulo){
         
-        this.Precio_cents = precio_cents;
+        this.PrecioCents = precioCents;
         this.Unidades = unidades;
         this.vendedor = vendedor;
         this.articulo = articulo;
         this.observadoresProducto = new List<IObservador>();
         descuentoAplicado = new SinDescuento();
     }
+
 
     public void AñadirObservadoresALista(IObservador observador){
         observadoresProducto.Add(observador);
@@ -53,10 +55,7 @@ namespace backend.Models
     }
 
     public int CalcularDescuento(){
-        return descuentoAplicado.AplicarDescuento(this.Precio_cents);
+        return descuentoAplicado.AplicarDescuento(this.PrecioCents);
     }
-
-    
-
    } 
 }

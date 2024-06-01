@@ -51,9 +51,9 @@ namespace backend.Mapper
 
         private static Articulo ConvertirArticuloBDAArticulo(ArticuloBD articuloBD)
         {
-            var usu = UsuarioMapper.ObtenerUsuarioPorId(articuloBD.Id_productor);
-            usu.Wait();
-            Productor? productor = usu.Result as Productor;
+            var usuario = UsuarioMapper.ObtenerUsuarioPorId(articuloBD.IdProductor);
+            usuario.Wait();
+            Productor? productor = usuario.Result as Productor;
 
             var imagenes = ImagenArticuloMapper.ObtenerImagenesArticuloPorId(articuloBD.Id);
             imagenes.Wait();
@@ -64,9 +64,9 @@ namespace backend.Mapper
 
         public static Articulo ArticuloBDAArticulo(ArticuloBD articuloBD, Productor productor, List<string> imagenesArticulo)
         {
-            Articulo articulo = new Articulo(articuloBD.Nombre, articuloBD.Categoria, articuloBD.Edad_min,
-            articuloBD.Consejos_utilizacion, articuloBD.Consejos_retirada, articuloBD.Origen, articuloBD.Proceso_produccion,
-            articuloBD.Impacto_ambiental_social, articuloBD.Contribucion_ods, productor);
+            Articulo articulo = new Articulo(articuloBD.Nombre, articuloBD.Categoria, articuloBD.EdadMin,
+            articuloBD.ConsejosUtilizacion, articuloBD.ConsejosRetirada, articuloBD.Origen, articuloBD.ProcesoProduccion,
+            articuloBD.ImpactoAmbientalSocial, articuloBD.ContribucionOds, productor);
             articulo.Id = articuloBD.Id;
             articulo.ImagenesUrl = imagenesArticulo;
             return articulo;

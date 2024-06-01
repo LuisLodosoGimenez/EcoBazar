@@ -9,11 +9,11 @@ namespace backend.ModelsSupabase
 
         [PrimaryKey("id_comprador")]
         [Column("id_comprador")]
-        public int Id_comprador { get; set; }
+        public int IdComprador { get; set; }
 
         [PrimaryKey("id_producto")]
         [Column("id_producto")]
-        public int Id_producto { get; set; }
+        public int IdProducto { get; set; }
 
     }
 }

@@ -29,7 +29,7 @@ namespace backend.Mapper
         {
             var result = await _supabaseClient
                                 .From<ProductoBD>()
-                                .Where(a => a.Id_articulo == idArticulo)
+                                .Where(a => a.IdArticulo == idArticulo)
                                 .Get();
 
 
@@ -40,11 +40,11 @@ namespace backend.Mapper
         public static Producto ConvertirProductoBDAProducto(ProductoBD productoBD)
         {
 
-            var vend = UsuarioMapper.ObtenerUsuarioPorId(productoBD.Id_vendedor);
+            var vend = UsuarioMapper.ObtenerUsuarioPorId(productoBD.IdVendedor);
             vend.Wait();
             Vendedor vendedor = (vend.Result as Vendedor)!;
 
-            var art = ArticuloMapper.ObtenerArticuloPorId(productoBD.Id_articulo);
+            var art = ArticuloMapper.ObtenerArticuloPorId(productoBD.IdArticulo);
             art.Wait();
             Articulo articulo = art.Result as Articulo;
 
@@ -57,14 +57,11 @@ namespace backend.Mapper
         public static Producto ProductoBDAProducto(ProductoBD productoBD, Vendedor vendedor, Articulo articulo)
         {
 
-            Producto producto = new Producto(productoBD.Precio_cents, productoBD.Unidades, vendedor, articulo);
+            Producto producto = new Producto(productoBD.PrecioCents, productoBD.Unidades, vendedor, articulo);
             producto.Id = productoBD.Id;
             return producto;
 
 
         }
-
-       
-
     }
 }

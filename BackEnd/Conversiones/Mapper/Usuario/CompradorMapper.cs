@@ -1,6 +1,6 @@
 using backend.Models;
 using backend.ModelsSupabase;
-
+using backend.Services;
 namespace backend.Mapper
 {
 
@@ -27,7 +27,6 @@ namespace backend.Mapper
 
         public async static Task AñadirComprador(CompradorBD compradorBD)
         {
-
             await _supabaseClient
                     .From<CompradorBD>()
                     .Insert(compradorBD);
@@ -41,7 +40,7 @@ namespace backend.Mapper
             {
                 Id = comprador.Id,
                 Nombre = comprador.Nombre,
-                Nick_name = comprador.Nick_name,
+                NickName = comprador.NickName,
                 Contraseña = comprador.Contraseña,
                 Email = comprador.Email,
                 Edad = comprador.Edad,
@@ -55,7 +54,7 @@ namespace backend.Mapper
             return new CompradorBD
             {
                 Id = comprador.Id,
-                Limite_gasto_cents_mes = comprador.Limite_gasto_cents_mes
+                LimiteGastoMes = comprador.LimiteGastoMes
             };
 
         }
@@ -65,11 +64,11 @@ namespace backend.Mapper
 
             var carrito = await _supabaseClient
                             .From<CarritoCompraBD>()
-                            .Where(x => x.Id_comprador == compradorId)
+                            .Where(x => x.IdComprador == compradorId)
                             .Get();
 
             List<int> lista = new List<int>();
-            lista = carrito.Models.ConvertAll((CarritoCompraBD carrito) => carrito.Id_producto);
+            lista = carrito.Models.ConvertAll((CarritoCompraBD carrito) => carrito.IdProducto);
 
 
             List<ProductoBD> productosBD = new List<ProductoBD>();
@@ -92,14 +91,11 @@ namespace backend.Mapper
 
         public async static Task AñadirProductoACarritoCompra(int compradorId, int productoId)
         {
-
-
-
             //todo: add to convertir
             CarritoCompraBD carritoCompraBD = new CarritoCompraBD
             {
-                Id_comprador = compradorId,
-                Id_producto = productoId
+                IdComprador = compradorId,
+                IdProducto = productoId
             };
 
 
@@ -112,8 +108,8 @@ namespace backend.Mapper
             //todo: add to convertir
             CarritoCompraBD carritoCompraBD = new CarritoCompraBD
             {
-                Id_comprador = compradorId,
-                Id_producto = productoId,
+                IdComprador = compradorId,
+                IdProducto = productoId,
             };
 
 
@@ -124,10 +120,10 @@ namespace backend.Mapper
 
         public static Comprador UsuarioBDYCompradorBDAComprador(UsuarioBD usuarioBD, CompradorBD compradorBD)
         {
-            var comprador = new Comprador(usuarioBD.Nombre, usuarioBD.Nick_name, usuarioBD.Contraseña, usuarioBD.Email);
+            var comprador = new Comprador(usuarioBD.Nombre, usuarioBD.NickName, usuarioBD.Contraseña, usuarioBD.Email);
             comprador.Id = usuarioBD.Id;
             comprador.Edad = usuarioBD.Edad;
-            comprador.Limite_gasto_cents_mes = compradorBD.Limite_gasto_cents_mes;
+            comprador.LimiteGastoMes = compradorBD.LimiteGastoMes;
             comprador.ImagenesUrl = usuarioBD.ImagenUrl;
             return comprador;
         }

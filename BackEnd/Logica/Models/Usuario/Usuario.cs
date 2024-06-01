@@ -6,7 +6,7 @@ namespace backend.Models
 
     public int? Id{get;set;}
     public string Nombre{get;set;}
-    public string Nick_name{get;set;}
+    public string NickName{get;set;}
     public string Contraseña{get;set;}
     public string Email{get;set;}
     public int? Edad{get;set;}
@@ -14,10 +14,10 @@ namespace backend.Models
 
 
 
-    public Usuario(string nombre, string nick_name, string contraseña, string email){
+    public Usuario(string nombre, string nickName, string contraseña, string email){
         
         this.Nombre = nombre;
-        this.Nick_name = nick_name;
+        this.NickName = nickName;
         this.Contraseña = contraseña;
         this.Email = email;
     }

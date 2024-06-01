@@ -40,7 +40,7 @@ namespace backend.Mapper
         {
             var result = await _supabaseClient
                                 .From<UsuarioBD>()
-                                .Where(x => x.Nick_name == nickName)
+                                .Where(x => x.NickName == nickName)
                                 .Get();
 
             return result.Models.Any();
@@ -62,7 +62,7 @@ namespace backend.Mapper
         {
             var usuario = await _supabaseClient
                                 .From<UsuarioBD>()
-                                .Where(x => x.Nick_name == nickName)
+                                .Where(x => x.NickName == nickName)
                                 .Get();
 
 
@@ -76,15 +76,15 @@ namespace backend.Mapper
         }
 
 
-        public async static Task<Object> ObtenerUsuarioPorId(int id_usuario)
+        public async static Task<Object> ObtenerUsuarioPorId(int idUsuario)
         {
 
             var usuario = await _supabaseClient
                                 .From<UsuarioBD>()
-                                .Where(x => x.Id == id_usuario)
+                                .Where(x => x.Id == idUsuario)
                                 .Get();
 
-            if (!usuario.Models.Any()) throw new Exception("El ID '" + id_usuario + "' no corresponde a ningún usuario.");
+            if (!usuario.Models.Any()) throw new Exception("El ID '" + idUsuario + "' no corresponde a ningún usuario.");
             UsuarioBD usuarioBD = usuario.Model!;
 
             return await UsuarioMapper.ObtenerTipoUsuarioPorUsurioBD(usuarioBD);
@@ -133,7 +133,7 @@ namespace backend.Mapper
         public static Usuario UsuarioBDAUsuario(UsuarioBD usuarioBD)
         {
 
-            var usuario = new Usuario(usuarioBD.Nombre, usuarioBD.Nick_name, usuarioBD.Contraseña, usuarioBD.Email);
+            var usuario = new Usuario(usuarioBD.Nombre, usuarioBD.NickName, usuarioBD.Contraseña, usuarioBD.Email);
             usuario.Edad = usuarioBD.Edad;
             return usuario;
 

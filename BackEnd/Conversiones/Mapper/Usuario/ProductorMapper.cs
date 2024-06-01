@@ -28,7 +28,7 @@ namespace backend.Mapper
 
         public static Productor UsuarioBDAProductor(UsuarioBD usuarioBD)
         {
-            var productor = new Productor(usuarioBD.Nombre, usuarioBD.Nick_name, usuarioBD.Contraseña, usuarioBD.Email);
+            var productor = new Productor(usuarioBD.Nombre, usuarioBD.NickName, usuarioBD.Contraseña, usuarioBD.Email);
             productor.Id = usuarioBD.Id;
             productor.Edad = usuarioBD.Edad;
             productor.ImagenesUrl = usuarioBD.ImagenUrl;

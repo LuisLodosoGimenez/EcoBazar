@@ -29,7 +29,7 @@ namespace backend.Mapper
 
         public static Vendedor UsuarioBDAVendedor(UsuarioBD usuarioBD)
         {
-            var vendedor = new Vendedor(usuarioBD.Nombre, usuarioBD.Nick_name, usuarioBD.Contraseña, usuarioBD.Email);
+            var vendedor = new Vendedor(usuarioBD.Nombre, usuarioBD.NickName, usuarioBD.Contraseña, usuarioBD.Email);
             vendedor.Id = usuarioBD.Id;
             vendedor.Edad = usuarioBD.Edad;
             vendedor.ImagenesUrl = usuarioBD.ImagenUrl;
