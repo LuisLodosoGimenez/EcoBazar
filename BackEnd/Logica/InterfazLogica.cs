@@ -27,27 +27,5 @@ namespace backend.Logica
 
         Task<Comprador> EliminarProductoEnCarritoCompra(int idComprador, int idProducto);
 
-        ///################################################################
-
-        // void AddMember(Usuario user);
-        // Task Login(String nick, String password);
-        //IList<Usuario> ObtenerUsuarios();
-
-        // IList<Producto> ObtenerProductos();
-        // IList<Articulo> ObtenerArticulos();
-        // IList<Articulo> GetArticlesByName(string keyWords);
-        // //IList<CarritoCompra> GetChartByUser(Usuario user);
-        // //IList<Producto> GetProductByChart(CarritoCompra carr);
-        //  IList<Articulo> GetArticleByProduct(Producto prod);
-        // void AgregarAlCarrito(int usuarioId, int productoId);
-        // IList<Producto> ObtenerProductosPorCategoria(string keyWords);
-        // IList<Producto>  FiltrarArticulos(IList<Articulo> filtrados);
-
-
-
-        // //CONSULTAR SI SIRVEN Y TAL
-        // //IList<CarritoCompra> ObtenerChart();
-        // Usuario UpdateEdadUsuario(Usuario usuario,int edad);
-        // Producto ObtenerProductoPorPrecio(int precio);
     }
 }
