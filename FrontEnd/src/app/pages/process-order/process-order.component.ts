@@ -30,7 +30,11 @@ export class ProcessOrderComponent {
 
   CreateOrder() {
     const func = () => {
-      this.createOrderApiService.createOrder(this.usuario!).subscribe({
+      let body = {
+        idComprador: this.usuario?.id!,
+        carritoCompra: this.usuario?.carritoCompra!.map((x) => x.id)!,
+      };
+      this.createOrderApiService.createOrder(body).subscribe({
         next: (data) => {
           console.log('aque');
           console.log(data);
@@ -55,7 +59,7 @@ export class ProcessOrderComponent {
   }
 
   ReturnTotalPrice() {
-    const precioCentString = this.usuario?.carritoCompra.reduce((a, b) => a + b.precio_cents, 0) + '';
+    const precioCentString = this.usuario?.carritoCompra.reduce((a, b) => a + b.precioCents, 0) + '';
 
     if (precioCentString == '0') return '00.00€';
     return (

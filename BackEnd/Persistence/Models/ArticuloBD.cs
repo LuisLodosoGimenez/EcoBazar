@@ -4,66 +4,66 @@ using Postgrest.Models;
 
 namespace backend.ModelsSupabase
 {
-    [Table("Articulo")]
-    public class ArticuloBD : BaseModel
-    {
-        [PrimaryKey("id", false)]
-        public int Id { get; set; }
+        [Table("Articulo")]
+        public class ArticuloBD : BaseModel
+        {
+                [PrimaryKey("id", false)]
+                public int Id { get; set; }
 
-        [Column("nombre")]
-        [Required]
+                [Column("nombre")]
+                [Required]
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public  string Nombre { get; set; }
+                public string Nombre { get; set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        [Column("categoria")]
-        [Required]
+                [Column("categoria")]
+                [Required]
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public string Categoria { get; set; }
+                public string Categoria { get; set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        [Column("edad_min")]
-        public int? Edad_min { get; set; }
+                [Column("edad_min")]
+                public int? EdadMin { get; set; }
 
-        [Column("consejos_utilizacion")]
-        [Required]
+                [Column("consejos_utilizacion")]
+                [Required]
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public  string Consejos_utilizacion { get; set; }
+                public string ConsejosUtilizacion { get; set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        [Column("consejos_retirada")]
-        [Required]
+                [Column("consejos_retirada")]
+                [Required]
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public  string Consejos_retirada { get; set; }
+                public string ConsejosRetirada { get; set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        [Column("origen")]
-        [Required]
+                [Column("origen")]
+                [Required]
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public  string Origen { get; set; }
+                public string Origen { get; set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        [Column("proceso_produccion")]
-        [Required]
+                [Column("proceso_produccion")]
+                [Required]
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public  string Proceso_produccion { get; set; }
+                public string ProcesoProduccion { get; set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        [Column("impacto_ambiental_social")]
-        [Required]
+                [Column("impacto_ambiental_social")]
+                [Required]
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public  string Impacto_ambiental_social { get; set; }
+                public string ImpactoAmbientalSocial { get; set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        [Column("contribucion_ods")]
-        [Required]
+                [Column("contribucion_ods")]
+                [Required]
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public  string Contribucion_ods { get; set; }
+                public string ContribucionOds { get; set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        [Column("id_productor")]
-        [Required]
-        public int Id_productor { get; set; }
+                [Column("id_productor")]
+                [Required]
+                public int IdProductor { get; set; }
 
-    }
+        }
 }

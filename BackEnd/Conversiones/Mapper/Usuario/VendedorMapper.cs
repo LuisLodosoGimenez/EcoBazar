@@ -1,6 +1,5 @@
 using backend.Models;
 using backend.ModelsSupabase;
-using backend.Services;
 
 namespace backend.Mapper
 {
@@ -8,28 +7,51 @@ namespace backend.Mapper
     public static class VendedorMapper
     {
 
-        private static readonly Supabase.Client _supabaseClient;
 
-
-        static VendedorMapper()
+        public async static Task<Vendedor> ObtenerVendedorPorNickName(string nickName)
         {
+            var usuario = await SupabaseClientSingleton.getInstance()
+                                .From<UsuarioBD>()
+                                .Where(x => x.NickName == nickName)
+                                .Get();
 
-            var supabaseUrl = "https://llpjnoklflyjokandifh.supabase.co";
-            var supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxscGpub2tsZmx5am9rYW5kaWZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM5Nzc0MzQsImV4cCI6MjAyOTU1MzQzNH0.IeBIVRWX_9LEGvCB7KQVntdIP3arB0ZF3SVOVJbktug";
+            if (!usuario.Models.Any()) throw new Exception("El NickName '" + nickName + "' no corresponde a ningún usuario.");
+            UsuarioBD usuarioBD = usuario.Model!;
 
-            var options = new Supabase.SupabaseOptions
-            {
-                AutoConnectRealtime = true
-            };
 
-            _supabaseClient = new Supabase.Client(supabaseUrl!, supabaseKey, options);
+            var vendedor = await SupabaseClientSingleton.getInstance()
+                                    .From<VendedorBD>()
+                                    .Where(x => x.Id == usuarioBD.Id!)
+                                    .Get();
+
+            if (vendedor.Models.Any()) return UsuarioBDAVendedor(usuarioBD);
+            else throw new Exception("No se ha encontrado ningún comprador con el siguiente NickName: " + nickName);
         }
 
+        public async static Task<Vendedor> ObtenerVendedorPorId(int idUsuario)
+        {
 
+            var usuario = await SupabaseClientSingleton.getInstance()
+                                .From<UsuarioBD>()
+                                .Where(x => x.Id == idUsuario)
+                                .Get();
+
+            if (!usuario.Models.Any()) throw new Exception("El ID '" + idUsuario + "' no corresponde a ningún usuario.");
+            UsuarioBD usuarioBD = usuario.Model!;
+
+            var vendedor = await SupabaseClientSingleton.getInstance()
+                                    .From<VendedorBD>()
+                                    .Where(x => x.Id == usuarioBD.Id!)
+                                    .Get();
+
+            if (vendedor.Models.Any()) return VendedorMapper.UsuarioBDAVendedor(usuarioBD);
+            else throw new Exception("No se ha encontrado ningún comprador con el siguiente ID: " + idUsuario);
+
+        }
 
         public static Vendedor UsuarioBDAVendedor(UsuarioBD usuarioBD)
         {
-            var vendedor = new Vendedor(usuarioBD.Nombre, usuarioBD.Nick_name, usuarioBD.Contraseña, usuarioBD.Email);
+            var vendedor = new Vendedor(usuarioBD.Nombre, usuarioBD.NickName, usuarioBD.Contraseña, usuarioBD.Email);
             vendedor.Id = usuarioBD.Id;
             vendedor.Edad = usuarioBD.Edad;
             vendedor.ImagenesUrl = usuarioBD.ImagenUrl;

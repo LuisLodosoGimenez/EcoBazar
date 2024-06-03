@@ -2,17 +2,19 @@ export type Productos = Producto[];
 
 export interface Producto {
   id: number;
-  precio_cents: number;
+  precioCents: number;
   unidades: number;
-  dias_entrega: number;
+  diasEntrega: number;
   vendedor: Vendedor;
   articulo: Articulo;
+  observadoresProducto: any[];
+  descuentoAplicado: DescuentoAplicado;
 }
 
 export interface Vendedor {
   id: number;
   nombre: string;
-  nick_name: string;
+  nickName: string;
   contraseña: string;
   email: string;
   edad: number;
@@ -23,13 +25,13 @@ export interface Articulo {
   id: number;
   nombre: string;
   categoria: string;
-  edad_min: number;
-  consejos_utilizacion: string;
-  consejos_retirada: string;
+  edadMin: number;
+  consejosUtilizacion: string;
+  consejosRetirada: string;
   origen: string;
-  proceso_produccion: string;
-  impacto_ambiental_social: string;
-  contribucion_ods: string;
+  procesoProduccion: string;
+  impactoAmbientalSocial: string;
+  contribucionOds: string;
   productor: Productor;
   productos: any[];
   imagenesUrl: string[];
@@ -38,9 +40,13 @@ export interface Articulo {
 export interface Productor {
   id: number;
   nombre: string;
-  nick_name: string;
+  nickName: string;
   contraseña: string;
   email: string;
   edad: number;
   imagenesUrl: any;
+}
+
+export interface DescuentoAplicado {
+  textoDescuento: string;
 }

@@ -5,16 +5,16 @@ export interface RespuestaLogIn {
 }
 
 export interface Comprador {
-  limite_gasto_cents_mes: number;
-  carritoCompra: Productos;
-  pedidos: Pedido[];
   id: number;
   nombre: string;
-  nick_name: string;
+  nickName: string;
   contraseña: string;
   email: string;
   edad: number;
-  imagenesUrl: any;
+  imagenesUrl: string;
+  limiteGastoCentsMes: number;
+  carritoCompra: Producto[];
+  pedidos: Pedido[];
 }
 
 export interface Pedido {

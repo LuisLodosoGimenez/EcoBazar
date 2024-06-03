@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 using Supabase;
 using Supabase.Interfaces;
 using Microsoft.Extensions.Configuration;
-using backend.Services;
 using backend.Models;
+using static backend.Controllers.ApiController;
 
 namespace backend.Logica
 {
     public interface InterfazLogica
     {
-        Task RegistrarComprador(Comprador comprador);
+        Task RegistrarComprador(Registro registro);
 
-        Task<object> IniciarSesion(string nickName, string contraseña);
+        Task<Usuario> IniciarSesion(string nickName, string contraseña, string tipoSesion);
 
         Task<IList<Producto>> ObtenerProductosPorCategoria(string categoria);
 
@@ -27,7 +27,7 @@ namespace backend.Logica
 
         Task<Comprador> EliminarProductoEnCarritoCompra(int idComprador, int idProducto);
 
-        Task<Comprador> CrearPedidoAComprador(Comprador comprador);
+        Task<Comprador> CrearPedidoAComprador(CreacionPedidoPeticion creacionPedidoPeticion);
 
         ///################################################################
 

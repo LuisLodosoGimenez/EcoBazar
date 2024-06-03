@@ -18,7 +18,7 @@ namespace backend.ModelsSupabase
 
         [Column("id_comprador")]
         [required]
-        public int idComprador { get; set; }
+        public int IdComprador { get; set; }
 
     }
 }

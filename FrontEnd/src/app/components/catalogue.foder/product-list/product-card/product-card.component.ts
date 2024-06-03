@@ -17,7 +17,7 @@ export class ProductCardComponent {
   }
 
   ReturnPrice() {
-    const precioCentString = this.product.precio_cents + '';
+    const precioCentString = this.product.precioCents + '';
     return (
       precioCentString.substring(0, precioCentString.length - 2) +
       ',' +

@@ -1,6 +1,5 @@
-using backend.Services;
+
 using backend.Logica;
-using backend.Conversiones;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +11,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 // Add services to the container.
 builder.Services.AddControllers().AddNewtonsoftJson();
-builder.Services.AddScoped<SupabaseService>();
 builder.Services.AddScoped<LogicaClase>();
-builder.Services.AddScoped<ISupabaseService, SupabaseService>();
 builder.Services.AddScoped<InterfazLogica, LogicaClase>();
-builder.Services.AddScoped<IConversiones,Conversiones>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -37,7 +33,7 @@ app.UseCors(x => x
             .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());
-            
+
 app.UseAuthorization();
 
 app.MapControllers();

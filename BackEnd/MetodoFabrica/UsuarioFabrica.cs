@@ -1,34 +1,18 @@
-using Postgrest.Attributes;
-using Postgrest.Models;
+using backend.Models;
+using static backend.Controllers.ApiController;
 
 namespace backend.MetodoFabrica
 {
-    [Table("usuario")]
-    public abstract class UsuarioFabrica : BaseModel
+
+    public abstract class UsuarioFabrica
     {
-        [PrimaryKey("id", false)]
-        public int Id { get; set; }
+        public UsuarioFabrica() { }
 
 
-        [Column("nombre")]
-        public string? Nombre { get; set; }
+        public abstract Usuario CrearUsuario(Registro registro);
 
-        [Column("nick_name")]
-        public string? Nick_name { get; set; }
+        public abstract Task<Usuario> ObtenerUsuario(string nickName);
 
-        [Column("contraseña")]
-        public string? Contraseña { get; set; }
-
-        [Column("email")]
-        public string? Email { get; set; }
-
-        [Column("edad")]
-        public int Edad { get; set; }
-
-        // Otros campos que puedas necesitar
-
-
-        // Relación con Cliente si es necesario
-
+        public abstract Task<Usuario> ObtenerUsuario(int idUsuario);
     }
 }

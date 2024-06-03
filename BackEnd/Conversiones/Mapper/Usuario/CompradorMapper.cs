@@ -7,31 +7,67 @@ namespace backend.Mapper
     public static class CompradorMapper
     {
 
-        private static readonly Supabase.Client _supabaseClient;
-
-
-        static CompradorMapper()
+        public async static Task AñadirComprador(Comprador comprador)
         {
 
-            var supabaseUrl = "https://llpjnoklflyjokandifh.supabase.co";
-            var supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxscGpub2tsZmx5am9rYW5kaWZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM5Nzc0MzQsImV4cCI6MjAyOTU1MzQzNH0.IeBIVRWX_9LEGvCB7KQVntdIP3arB0ZF3SVOVJbktug";
 
-            var options = new Supabase.SupabaseOptions
-            {
-                AutoConnectRealtime = true
-            };
-
-            _supabaseClient = new Supabase.Client(supabaseUrl!, supabaseKey, options);
+            var idUsuario = await UsuarioMapper.AñadirUsuario(CompradorMapper.CompradorAUsuarioBD(comprador));
+            comprador.Id = idUsuario;
+            await AñadirCompradorBD(CompradorMapper.CompradorACompradorBD(comprador));
         }
 
 
-        public async static Task AñadirComprador(CompradorBD compradorBD)
+        public async static Task AñadirCompradorBD(CompradorBD compradorBD)
         {
 
-            await _supabaseClient
+            await SupabaseClientSingleton.getInstance()
                     .From<CompradorBD>()
                     .Insert(compradorBD);
             Console.WriteLine("Comprador insertado correctamente en Supabase.");
+        }
+
+        public async static Task<Comprador> ObtenerCompradorPorNickName(string nickName)
+        {
+            var usuario = await SupabaseClientSingleton.getInstance()
+                                .From<UsuarioBD>()
+                                .Where(x => x.NickName == nickName)
+                                .Get();
+
+
+
+            if (!usuario.Models.Any()) throw new Exception("El NickName '" + nickName + "' no corresponde a ningún usuario.");
+            UsuarioBD usuarioBD = usuario.Model!;
+
+
+            var comprador = await SupabaseClientSingleton.getInstance()
+                                    .From<CompradorBD>()
+                                    .Where(x => x.Id == usuarioBD.Id!)
+                                    .Get();
+
+            if (comprador.Models.Any()) return CompradorMapper.UsuarioBDYCompradorBDAComprador(usuarioBD, comprador.Model!);
+            else throw new Exception("No se ha encontrado ningún comprador con el siguiente NickName: " + nickName);
+
+        }
+
+        public async static Task<Comprador> ObtenerCompradorPorId(int idUsuario)
+        {
+
+            var usuario = await SupabaseClientSingleton.getInstance()
+                                .From<UsuarioBD>()
+                                .Where(x => x.Id == idUsuario)
+                                .Get();
+
+            if (!usuario.Models.Any()) throw new Exception("El ID '" + idUsuario + "' no corresponde a ningún usuario.");
+            UsuarioBD usuarioBD = usuario.Model!;
+
+            var comprador = await SupabaseClientSingleton.getInstance()
+                                    .From<CompradorBD>()
+                                    .Where(x => x.Id == usuarioBD.Id!)
+                                    .Get();
+
+            if (comprador.Models.Any()) return CompradorMapper.UsuarioBDYCompradorBDAComprador(usuarioBD, comprador.Model!);
+            else throw new Exception("No se ha encontrado ningún comprador con el siguiente ID: " + idUsuario);
+
         }
 
         public static UsuarioBD CompradorAUsuarioBD(Comprador comprador)
@@ -41,7 +77,7 @@ namespace backend.Mapper
             {
                 Id = comprador.Id,
                 Nombre = comprador.Nombre,
-                Nick_name = comprador.Nick_name,
+                NickName = comprador.NickName,
                 Contraseña = comprador.Contraseña,
                 Email = comprador.Email,
                 Edad = comprador.Edad,
@@ -55,7 +91,7 @@ namespace backend.Mapper
             return new CompradorBD
             {
                 Id = comprador.Id,
-                Limite_gasto_cents_mes = comprador.Limite_gasto_cents_mes
+                LimiteGastoCentsMes = comprador.LimiteGastoCentsMes
             };
 
         }
@@ -63,13 +99,13 @@ namespace backend.Mapper
         public async static Task<ICollection<Producto>> ObtenerCarritoCompra(int compradorId)
         {
 
-            var carrito = await _supabaseClient
+            var carrito = await SupabaseClientSingleton.getInstance()
                             .From<CarritoCompraBD>()
-                            .Where(x => x.Id_comprador == compradorId)
+                            .Where(x => x.IdComprador == compradorId)
                             .Get();
 
             List<int> lista = new List<int>();
-            lista = carrito.Models.ConvertAll((CarritoCompraBD carrito) => carrito.Id_producto);
+            lista = carrito.Models.ConvertAll((CarritoCompraBD carrito) => carrito.IdProducto);
 
 
             List<ProductoBD> productosBD = new List<ProductoBD>();
@@ -77,7 +113,7 @@ namespace backend.Mapper
             foreach (var idProducto in lista)
             {
 
-                var productos = await _supabaseClient
+                var productos = await SupabaseClientSingleton.getInstance()
                         .From<ProductoBD>()
                         .Where(x => x.Id == idProducto)
                         .Get();
@@ -98,12 +134,12 @@ namespace backend.Mapper
             //todo: add to convertir
             CarritoCompraBD carritoCompraBD = new CarritoCompraBD
             {
-                Id_comprador = compradorId,
-                Id_producto = productoId
+                IdComprador = compradorId,
+                IdProducto = productoId
             };
 
 
-            await _supabaseClient.From<CarritoCompraBD>().Insert(carritoCompraBD);
+            await SupabaseClientSingleton.getInstance().From<CarritoCompraBD>().Insert(carritoCompraBD);
         }
 
 
@@ -112,30 +148,30 @@ namespace backend.Mapper
             //todo: add to convertir
             CarritoCompraBD carritoCompraBD = new CarritoCompraBD
             {
-                Id_comprador = compradorId,
-                Id_producto = productoId,
+                IdComprador = compradorId,
+                IdProducto = productoId,
             };
 
 
-            var result = await _supabaseClient
+            var result = await SupabaseClientSingleton.getInstance()
             .From<CarritoCompraBD>().Delete(carritoCompraBD);
         }
 
 
         public static Comprador UsuarioBDYCompradorBDAComprador(UsuarioBD usuarioBD, CompradorBD compradorBD)
         {
-            var comprador = new Comprador(usuarioBD.Nombre, usuarioBD.Nick_name, usuarioBD.Contraseña, usuarioBD.Email);
+            var comprador = new Comprador(usuarioBD.Nombre, usuarioBD.NickName, usuarioBD.Contraseña, usuarioBD.Email);
             comprador.Id = usuarioBD.Id;
             comprador.Edad = usuarioBD.Edad;
-            comprador.Limite_gasto_cents_mes = compradorBD.Limite_gasto_cents_mes;
+            comprador.LimiteGastoCentsMes = compradorBD.LimiteGastoCentsMes;
             comprador.ImagenesUrl = usuarioBD.ImagenUrl;
             return comprador;
         }
 
         public static async Task EliminarCarritoCompra(int id_comprador)
         {
-            await _supabaseClient
-            .From<CarritoCompraBD>().Where(x => x.Id_comprador == id_comprador).Delete();
+            await SupabaseClientSingleton.getInstance()
+            .From<CarritoCompraBD>().Where(x => x.IdComprador == id_comprador).Delete();
         }
 
 

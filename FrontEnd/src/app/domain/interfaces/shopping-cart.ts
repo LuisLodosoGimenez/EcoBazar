@@ -1,8 +1,8 @@
 import { Producto } from './category-products';
 
 export interface ShoppingCartProduct {
-  id_comprador: number;
-  id_producto: number;
+  idComprador: number;
+  idProducto: number;
 }
 
 export interface NuevoCarritoCompra {

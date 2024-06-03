@@ -46,7 +46,7 @@ export class ProductListComponent {
   }
 
   ReturnPrice() {
-    const precioCentString = this.productDetails!.precio_cents + '';
+    const precioCentString = this.productDetails!.precioCents + '';
     return (
       precioCentString.substring(0, precioCentString.length - 2) +
       ',' +
@@ -58,8 +58,8 @@ export class ProductListComponent {
   AddProductToShoppingCart() {
     if (AppComponent.usuario == undefined) this.router.navigate(['/log-in']);
     let shoppingCart = {
-      id_comprador: AppComponent.usuario!.id,
-      id_producto: this.productDetails!.id,
+      idComprador: AppComponent.usuario!.id,
+      idProducto: this.productDetails!.id,
     };
     this.shoppingCartApiService.AddProductToShoppingCart(shoppingCart).subscribe({
       next: (data) => {

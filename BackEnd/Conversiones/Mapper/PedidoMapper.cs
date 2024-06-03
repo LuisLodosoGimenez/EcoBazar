@@ -1,55 +1,36 @@
 using System.Collections.ObjectModel;
 using backend.Models;
 using backend.ModelsSupabase;
-using backend.Services;
 
 namespace backend.Mapper
 {
 
     public static class PedidoMapper
     {
-
-        private static readonly Supabase.Client _supabaseClient;
-
-
-        static PedidoMapper()
-        {
-
-            var supabaseUrl = "https://llpjnoklflyjokandifh.supabase.co";
-            var supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxscGpub2tsZmx5am9rYW5kaWZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM5Nzc0MzQsImV4cCI6MjAyOTU1MzQzNH0.IeBIVRWX_9LEGvCB7KQVntdIP3arB0ZF3SVOVJbktug";
-
-            var options = new Supabase.SupabaseOptions
-            {
-                AutoConnectRealtime = true
-            };
-
-            _supabaseClient = new Supabase.Client(supabaseUrl!, supabaseKey, options);
-        }
-
-        public static async Task CrearPedido(int compradorId, ICollection<Producto> carritoCompra)
+        public static async Task CrearPedido(int compradorId, int[] carritoCompra)
         {
 
             PedidoBD pedidoBD = new PedidoBD
             {
                 Estado = "En proceso en vendedor",
-                idComprador = (int)compradorId,
+                IdComprador = (int)compradorId,
             };
 
-            var response = await _supabaseClient
+            var response = await SupabaseClientSingleton.getInstance()
                     .From<PedidoBD>()
                     .Insert(pedidoBD);
             Console.WriteLine("Pedido insertado correctamente en Supabase.");
 
-            foreach (Producto producto in carritoCompra)
+            foreach (int idProducto in carritoCompra)
             {
 
                 ProductoPedidoBD productoPedidoBD = new ProductoPedidoBD
                 {
-                    idProducto = (int)producto.Id!,
+                    IdProducto = idProducto,
                     IdPedido = response.Model!.Id
                 };
 
-                await _supabaseClient
+                await SupabaseClientSingleton.getInstance()
                     .From<ProductoPedidoBD>()
                     .Insert(productoPedidoBD);
                 Console.WriteLine("ProductoPedido insertado correctamente en Supabase.");
@@ -60,9 +41,9 @@ namespace backend.Mapper
         public static async Task<ICollection<Pedido>> ObtenerPedidosComprador(int compradorId)
         {
 
-            var result = await _supabaseClient
+            var result = await SupabaseClientSingleton.getInstance()
                                 .From<PedidoBD>()
-                                .Where(x => x.idComprador == compradorId)
+                                .Where(x => x.IdComprador == compradorId)
                                 .Get();
 
 
@@ -74,7 +55,7 @@ namespace backend.Mapper
         {
 
             ICollection<Producto> productosPedido = new Collection<Producto>();
-            var result = _supabaseClient
+            var result = SupabaseClientSingleton.getInstance()
                                 .From<ProductoPedidoBD>()
                                 .Where(x => x.IdPedido == pedidoBD.Id)
                                 .Get();
@@ -83,9 +64,9 @@ namespace backend.Mapper
 
             foreach (ProductoPedidoBD productoPedidoBD in result.Result.Models)
             {
-                var prod = _supabaseClient
+                var prod = SupabaseClientSingleton.getInstance()
                                 .From<ProductoBD>()
-                                .Where(x => x.Id == productoPedidoBD.idProducto)
+                                .Where(x => x.Id == productoPedidoBD.IdProducto)
                                 .Get();
                 result.Wait();
                 productosPedido.Add(ProductoMapper.ConvertirProductoBDAProducto(prod.Result.Model!));

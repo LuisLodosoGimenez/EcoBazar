@@ -45,7 +45,8 @@ export class LogInComponent implements OnInit {
 
   iniciarSesion() {
     let body = {
-      nick_name: String(this.formularioInicioSesion.value.nickname),
+      tipoSesion: 'comprador',
+      nickName: String(this.formularioInicioSesion.value.nickname),
       contraseña: String(this.formularioInicioSesion.value.contraseña),
     };
 
@@ -59,7 +60,10 @@ export class LogInComponent implements OnInit {
         this.router.navigate([this.url]);
       },
       error: (error) => {
-        this.notificationsService.showNotification('PROBLEMA INTERNO DEL SERVIDOR');
+        var failure: String = error['error']['response'];
+        if (failure.includes('El NickName') || failure.includes('Contraseña')) {
+          this.failText = failure;
+        } else this.notificationsService.showNotification('PROBLEMA INTERNO DEL SERVIDOR');
       },
     });
   }

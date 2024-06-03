@@ -34,8 +34,9 @@ export class SignInComponent {
 
   registrase() {
     let body = {
+      tipoRegistro: 'comprador',
       nombre: String(this.formularioRegistro.value.nombre) + ' ' + String(this.formularioRegistro.value.apellidos),
-      nick_name: String(this.formularioRegistro.value.nickname),
+      nickName: String(this.formularioRegistro.value.nickname),
       contraseña: String(this.formularioRegistro.value.contraseña),
       email: String(this.formularioRegistro.value.mail),
       edad: Number(this.formularioRegistro.value.edad),
@@ -49,7 +50,10 @@ export class SignInComponent {
         this.failText = 'REGISTRO CORRECTO. INICIE SESION';
       },
       error: (error) => {
-        this.notificationsService.showNotification('PROBLEMA INTERNO DEL SERVIDOR');
+        var failure: String = error['error']['response'];
+        if (failure.includes('NickName') || failure.includes('Email')) {
+          this.failText = failure;
+        } else this.notificationsService.showNotification('PROBLEMA INTERNO DEL SERVIDOR');
       },
     });
   }

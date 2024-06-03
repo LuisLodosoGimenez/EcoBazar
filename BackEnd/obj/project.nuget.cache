@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ATujY+uogVfxhyZcfBEiDWQuudjPL+SPLlmcYovxHPA53xRVYo8vGzkVmv9yXU5pH7Z27SqiS4R0IFxitS9JLQ==",
+  "dgSpecHash": "KaL3uaUkzfxSeswRX93jpp8tbwLS170tB+WtwHKx8gPBW9qndV8pBJhUB2WFuFbUnNk2TreYwj4v15ied28qbw==",
   "success": true,
   "projectFilePath": "C:\\Software\\PersonalGit\\EcoBazar\\BackEnd\\backend.csproj",
   "expectedPackageFiles": [
@@ -32,10 +32,10 @@
     "C:\\Users\\34684\\.nuget\\packages\\system.reactive\\5.0.0\\system.reactive.5.0.0.nupkg.sha512",
     "C:\\Users\\34684\\.nuget\\packages\\system.threading.channels\\5.0.0\\system.threading.channels.5.0.0.nupkg.sha512",
     "C:\\Users\\34684\\.nuget\\packages\\websocket.client\\4.6.1\\websocket.client.4.6.1.nupkg.sha512",
-    "C:\\Users\\34684\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.19\\microsoft.netcore.app.ref.7.0.19.nupkg.sha512",
-    "C:\\Users\\34684\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.19\\microsoft.windowsdesktop.app.ref.7.0.19.nupkg.sha512",
-    "C:\\Users\\34684\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.19\\microsoft.aspnetcore.app.ref.7.0.19.nupkg.sha512",
-    "C:\\Users\\34684\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.19\\microsoft.netcore.app.host.win-x64.7.0.19.nupkg.sha512"
+    "C:\\Users\\34684\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.20\\microsoft.netcore.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\34684\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.20\\microsoft.windowsdesktop.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\34684\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.20\\microsoft.aspnetcore.app.ref.7.0.20.nupkg.sha512",
+    "C:\\Users\\34684\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.20\\microsoft.netcore.app.host.win-x64.7.0.20.nupkg.sha512"
   ],
   "logs": []
 }

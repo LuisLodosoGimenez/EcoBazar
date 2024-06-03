@@ -28,7 +28,7 @@ export class ShoppingCartComponent {
   }
 
   ReturnTotalPrice() {
-    const precioCentString = this.usuario?.carritoCompra.reduce((a, b) => a + b.precio_cents, 0) + '';
+    const precioCentString = this.usuario?.carritoCompra.reduce((a, b) => a + b.precioCents, 0) + '';
 
     if (precioCentString == '0') return '00.00€';
     return (
@@ -53,8 +53,8 @@ export class ShoppingCartComponent {
 
   RemoveProductFromShoppintCart(producto: Producto) {
     let shoppingCart = {
-      id_comprador: AppComponent.usuario!.id,
-      id_producto: producto.id,
+      idComprador: AppComponent.usuario!.id,
+      idProducto: producto.id,
     };
     const func = () => {
       this.shoppingCartApiService.DeleteProductFromShoppingCart(shoppingCart).subscribe({

@@ -1,37 +1,43 @@
-using backend.Services;
+
 using backend.Models;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using backend.ModelsSupabase;
-using backend.Conversiones;
 using System.Collections.ObjectModel;
 using backend.Mapper;
 using System.Collections;
+using backend.MetodoFabrica;
+using static backend.Controllers.ApiController;
 
 namespace backend.Logica
 {
+
     public class LogicaClase : InterfazLogica
     {
+
+        public UsuarioFabrica? usuarioFabrica;
+
         public LogicaClase() { }
 
 
 
-        public async Task RegistrarComprador(Comprador comprador)
+        public async Task RegistrarComprador(Registro registro)
         {
-            if (UsuarioMapper.ExisteNickNameEnUsuario(comprador.Nick_name).Result)
+            if (UsuarioMapper.ExisteNickNameEnUsuario(registro.NickName!).Result)
             {
-                throw new Exception("NickName '" + comprador.Nick_name + "' ya en uso.");
+                throw new Exception("NickName '" + registro.NickName + "' ya en uso.");
 
             }
-            else if (UsuarioMapper.ExisteEmailEnUsuario(comprador.Email).Result)
+            else if (UsuarioMapper.ExisteEmailEnUsuario(registro.Email!).Result)
             {
-                throw new Exception("Email '" + comprador.Email + "' ya en uso.");
+                throw new Exception("Email '" + registro.Email + "' ya en uso.");
             }
             else
             {
-                var idUsuario = await UsuarioMapper.AñadirUsuario(CompradorMapper.CompradorAUsuarioBD(comprador));
-                comprador.Id = idUsuario;
-                await CompradorMapper.AñadirComprador(CompradorMapper.CompradorACompradorBD(comprador));
+                InicializarUsuarioFabrica(registro.TipoRegistro!);
+
+                await CompradorMapper.AñadirComprador((Comprador)usuarioFabrica!.CrearUsuario(registro));
+
 
             }
         }
@@ -39,60 +45,43 @@ namespace backend.Logica
 
 
 
-        public async Task<object> IniciarSesion(string nickName, string contraseña)
+        public async Task<Usuario> IniciarSesion(string nickName, string contraseña, string tipoSesion)
         {
 
+            InicializarUsuarioFabrica(tipoSesion);
+            Usuario usuario = await usuarioFabrica!.ObtenerUsuario(nickName);
+            ComprobarContraseña(usuario, contraseña);
+            return usuario;
 
-            var objeto = await UsuarioMapper.ObtenerUsuarioPorNickName(nickName);
-
-            if (objeto.GetType() == Type.GetType("backend.Models.Comprador"))
-            {
-
-                Comprador? comprador = objeto as Comprador;
-
-                if (comprador!.Contraseña != contraseña) throw new Exception("Contraseña incorrecta");
-                comprador.CarritoCompra = await CompradorMapper.ObtenerCarritoCompra((int)comprador.Id!);
-                comprador.Pedidos = await PedidoMapper.ObtenerPedidosComprador((int)comprador.Id!);
-
-                return comprador;
-
-            }
-
-            throw new Exception("ERROR DESCONOCIDOOO");
         }
 
+        public static void ComprobarContraseña(Usuario usuario, string contraseña)
+        {
+            if (usuario.Contraseña != contraseña) throw new Exception("Contraseña incorrecta");
+        }
 
+        public void InicializarUsuarioFabrica(string tipoSesion)
+        {
+            switch (tipoSesion)
+            {
+                case "comprador": usuarioFabrica = new CompradorFabrica(); break;
+                case "vendededor": usuarioFabrica = new VendedorFabrica(); break;
+                case "productor": usuarioFabrica = new ProductorFabrica(); break;
+            }
+        }
 
         public async Task<IList<Producto>> ObtenerProductosPorCategoria(string categoria)
         {
             List<Articulo> articulos = await ArticuloMapper.ObtenerArticulosPorCategoria(categoria);
-
-
-            //TODO: en vez de obtener todos los productos de un artículo para que se complete 
-            //      su lista de productos, obtener directamente el más barato.
-            //      el diseño de las clases de la logica se queda así por si en un futuro es de utilidad
-            //      darle el uso correspondiente a según que atributo.
-
             articulos = articulos.ConvertAll(ObtenerProductosDeArticulo);
-
-
-
             List<Producto> productosMasBaratos = new List<Producto>();
-
             foreach (var articulo in articulos)
             {
-
-
                 Producto? producto = ObtenerProductoMasBaratoDeArticulo(articulo);
                 if (producto != null) productosMasBaratos.Add(producto);
             }
-
             return productosMasBaratos;
-
-
-
         }
-
 
         private Articulo ObtenerProductosDeArticulo(Articulo articulo)
         {
@@ -111,7 +100,7 @@ namespace backend.Logica
 
         private Producto? ObtenerProductoMasBaratoDeArticulo(Articulo articulo)
         {
-            List<Producto> productosOrdenados = articulo.Productos.OrderBy(producto => producto.Precio_cents).ToList();
+            List<Producto> productosOrdenados = articulo.Productos.OrderBy(producto => producto.PrecioCents).ToList();
 
             if (productosOrdenados.Count != 0) return productosOrdenados.First();
             else return null;
@@ -122,61 +111,26 @@ namespace backend.Logica
         {
 
 
-            var objeto = await UsuarioMapper.ObtenerUsuarioPorId(idComprador);
-
-            if (objeto.GetType() == Type.GetType("backend.Models.Comprador"))
-            {
-
-                Comprador? comprador = objeto as Comprador;
-                await CompradorMapper.AñadirProductoACarritoCompra((int)comprador!.Id!, idProducto);
-                ICollection<Producto> productos = await CompradorMapper.ObtenerCarritoCompra(idComprador);
-
-                comprador!.CarritoCompra = productos;
-
-                return comprador;
-
-            }
-            //todo: make it correctly
-
-            throw new Exception("EL ID DE USUARIO NO ES DE COMPRADOR");
+            InicializarUsuarioFabrica("comprador");
+            await CompradorMapper.AñadirProductoACarritoCompra((int)idComprador, idProducto);
+            return (Comprador)await usuarioFabrica!.ObtenerUsuario(idComprador);
         }
 
         public async Task<Comprador> EliminarProductoEnCarritoCompra(int idComprador, int idProducto)
         {
-
-
-            var objeto = await UsuarioMapper.ObtenerUsuarioPorId(idComprador);
-
-            if (objeto.GetType() == Type.GetType("backend.Models.Comprador"))
-            {
-
-                Comprador? comprador = objeto as Comprador;
-                await CompradorMapper.EliminarProductoEnCarritoCompra((int)comprador!.Id!, idProducto);
-                ICollection<Producto> productos = await CompradorMapper.ObtenerCarritoCompra(idComprador);
-
-                comprador!.CarritoCompra = productos;
-
-                return comprador;
-
-            }
-            //todo: make it correctly
-
-            throw new Exception("EL ID DE USUARIO NO ES DE COMPRADOR");
+            InicializarUsuarioFabrica("comprador");
+            await CompradorMapper.EliminarProductoEnCarritoCompra((int)idComprador, idProducto);
+            return (Comprador)await usuarioFabrica!.ObtenerUsuario(idComprador);
         }
 
 
-
-        public async Task<Comprador> CrearPedidoAComprador(Comprador comprador)
+        public async Task<Comprador> CrearPedidoAComprador(CreacionPedidoPeticion creacionPedidoPeticion)
         {
+            await PedidoMapper.CrearPedido((int)creacionPedidoPeticion.IdComprador!, creacionPedidoPeticion.CarritoCompra!);
+            await CompradorMapper.EliminarCarritoCompra((int)creacionPedidoPeticion.IdComprador!);
 
-            await PedidoMapper.CrearPedido((int)comprador.Id!, comprador.CarritoCompra);
-            await CompradorMapper.EliminarCarritoCompra((int)comprador.Id!);
-
-            comprador.CarritoCompra = new Collection<Producto>();
-            comprador.Pedidos = await PedidoMapper.ObtenerPedidosComprador((int)comprador.Id!);
-            return comprador;
-
-
+            InicializarUsuarioFabrica("comprador");
+            return (Comprador)await usuarioFabrica!.ObtenerUsuario(creacionPedidoPeticion.IdComprador);
         }
 
 

@@ -13,7 +13,7 @@ export class UserProfileOrderListComponent {
   usuario?: Comprador = AppComponent.usuario;
 
   ReturnTotalPrice(pedido: Pedido) {
-    const precioCentString = pedido.productosPedido.reduce((a, b) => a + b.precio_cents, 0) + '';
+    const precioCentString = pedido.productosPedido.reduce((a, b) => a + b.precioCents, 0) + '';
 
     if (precioCentString == '0') return '00.00€';
     return (

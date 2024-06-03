@@ -1,4 +1,4 @@
 export interface SignInUser {
-  nick_name: string;
+  nickName: string;
   contraseña: string;
 }

@@ -42,23 +42,22 @@ namespace backend.Controllers
         // ----------------------------------------------- //
         public class Registro
         {
+            public string? TipoRegistro { get; set; }
             public string? Nombre { get; set; }
-            public string? Nick_name { get; set; }
+            public string? NickName { get; set; }
             public string? Contraseña { get; set; }
             public string? Email { get; set; }
             public int? Edad { get; set; }
             public int? LimiteGasto { get; set; }
         }
         [HttpPost("Registrarse")]
-        public async Task<IActionResult> RegistrarCompradorAsync(Registro registro)
+        public async Task<IActionResult> RegistrarComprador(Registro registro)
         {
 
             try
             {
-                var comprador = new Comprador(registro.Nombre!, registro.Nick_name!, registro.Contraseña!, registro.Email!);
-                comprador.Edad = registro.Edad;
-                comprador.Limite_gasto_cents_mes = registro.LimiteGasto;
-                await _logica.RegistrarComprador(comprador);
+
+                await _logica.RegistrarComprador(registro);
 
             }
             catch (Exception ex)
@@ -83,15 +82,18 @@ namespace backend.Controllers
         // ----------------------------------------------- //
         public class InicioSesion
         {
-            public string? Nick_name { get; set; }
+            public string? TipoSesion { get; set; }
+            public string? NickName { get; set; }
             public string? Contraseña { get; set; }
+
+
         }
         [HttpPost("IniciarSesion")]
         public async Task<IActionResult> IniciarSesion(InicioSesion inicioSesion)
         {
             try
             {
-                var perfil = await _logica.IniciarSesion(inicioSesion.Nick_name!, inicioSesion.Contraseña!);
+                var perfil = await _logica.IniciarSesion(inicioSesion.NickName!, inicioSesion.Contraseña!, inicioSesion.TipoSesion!);
 
                 if (perfil.GetType() == Type.GetType("backend.Models.Comprador"))
                 {
@@ -156,28 +158,23 @@ namespace backend.Controllers
         // ----------------------------------------------- //
         public class CarritoCompra
         {
-            public int? id_comprador { get; set; }
-            public int? id_producto { get; set; }
+            public int? idComprador { get; set; }
+            public int? idProducto { get; set; }
         }
         [HttpPost("AñadirProductoACarritoCompra")]
         public async Task<IActionResult> AñadirProductoACarritoCompra(CarritoCompra carritoCompra)
         {
             try
             {
-                var perfil = await _logica.AñadirProductoACarritoCompra((int)carritoCompra.id_comprador!, (int)carritoCompra.id_producto!);
+                Comprador comprador = await _logica.AñadirProductoACarritoCompra((int)carritoCompra.idComprador!, (int)carritoCompra.idProducto!);
 
-                if (perfil.GetType() == Type.GetType("backend.Models.Comprador"))
+                var responseData = new
                 {
+                    CarritoCompra = comprador.CarritoCompra,
+                };
+                return Ok(responseData);
 
-                    Comprador? comprador = perfil as Comprador;
 
-                    var responseData = new
-                    {
-                        CarritoCompra = comprador.CarritoCompra,
-                    };
-                    return Ok(responseData);
-
-                }
             }
             catch (Exception ex)
             {
@@ -187,7 +184,6 @@ namespace backend.Controllers
                 };
                 return BadRequest(errorResponse);
             }
-            return BadRequest("No se trata de un comprador");
         }
 
 
@@ -199,20 +195,13 @@ namespace backend.Controllers
         {
             try
             {
-                var perfil = await _logica.EliminarProductoEnCarritoCompra((int)carritoCompra.id_comprador!, (int)carritoCompra.id_producto!);
+                Comprador comprador = await _logica.EliminarProductoEnCarritoCompra((int)carritoCompra.idComprador!, (int)carritoCompra.idProducto!);
 
-                if (perfil.GetType() == Type.GetType("backend.Models.Comprador"))
+                var responseData = new
                 {
-
-                    Comprador? comprador = perfil as Comprador;
-
-                    var responseData = new
-                    {
-                        CarritoCompra = comprador.CarritoCompra,
-                    };
-                    return Ok(responseData);
-
-                }
+                    CarritoCompra = comprador.CarritoCompra,
+                };
+                return Ok(responseData);
             }
             catch (Exception ex)
             {
@@ -222,12 +211,6 @@ namespace backend.Controllers
                 };
                 return BadRequest(errorResponse);
             }
-
-            var error = new
-            {
-                response = "No se trata de un comprador",
-            };
-            return BadRequest(error);
         }
         // ----------------------------------------------- //
 
@@ -235,17 +218,24 @@ namespace backend.Controllers
 
 
         // ----------------------------------------------- //
+        public class CreacionPedidoPeticion
+        {
+            public int IdComprador { get; set; }
+            public int[]? CarritoCompra { get; set; }
+
+
+        }
         [HttpPost("CrearPedido")]
-        public async Task<IActionResult> CrearPedidoAComprador(Comprador comprador)
+        public async Task<IActionResult> CrearPedidoAComprador(CreacionPedidoPeticion creacionPedidoPeticion)
         {
 
             try
             {
-                var comp = await _logica.CrearPedidoAComprador(comprador);
+                var comp = await _logica.CrearPedidoAComprador(creacionPedidoPeticion);
 
                 var responseData = new
                 {
-                    Comprador = comprador,
+                    Comprador = comp,
                 };
                 return Ok(responseData);
 

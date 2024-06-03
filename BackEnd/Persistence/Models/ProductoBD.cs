@@ -12,7 +12,7 @@ namespace backend.ModelsSupabase
 
         [Column("precio_cents")]
         [required]
-        public int Precio_cents { get; set; }
+        public int PrecioCents { get; set; }
 
         [Column("unidades")]
         [required]
@@ -20,15 +20,15 @@ namespace backend.ModelsSupabase
 
         [Column("dias_entrega")]
         [required]
-        public int Dias_entrega { get; set; }
+        public int DiasEntrega { get; set; }
 
         [Column("id_vendedor")]
         [required]
-        public int Id_vendedor { get; set; }
+        public int IdVendedor { get; set; }
 
         [Column("id_articulo")]
         [required]
-        public int Id_articulo { get; set; }
+        public int IdArticulo { get; set; }
 
     }
 

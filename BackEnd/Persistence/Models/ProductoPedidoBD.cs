@@ -13,7 +13,7 @@ namespace backend.ModelsSupabase
 
         [PrimaryKey("id_producto")]
         [Column("id_producto")]
-        public int idProducto { get; set; }
+        public int IdProducto { get; set; }
 
     }
 }

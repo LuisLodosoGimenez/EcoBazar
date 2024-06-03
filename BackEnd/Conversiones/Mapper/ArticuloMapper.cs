@@ -1,7 +1,6 @@
 
 using backend.Models;
 using backend.ModelsSupabase;
-using backend.Services;
 
 namespace backend.Mapper
 {
@@ -9,27 +8,11 @@ namespace backend.Mapper
     public static class ArticuloMapper
     {
 
-        private static readonly Supabase.Client _supabaseClient;
-
-
-        static ArticuloMapper()
-        {
-
-            var supabaseUrl = "https://llpjnoklflyjokandifh.supabase.co";
-            var supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxscGpub2tsZmx5am9rYW5kaWZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM5Nzc0MzQsImV4cCI6MjAyOTU1MzQzNH0.IeBIVRWX_9LEGvCB7KQVntdIP3arB0ZF3SVOVJbktug";
-
-            var options = new Supabase.SupabaseOptions
-            {
-                AutoConnectRealtime = true
-            };
-
-            _supabaseClient = new Supabase.Client(supabaseUrl!, supabaseKey, options);
-        }
 
         public async static Task<Articulo> ObtenerArticuloPorId(int articuloId)
         {
 
-            var articulo = await _supabaseClient
+            var articulo = await SupabaseClientSingleton.getInstance()
                             .From<ArticuloBD>()
                             .Where(x => x.Id == articuloId)
                             .Get();
@@ -40,7 +23,7 @@ namespace backend.Mapper
 
         public async static Task<List<Articulo>> ObtenerArticulosPorCategoria(string categoria)
         {
-            var result = await _supabaseClient
+            var result = await SupabaseClientSingleton.getInstance()
                     .From<ArticuloBD>()
                     .Where(c => c.Categoria == categoria)
                     .Get();
@@ -51,7 +34,7 @@ namespace backend.Mapper
 
         private static Articulo ConvertirArticuloBDAArticulo(ArticuloBD articuloBD)
         {
-            var usu = UsuarioMapper.ObtenerUsuarioPorId(articuloBD.Id_productor);
+            var usu = UsuarioMapper.ObtenerUsuarioPorId(articuloBD.IdProductor);
             usu.Wait();
             Productor? productor = usu.Result as Productor;
 
@@ -64,9 +47,9 @@ namespace backend.Mapper
 
         public static Articulo ArticuloBDAArticulo(ArticuloBD articuloBD, Productor productor, List<string> imagenesArticulo)
         {
-            Articulo articulo = new Articulo(articuloBD.Nombre, articuloBD.Categoria, articuloBD.Edad_min,
-            articuloBD.Consejos_utilizacion, articuloBD.Consejos_retirada, articuloBD.Origen, articuloBD.Proceso_produccion,
-            articuloBD.Impacto_ambiental_social, articuloBD.Contribucion_ods, productor);
+            Articulo articulo = new Articulo(articuloBD.Nombre, articuloBD.Categoria, articuloBD.EdadMin,
+            articuloBD.ConsejosUtilizacion, articuloBD.ConsejosRetirada, articuloBD.Origen, articuloBD.ProcesoProduccion,
+            articuloBD.ImpactoAmbientalSocial, articuloBD.ContribucionOds, productor);
             articulo.Id = articuloBD.Id;
             articulo.ImagenesUrl = imagenesArticulo;
             return articulo;
