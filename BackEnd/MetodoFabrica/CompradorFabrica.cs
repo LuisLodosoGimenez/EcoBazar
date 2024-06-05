@@ -8,7 +8,7 @@ namespace backend.MetodoFabrica
     {
 
 
-        public override Usuario CrearUsuario(Registro registro)
+        public Usuario CrearUsuario(Registro registro)
         {
             Comprador comprador = new Comprador(registro.Nombre!, registro.NickName!, registro.Contraseña!, registro.Email!);
             comprador.Edad = registro.Edad;
@@ -17,7 +17,7 @@ namespace backend.MetodoFabrica
 
         }
 
-        public override async Task<Usuario> ObtenerUsuario(int idUsuario)
+        public async Task<Usuario> ObtenerUsuario(int idUsuario)
         {
             Comprador comprador = await CompradorMapper.ObtenerCompradorPorId(idUsuario);
             comprador.CarritoCompra = await CompradorMapper.ObtenerCarritoCompra((int)comprador.Id!);
@@ -26,7 +26,7 @@ namespace backend.MetodoFabrica
             return comprador;
         }
 
-        public override async Task<Usuario> ObtenerUsuario(string nickName)
+        public async Task<Usuario> ObtenerUsuario(string nickName)
         {
             Comprador comprador = await CompradorMapper.ObtenerCompradorPorNickName(nickName);
             comprador.CarritoCompra = await CompradorMapper.ObtenerCarritoCompra((int)comprador.Id!);

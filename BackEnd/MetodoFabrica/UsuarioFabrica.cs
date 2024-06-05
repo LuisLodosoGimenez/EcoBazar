@@ -4,15 +4,12 @@ using static backend.Controllers.ApiController;
 namespace backend.MetodoFabrica
 {
 
-    public abstract class UsuarioFabrica
+    public interface UsuarioFabrica
     {
-        public UsuarioFabrica() { }
+        public Usuario CrearUsuario(Registro registro);
 
+        public Task<Usuario> ObtenerUsuario(string nickName);
 
-        public abstract Usuario CrearUsuario(Registro registro);
-
-        public abstract Task<Usuario> ObtenerUsuario(string nickName);
-
-        public abstract Task<Usuario> ObtenerUsuario(int idUsuario);
+        public Task<Usuario> ObtenerUsuario(int idUsuario);
     }
 }

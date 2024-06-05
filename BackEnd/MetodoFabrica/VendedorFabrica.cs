@@ -7,17 +7,17 @@ namespace backend.MetodoFabrica
     public class VendedorFabrica : UsuarioFabrica
     {
 
-        public override Usuario CrearUsuario(Registro registro)
+        public Usuario CrearUsuario(Registro registro)
         {
             throw new Exception();
         }
 
-        public override async Task<Usuario> ObtenerUsuario(string nickName)
+        public async Task<Usuario> ObtenerUsuario(string nickName)
         {
             return await VendedorMapper.ObtenerVendedorPorNickName(nickName);
         }
 
-        public override async Task<Usuario> ObtenerUsuario(int idUsuario)
+        public async Task<Usuario> ObtenerUsuario(int idUsuario)
         {
             return await VendedorMapper.ObtenerVendedorPorId(idUsuario);
         }

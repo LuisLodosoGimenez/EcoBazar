@@ -2,7 +2,7 @@
 
 namespace backend.Models
 {
-    public class Producto
+    public class Producto : ISujeto
     {
 
         public int? Id { get; set; }
@@ -19,6 +19,9 @@ namespace backend.Models
         public Producto(int precioCents, int unidades, int diasEntrega, Vendedor vendedor, Articulo articulo)
         {
 
+            if (vendedor == null) throw new Exception("El parámentro vendedor no puede quedar a NULL");
+            else if (articulo == null) throw new Exception("El parámentro articulo no puede quedar a NULL");
+
             this.PrecioCents = precioCents;
             this.Unidades = unidades;
             this.Vendedor = vendedor;
@@ -27,12 +30,12 @@ namespace backend.Models
             this.ObservadoresProducto = new List<IObservador>();
         }
 
-        public void AñadirObservadoresALista(IObservador observador)
+        public void AñadirObservador(IObservador observador)
         {
             ObservadoresProducto.Add(observador);
         }
 
-        public void BorrarObservadoresDeLista(IObservador observador)
+        public void EliminarObservador(IObservador observador)
         {
             ObservadoresProducto.Remove(observador);
         }

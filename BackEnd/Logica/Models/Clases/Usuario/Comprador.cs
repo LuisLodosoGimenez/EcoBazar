@@ -1,11 +1,12 @@
 using System.Collections.ObjectModel;
 using System.Net.Http.Headers;
+using backend.Logica;
 using Postgrest.Attributes;
 using Postgrest.Models;
 
 namespace backend.Models
 {
-    public class Comprador : Usuario
+    public class Comprador : Usuario, IObservador
     {
 
         public int? LimiteGastoCentsMes { get; set; }
@@ -23,7 +24,15 @@ namespace backend.Models
 
         public void Actualizar(Producto productoBajoEnExistencias)
         {
-            // MODIFICAR ESTADO DE COMRPRADOR
+
+            // CUANDO SE LLAME A ESTE MÉTODO ACTUALIZAR SE PODRÍAN REALIZAR DIVERSAS FUNCIONES:
+            //
+            //  - MODIFICAR EL ESTADO DEL COMRPRADOR SEGÚN EL ESTADO DEL PRODUCTO BAJO EN EXISTENCIAS 
+            //    QUE OBTENEMOS CÓMO PARÁMETRO
+            // 
+            //  - O POR EJEMPLO, MANDAR UN EMAIL UTILIZANDO EL CORREO ELECTRÓNICO DEL COMPRADOR
+            //    INDICANDO EL NÚMERO DE PRODUCTOS QUE QUEDAN (OBTENIÉNDOLO DE "productoBajoEnExistencias")
+
         }
 
 

@@ -25,6 +25,8 @@ namespace backend.Models
         public Articulo(string nombre, string categoria, int? edadMin, string consejosUtilizacion, string consejosRetirada,
         string origen, string procesoProduccion, string impacto, string ods, Productor productor)
         {
+
+            if (productor == null) throw new Exception("El parámentro vendedor no puede quedar a NULL");
             this.Nombre = nombre;
             this.Categoria = categoria;
             this.EdadMin = edadMin;
